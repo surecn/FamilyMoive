@@ -1,0 +1,55 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        
+    }
+}
+
+ext {
+    appCompatVersion = '25.2.0'
+    constraintLayoutVersion = '1.1.0-beta4'
+    buildToolsVersion = "27.0.2"
+    compileSdkVersion = 28
+    minSdkVersion = 19
+    targetSdkVersion = 26
+    versionName = '3.0.0'
+    versionCode = 3000000
+//    versionCode scheme is T M NN RR AA
+//    T: Target/Flavour (1 for Android, 2 for Chrome?)
+//    M: Major version from 0 to 9
+//    NN: Minor version from 00 to 99
+//    RR: Micro/Revision version from 00 to 99
+//    AA: ABI from 0 to 99
+//    0 is dev
+//    1 was ARMv5        (deprecated)
+//    2 was ARMv6-nofpu  (deprecated)
+//    3 was ARMv6-fpu    (deprecated)
+//    4 is ARMv7-A
+//    5 is x86
+//    6 is MIPS
+//    7 is ARMv8
+//    8 is x86_64
+//    9 is MIPS64
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
