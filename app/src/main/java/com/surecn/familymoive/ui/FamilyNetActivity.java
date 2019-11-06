@@ -1,6 +1,5 @@
 package com.surecn.familymoive.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,9 +8,11 @@ import com.surecn.familymoive.R;
 import com.surecn.familymoive.common.SambaManager;
 import com.surecn.familymoive.common.StreamService;
 import com.surecn.familymoive.common.samba.IConfig;
+import com.surecn.familymoive.domain.FileItem;
+import com.surecn.familymoive.ui.player.VideoActivity;
 import com.surecn.familymoive.utils.UriUtil;
-import com.surecn.moat.core.Moat;
-import com.surecn.moat.core.TaskPool;
+import com.surecn.moat.core.Schedule;
+import com.surecn.moat.core.TaskSchedule;
 import com.surecn.moat.core.task.UITask;
 import com.surecn.moat.core.task.Task;
 
@@ -26,6 +27,8 @@ public class FamilyNetActivity extends FileActivity {
 
     private IConfig mIconfig;
 
+    private FileItem mCurrentFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,31 +36,23 @@ public class FamilyNetActivity extends FileActivity {
         startService(new Intent(this, StreamService.class));
 
         mIconfig = new DefaultConfig();
-        mSambaManager = new SambaManager(this, mIconfig);
-    }
+        mSambaManager = new SambaManager(mIconfig);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Moat.with(this).next(new Task() {
-            @Override
-            public void run(Context context, TaskPool work, Object result) {
-                getData().addAll(mSambaManager.listWorkGroup());
-            }
-        }).next(new UITask() {
-            @Override
-            public void run(Context context, TaskPool work, Object result) {
-                FileAdapter fileAdapter = getAdater();
-                fileAdapter.notifyDataSetChanged();
-            }
-        }).start();
+        listServer();
     }
 
     @Override
     public void onBackPressed() {
-        String uri = UriUtil.getUriParent(mSambaManager.getCurrentRemoteFolder());
-        if (uri.equals("smb")) {
+        String uri = mSambaManager.getCurrentRemoteFolder();
+        if (uri == null) {
+            super.onBackPressed();
+            return;
+        }
+        uri = UriUtil.getUriParent(uri);
+        if (uri == null) {
             listRoot(mSambaManager.getHost());
+        } else if (uri.equals("smb://")) {
+            listServer();
         } else {
             listFile(uri);
         }
@@ -79,43 +74,51 @@ public class FamilyNetActivity extends FileActivity {
     }
 
     private void play(String path) {
-        Intent intent = new Intent(this, VideoActivity.class);
-        intent.putExtra("url", path);
-        startActivity(intent);
+        VideoActivity.startActivity(this, path, 0);
     }
 
-    private void listFile(final String path) {
-        Moat.with(this).next(new Task() {
+    private void listServer() {
+        setTitle(getString(R.string.family_net));
+        Schedule.linear(new Task() {
             @Override
-            public void run(Context context, TaskPool work, Object result) {
-                getData().clear();
-                getData().addAll(mSambaManager.setCurrentFolder(path));
+            public void run(TaskSchedule work, Object result) {
+                updateData(mSambaManager.listWorkGroup());
             }
         }).next(new UITask() {
             @Override
-            public void run(Context context, TaskPool work, Object result) {
-                setTitle(getString(R.string.family_net));
-                FileAdapter fileAdapter = getAdater();
-                fileAdapter.notifyDataSetChanged();
+            public void run(TaskSchedule work, Object result) {
+                updateList();
+            }
+        }).start();
+    }
+
+    private void listFile(final String path) {
+        Schedule.linear(new Task() {
+            @Override
+            public void run(TaskSchedule work, Object result) {
+                updateData(mSambaManager.setCurrentFolder(path));
+            }
+        }).next(new UITask() {
+            @Override
+            public void run(TaskSchedule work, Object result) {
+                setTitle(UriUtil.getUriName(path));
+                updateList();
             }
         }).start();
     }
 
     private void listRoot(final String path) {
-        mIconfig.updateHost(path);
-        Moat.with(this).next(new Task() {
+        Schedule.linear(new Task() {
             @Override
-            public void run(Context context, TaskPool work, Object result) {
-                mSambaManager.listRoot();
-                getData().clear();
-                getData().addAll(mSambaManager.listFile());
+            public void run(TaskSchedule work, Object result) {
+                mSambaManager.updateHost(path);
+                updateData(mSambaManager.listAll());
             }
         }).next(new UITask() {
             @Override
-            public void run(Context context, TaskPool work, Object result) {
+            public void run(TaskSchedule work, Object result) {
                 setTitle(UriUtil.getUriName(path));
-                FileAdapter fileAdapter = getAdater();
-                fileAdapter.notifyDataSetChanged();
+                updateList();
             }
         }).start();
     }

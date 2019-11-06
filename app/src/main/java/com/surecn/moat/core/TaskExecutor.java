@@ -1,5 +1,10 @@
 package com.surecn.moat.core;
 
+import android.content.Context;
+
+import com.surecn.moat.core.task.Task;
+import com.surecn.moat.core.task.UITask;
+
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -11,127 +16,40 @@ import java.util.concurrent.TimeUnit;
  */
 public class TaskExecutor {
 
-    private MainHandler mMainHandler = null;
+    private MainHandler mMainHandler;
 
-    private ThreadPoolExecutor mPoolExecutor;
+    private BackHandler mBackHandler;
 
     private ErrorInterceptor mErrorInterceptor;
 
-    private static TaskExecutor sTaskExecutor;
-
-    private final static int THREAD_COUNT = 5;
-
-    public static TaskExecutor getTaskExecutor() {
-        if (sTaskExecutor == null) {
-            sTaskExecutor = new TaskExecutor();
-            sTaskExecutor.init(THREAD_COUNT);
-        }
-        return sTaskExecutor;
-    }
-
     /*package*/TaskExecutor() {
-        mMainHandler = new MainHandler(this);
+        mMainHandler = MainHandler.getInstance();
+        mBackHandler = BackHandler.getInstance();
     }
 
-    /*package*/void init(int threadCount) {
-        mPoolExecutor = new ThreadPoolExecutor(threadCount, threadCount * 3, 0, TimeUnit.MILLISECONDS,new PriorityBlockingQueue<Runnable>());
+    public void onError(TaskSchedule taskSchedule, Throwable e) {
+        mMainHandler.performErrorTask(this, taskSchedule, e);
     }
 
-    /*package*/ void setErrorInterceptor(ErrorInterceptor errorInterceptor) {
-        mErrorInterceptor = errorInterceptor;
+    public void executeNext(TaskSchedule taskSchedule) {
+        if (taskSchedule.hasNext()) {
+            taskSchedule.next();
+        }
+        execute(taskSchedule);
     }
 
-    /*package*/ void doPre(TaskPool pool) {
-        if (pool.getCurrentState() == TaskPool.State.cancel) {
+    public void execute(TaskSchedule taskSchedule) {
+        TaskRecord taskRecord = taskSchedule.current();
+        if (taskRecord == null) {
             return;
         }
-        final ProcessObserver observer = pool.getProcessObserver();
-        if (observer != null) {
-            observer.onPre();
+        if (taskRecord.getTask() instanceof UITask) {
+            mMainHandler.performDelayExecute(this, taskSchedule, taskRecord.getDelayMillis());
+        } else if (taskRecord.getDelayMillis() > 0) {
+            mMainHandler.performDelayNotify(this, taskSchedule, taskRecord.getDelayMillis());
+        } else {
+            mBackHandler.execute(this, taskSchedule);
         }
-        mMainHandler.sendExecuteMessage(pool);
-    }
-
-    /*package*/ void executeRunable(TaskPool pool) {
-        if (pool instanceof TaskQueue) {
-            QueueRunnable runnable = new QueueRunnable(mMainHandler, pool, pool.getPriority());
-            if (mPoolExecutor == null) {
-                throw new RuntimeException("TaskManager not init");
-            }
-            if (pool.getCurrentState() == TaskPool.State.cancel) {
-                return;
-            }
-            mPoolExecutor.execute(runnable);
-        }
-    }
-
-    /*package*/ void executeAsyncAction(TaskRecord record) {
-        try {
-            record.getAction().run(record.getActionPool().getContext(), record.getActionPool(), record.mObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-            mMainHandler.sendErrorMessage(record.getActionPool());
-        }
-    }
-
-    /*package*/ void executeSyncAction(TaskRecord record) {
-        TaskPool pool = record.getActionPool();
-        try {
-            record.getAction().run(pool.getContext(), record.getActionPool(), record.mObject);
-        } catch (Exception e) {
-            e.printStackTrace();
-            mMainHandler.sendErrorMessage(record.getActionPool());
-        } finally {
-            if (record.mNeedNotify) {
-                record.mNeedNotify = false;
-                TaskPool taskPool = record.getActionPool();
-                if (taskPool == null) {
-                    return;
-                }
-                try {
-                    synchronized (taskPool) {
-                        taskPool.notifyAll();
-                    }
-                } catch (Exception e){}
-            }
-        }
-    }
-
-    /*package*/ void executeComplete(TaskPool taskPool) {
-        final ResultObserver observer = taskPool.getTaskObserver();
-        if (observer != null) {
-            observer.onComplete(taskPool, taskPool.getResult());
-        }
-    }
-
-    /*package*/ void executeFinally(TaskPool actionQueue) {
-        final ProcessObserver observer = actionQueue.getProcessObserver();
-        if (observer != null) {
-            observer.onFinally();
-        }
-
-    }
-
-    /*package*/ void executeError(TaskPool actionQueue) {
-        final ResultObserver observer = actionQueue.getTaskObserver();
-        if (observer != null) {
-            if (actionQueue.isDefaultErrorHandler() &&
-                    mErrorInterceptor != null) {
-                if (!mErrorInterceptor.interceptor(actionQueue.getThrowable())) {
-                    observer.onError(actionQueue, actionQueue.getThrowable());
-                }
-            } else {
-                observer.onError(actionQueue, actionQueue.getThrowable());
-            }
-        }
-    }
-
-    /*package*/void start(TaskPool pool, int delay) {
-        mMainHandler.sendPreTaskMessage(pool, delay);
-    }
-
-    /*package*/void reStart(TaskPool pool, int delay) {
-        mMainHandler.sendExecuteMessage(pool, delay);
     }
 
 }

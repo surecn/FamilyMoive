@@ -4,20 +4,15 @@ import android.util.Log;
 
 import com.surecn.moat.exception.HttpRequestException;
 import com.surecn.moat.exception.HttpResponseException;
-import com.surecn.moat.rest.IHttpResult;
+import com.surecn.moat.net.IHttpResult;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * User: surecn(surecn@163.com)

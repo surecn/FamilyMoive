@@ -1,365 +1,353 @@
 package com.surecn.familymoive.ui;
 
-import android.app.Activity;
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.provider.Settings;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.surecn.familymoive.R;
-import com.surecn.familymoive.common.StreamService;
-import com.surecn.familymoive.common.samba.IConfig;
-import com.surecn.familymoive.common.samba.SambaUtil;
-import com.surecn.familymoive.common.samba.httpd.NanoStreamer;
-import com.surecn.familymoive.utils.DialogUtil;
-import com.surecn.familymoive.utils.IntentUtils;
-import com.surecn.familymoive.utils.UriUtil;
+import com.surecn.familymoive.common.GridPaddingDecoration;
+import com.surecn.familymoive.data.HttpAdapter;
+import com.surecn.familymoive.domain.RecommendInfo;
+import com.surecn.familymoive.domain.UpdateInfo;
+import com.surecn.moat.core.Schedule;
+import com.surecn.moat.core.TaskSchedule;
+import com.surecn.moat.core.task.Task;
+import com.surecn.moat.core.task.UITask;
+import com.surecn.moat.tools.utils.DensityUtils;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import jcifs.smb.SmbFile;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * User: surecn(surecn@163.com)
+ * Date: 2019-10-22
+ * Time: 17:43
+ */
+public class MainActivity extends TitleActivity implements View.OnClickListener {
 
-public class MainActivity extends SambaActivity {
-    //    private final static String TAG = "MainActivity";
-    public final static String SMB_VIDEO_URL_CIF46000 = "smb://;ram:1234@RAM-ELEM/samba/videos/cif-46000.mp4";
-    private Spinner fileSpinner;
-    private Spinner wgSpinner;
-    private TextView tvResult;
-    private TextView tvSelectedFile;
-    private TextView tvSelectedWG;
-    private EditText editText;
+    private long mBackPressTime = -1;
 
-    protected ArrayAdapter<String> fileAdapter;
-    protected ArrayAdapter<String> wgAdapter;
+    private RecyclerView mViewList;
 
-    protected boolean isAutoSelected = false;
+    private ItemAdapter mAdapter;
+
+    private List<MainItem> mList;
+
+    private ImageView mImageView;
+
+    private TextView mViewText;
+
+    //申请两个权限，录音和文件读写
+    //1、首先声明一个数组permissions，将需要的权限都放在里面
+    String[] permissions = new String[]{Manifest.permission.INTERNET,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.ACCESS_WIFI_STATE,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.REQUEST_INSTALL_PACKAGES};
+    //2、创建一个mPermissionList，逐个判断哪些权限未授予，未授予的权限存储到mPerrrmissionList中
+    List<String> mPermissionList = new ArrayList<>();
+
+    private final int mRequestCode = 100;//权限请求码
+
+    /**
+     * 不再提示权限时的展示对话框
+     */
+    AlertDialog mPermissionDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, StreamService.class));
-        setContentView(R.layout.activity_samba);
-        tvResult = (TextView) findViewById(R.id.tv_result);
-        tvSelectedFile = (TextView) findViewById(R.id.tv_selected_file);
-        tvSelectedWG = (TextView) findViewById(R.id.tv_selected_workgroup);
-        initSpinner();
+
+        setContentView(R.layout.activity_main);
+        setTitle(R.string.app_name);
+        setHiddenBack(true);
+
+        initView();
+        //delayFocus(findViewById(R.id.history));
+        initData();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopService(new Intent(this, StreamService.class));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_samba, menu);
-        return true;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode != REQUEST_CODE_CHOOSE_IMAGE) {
-            return;
-        }
-        try {
-            Uri selectedImage = data.getData();
-            String path = UriUtil.getImagePath(this, selectedImage);
-            upload(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_change_host) {
-            showAccountDialog();
-        } else if (id == R.id.action_smb_home) {
-            listRoot();
-        } else if (id == R.id.action_upload) {
-            IntentUtils.pickupImages(this, REQUEST_CODE_CHOOSE_IMAGE);
-        } else if (id == R.id.action_upload_video) {
-            IntentUtils.pickupVideo(this, REQUEST_CODE_CHOOSE_IMAGE);
-        } else if (id == R.id.action_play_video) {
-            playVideo(curRemoteFile, false);
-        } else if (id == R.id.action_play_video_3rd) {
-            playVideo(curRemoteFile, true);
-        } else if (id == R.id.action_download) {
-            download(genLocalPath(), curRemoteFile);
-        } else if (id == R.id.action_clear) {
-            tvResult.setText("CLEARED");
-        } else if (id == R.id.action_create_folder) {
-            showCreateDialog();
-        } else if (id == R.id.action_delete_file) {
-            showDeleteDialog(curRemoteFile);
-        } else if (id == R.id.action_delete_folder) {
-            showDeleteDialog(curRemoteFolder);
-        } else if (id == R.id.action_list_workgroup) {
-            listWorkGroup();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showCreateDialog() {
-        editText = DialogUtil.showInput(this, "Please input folder name", new DialogInterface.OnClickListener() {
+    private void initView() {
+        mViewText = findViewById(R.id.text);
+        mImageView = findViewById(R.id.image);
+        mViewList = findViewById(R.id.list);
+        mViewList.setLayoutManager(new GridLayoutManager(this, 3) {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which != DialogInterface.BUTTON_POSITIVE) {
-                    return;
-                }
-                createFolder(editText.getText().toString());
+            public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent, @NonNull View child, @NonNull Rect rect, boolean immediate, boolean focusedChildVisible) {
+                return super.requestChildRectangleOnScreen(parent, child, rect, true, focusedChildVisible);
             }
         });
+        mAdapter = new ItemAdapter();
+        mViewList.setAdapter(mAdapter);
+        mViewList.addItemDecoration(new GridPaddingDecoration(this, DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20)));
     }
 
-    private void showDeleteDialog(final String path) {
-        if (TextUtils.isEmpty(path)) {
-            Toast.makeText(this, "INVALID FILE/FOLDER", Toast.LENGTH_LONG).show();
-            return;
-        }
-        DialogUtil.showConfirmDialog(//
-                this,//
-                new StringBuilder("Confirm to Delete \n\"").append(path).append("\"?").toString(), //
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which != DialogInterface.BUTTON_POSITIVE) {
-                            return;
-                        }
-                        delele(path);
-                    }
-                });
-    }
+    private void initData() {
+        mList = new ArrayList<>();
+        mList.add(new MainItem("history", R.mipmap.main_history, Color.parseColor("#2FE487"), "播放历史"));
+        mList.add(new MainItem("local", R.mipmap.main_file, Color.parseColor("#2F9CFF"), "本地"));
+        mList.add(new MainItem("lan", R.mipmap.main_lan, Color.parseColor("#FD8723"), "家庭网络"));
+        mList.add(new MainItem("setting", R.mipmap.main_setting, Color.parseColor("#FB4C2B"), "设置"));
+        mList.add(new MainItem("setting", 0, Color.GRAY, "敬请期待"));
+        mList.add(new MainItem("setting", 0, Color.GRAY, "敬请期待"));
+        mAdapter.notifyDataSetChanged();
 
-    private void showAccountDialog() {
-        DialogUtil.showInputAccoutDialog(//
-                this,//
-                new IConfig.OnConfigListener() {
-                    @Override
-                    public void onConfig(IConfig config, Object obj) {
-                        Log.d(TAG, "" + config);
-                        mConfig = config;
-                        listRoot();
-                        updateWorkgroupUI();
-                    }
-                }
-        );
-    }
-
-    /* * handler Spinner****/
-    private void initSpinner() {
-        //------------
-        wgSpinner = (Spinner) findViewById(R.id.sp_workgroup);
-        wgAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
-        wgAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        wgSpinner.setAdapter(wgAdapter);
-        wgSpinner.setOnItemSelectedListener(//
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String host = wgAdapter.getItem(position);
-                        Log.d(TAG, "wgSpinner onItemSelected  " + host);
-                        if (TextUtils.isEmpty(host)) {
-                            return;
-                        }
-                        mConfig.updateHost(host);
-                        Log.d(TAG, "wgSpinner onItemSelected  " + mConfig);
-                        listRoot();
-                        updateWorkgroupUI();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        Log.d(TAG, "wgSpinner   onNothingSelected  curRemoteFolder=" + curRemoteFolder + "    isAutoSelected=" + isAutoSelected);
-                    }
-                }
-        );
-        listWorkGroup();
-
-        //------------
-        fileSpinner = (Spinner) findViewById(R.id.sp_file);
-        fileAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item);
-        fileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        fileSpinner.setAdapter(fileAdapter);
-        fileSpinner.setOnItemSelectedListener(//
-                new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String name = fileAdapter.getItem(position);
-                        onFileSelected(name);
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        Log.d(TAG, "fileAdapter onNothingSelected  curRemoteFolder=" + curRemoteFolder + "    isAutoSelected=" + isAutoSelected);
-                    }
-                }
-        );
-//        curRemoteFolder = SambaUtil.wrapSmbFullURL(mConfig, "/");
-//        loadToSpinner(curRemoteFolder);
-    }
-
-    private void onFileSelected(String name) {
-        Log.d(TAG, "onFileSelected  curRemoteFolder=" + curRemoteFolder + " name=\"" + name + "\"    isAutoSelected=" + isAutoSelected);
-        if (isAutoSelected) {
-            isAutoSelected = false;
-            return;
-        }
-        if (name.equals(REMOTE_PARENT)) {
-            if (curRemoteFolder != null) {
-            }
-            return;
-        }
-        SmbFile file = REMOTE_PATHS.get(name);
-        tvSelectedFile.setText(file.getName());
-        if (name.startsWith(REMOTE_FOLDER_PREFIX)) {
-            curRemoteFolder = file.getPath();
-            loadToSpinner(curRemoteFolder);
-        } else if (name.startsWith(REMOTE_FILE_PREFIX)) {
-            curRemoteFile = file.getPath();
-            curRemoteFolder = file.getParent();
-        }
-        updateSelectedUI();
-    }
-
-
-    private void loadToSpinner(final String path) {
-        Log.d(TAG, "loadToSpinner    " + path);
-        new Thread(new Runnable() {
+//        Schedule.linear(new Task() {
+//            @Override
+//            public void run(TaskSchedule taskSchedule, Object result) {
+//                RecommendInfo recommendInfo = HttpAdapter.getPlayerService().recommend();
+//                taskSchedule.sendNext(recommendInfo);
+//            }
+//        }).next(new UITask<RecommendInfo>() {
+//            @Override
+//            public void run(TaskSchedule taskSchedule, RecommendInfo result) {
+//                initRecommend(result);
+//            }
+//        });
+        Schedule.linear(new Task() {
             @Override
-            public void run() {
-                listAndPrepare(path);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        fileAdapter.clear();
-                        fileAdapter.addAll(REMOTE_PATHS.keySet());
-                        fileAdapter.notifyDataSetChanged();
-                        isAutoSelected = true;
-                        fileSpinner.setSelection(0);
-                    }
-                });
+            public void run(TaskSchedule taskSchedule, Object result) {
+                UpdateInfo updateInfo = HttpAdapter.getPlayerService().update(getVersionCode());
+                taskSchedule.sendNext(updateInfo);
+            }
+        }).next(new UITask<UpdateInfo>() {
+            @Override
+            public void run(TaskSchedule taskSchedule, UpdateInfo result) {
+                if (result.update == 1) {
+                    UpdateManager updateManager = new UpdateManager(MainActivity.this);
+                    updateManager.checkUpdateInfo(result);
+                }
+                if (Build.VERSION.SDK_INT >= 23) {//6.0才用动态权限
+                    initPermission();
+                }
             }
         }).start();
     }
 
+    private long getVersionCode() {
+        PackageManager packageManager = getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return 1;
+    }
+
+    private void initRecommend(RecommendInfo recommendInfo) {
+        Glide.with(this).load(recommendInfo.getImages().get(0)).into(mImageView);
+        mViewText.setText(recommendInfo.getText());
+    }
+
     @Override
-    protected void listRoot() {
-        super.listRoot();
-        loadToSpinner(curRemoteFolder);
+    public void onBackPressed() {
+        if (mBackPressTime == -1) {
+            mBackPressTime = System.currentTimeMillis();
+            showToast(R.string.exit_msg);
+        } else if ((System.currentTimeMillis() - mBackPressTime) > 1000) {
+            mBackPressTime = -1;
+        } else {
+            super.onBackPressed();
+        }
     }
 
-    private final void playVideo(String path, boolean is3RD) {
-        if (TextUtils.isEmpty(path)) {
-            path = SMB_VIDEO_URL_CIF46000;
+    @Override
+    public void onClick(View v) {
+        MainItem item = (MainItem) v.getTag();
+        if (item.key.equals("history")) {
+            Intent intent = new Intent(this, HistoryActivity.class);
+            startActivity(intent);
+        } else if (item.key.equals("local")) {
+            Intent intent = new Intent(this, DiskActivity.class);
+            startActivity(intent);
+        } else if (item.key.equals("lan")) {
+            Intent intent = new Intent(this, FamilyNetActivity.class);
+            startActivity(intent);
+        } else if (item.key.equals("setting")) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
-        String mime = SambaUtil.getVideoMimeType(path) + "";
-        if (!String.valueOf(mime).toLowerCase().startsWith("video")) {
-            Toast.makeText(this, "NOT a video file  " + mime, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        path = SambaUtil.wrapStreamSmbURL(path, NanoStreamer.INSTANCE().getIp(), NanoStreamer.INSTANCE().getPort());
-        if (is3RD) {
-            IntentUtils.openVideo(this, path);
-            return;
-        }
-        Intent intent = new Intent();
-        intent.putExtra("url", path);
-        intent.setClass(this, VideoActivity.class);
-        startActivity(intent);
     }
 
+    public class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
+        @NonNull
+        @Override
+        public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_main, parent, false);
+            view.setOnClickListener(MainActivity.this);
+            ItemHolder itemHolder = new ItemHolder(view);
+            view.setTag(itemHolder);
+            return itemHolder;
+        }
 
-    private void updateWorkgroupUI() {
-        tvSelectedWG.setText("Current Host:" + mConfig.host);
+        @Override
+        public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+            holder.setData(mList.get(position));
+            holder.index = position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Object obj = mList.get(position);
+            return (obj != null && obj instanceof String) ? 0 : 1;
+        }
+
+        @Override
+        public int getItemCount() {
+            return mList == null ? 0 : mList.size();
+        }
     }
 
-    private void updateSelectedUI() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvSelectedFile.setText("FOLDER:\n");
-                tvSelectedFile.append("     ");
-                tvSelectedFile.append(String.valueOf(curRemoteFolder));
-                tvSelectedFile.append("\n");
+    public static class MainItem {
+        String key;
+        int icon;
+        int backgroundColor;
+        String title;
 
-                tvSelectedFile.append("FILE:\n");
-                tvSelectedFile.append("     ");
-                tvSelectedFile.append(curRemoteFile == null ? "NONE FILE SELECTED!" : curRemoteFile);
+        public MainItem(String key, int icon, int backgroundColor, String title) {
+            this.key = key;
+            this.icon = icon;
+            this.backgroundColor = backgroundColor;
+            this.title = title;
+        }
+    }
+
+    public static class ItemHolder extends RecyclerView.ViewHolder {
+        public  int index;
+        private ImageView viewIcon;
+        private TextView viewTitle;
+        private ViewGroup root;
+
+        public ItemHolder(View view) {
+            super(view);
+            root = (ViewGroup) view;
+            viewIcon = root.findViewById(R.id.icon);
+            viewTitle = root.findViewById(R.id.title);
+        }
+
+        public void setData(MainItem item) {
+            root.setTag(item);
+            if (item.icon > 0) {
+                viewIcon.setImageResource(item.icon);
+                root.setEnabled(true);
+                root.setFocusable(true);
+            } else {
+                viewIcon.setImageDrawable(null);
+                root.setEnabled(false);
+                root.setFocusable(false);
             }
-        });
+            viewTitle.setText(item.title);
+            GradientDrawable drawable=new GradientDrawable();
+            drawable.setCornerRadius(DensityUtils.dp2px(root.getContext(), 10f));
+            drawable.setColor(item.backgroundColor);// 设置颜色
+            root.setBackground(drawable);
+        }
     }
 
-    private final String genLocalPath() {
-        File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + LOCAL_FOLDER_PATH);
-        if (!folder.exists()) {
-            folder.mkdirs();
+    //权限判断和申请
+    private void initPermission() {
+
+        mPermissionList.clear();//清空没有通过的权限
+
+        //逐个判断你要的权限是否已经通过
+        for (int i = 0; i < permissions.length; i++) {
+            if (ContextCompat.checkSelfPermission(this, permissions[i]) != PackageManager.PERMISSION_GRANTED) {
+                mPermissionList.add(permissions[i]);//添加还未授予的权限
+            }
         }
-        String name = SambaUtil.getFileName(curRemoteFile);
-        if (name == null) {
-            name = String.valueOf(System.currentTimeMillis());
+
+        //申请权限
+        if (mPermissionList.size() > 0) {//有权限没有通过，需要申请
+            ActivityCompat.requestPermissions(this, permissions, mRequestCode);
+        }else{
+            //说明权限都已经通过，可以做你想做的事情去
         }
-        File f = new File(new StringBuilder(folder.getAbsolutePath()).append("/").append(name).toString());
-        return f.getAbsolutePath();
     }
 
+
+    //请求权限后回调的方法
+    //参数： requestCode  是我们自己定义的权限请求码
+    //参数： permissions  是我们请求的权限名称数组
+    //参数： grantResults 是我们在弹出页面后是否允许权限的标识数组，数组的长度对应的是权限名称数组的长度，数组的数据0表示允许权限，-1表示我们点击了禁止权限
     @Override
-    protected void updateResult(final String action, final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                String ACTION_STR = String.valueOf(action).toUpperCase();
-                int MAX_LENGTH = 35;
-                int length = ACTION_STR.length();
-                final String DIVIDER = "=";
-                while (length <= MAX_LENGTH) {
-                    ACTION_STR = length % 2 == 0 ? ACTION_STR + DIVIDER : DIVIDER + ACTION_STR;
-                    length++;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        boolean hasPermissionDismiss = false;//有权限没有通过
+        if (mRequestCode == requestCode) {
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] == -1) {
+                    hasPermissionDismiss = true;
                 }
-                StringBuilder builder = new StringBuilder("\n");
-                builder.append(ACTION_STR);
-                builder.append("\n");
-                builder.append(msg);
-                tvResult.append(builder);
-                Log.d(TAG, "updateResult    " + builder);
             }
-        });
-    }
+            //如果有权限没有被允许
+            if (hasPermissionDismiss) {
+                showPermissionDialog();//跳转到系统设置权限页面，或者直接关闭页面，不让他继续访问
+            }else{
+                //全部权限通过，可以进行下一步操作。。。
 
-    @Override
-    protected void onRemoteFolderChange(String path, boolean result) {
-        loadToSpinner(path);
-    }
-
-    @Override
-    protected void onListWorkgroup(String[] paths) {
-        if (paths == null) {
-            return;
+            }
         }
-        wgAdapter.clear();
-        wgAdapter.addAll(paths);
-        wgAdapter.notifyDataSetChanged();
-        wgSpinner.setSelection(0);
+
+    }
+
+    private void showPermissionDialog() {
+        if (mPermissionDialog == null) {
+            mPermissionDialog = new AlertDialog.Builder(this)
+                    .setMessage("已禁用权限，请手动授予")
+                    .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cancelPermissionDialog();
+
+                            Uri packageURI = Uri.parse("package:" + getPackageName());
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //关闭页面或者做其他操作
+                            cancelPermissionDialog();
+
+                        }
+                    })
+                    .create();
+        }
+        mPermissionDialog.show();
+    }
+
+    //关闭对话框
+    private void cancelPermissionDialog() {
+        mPermissionDialog.cancel();
     }
 
 }

@@ -3,6 +3,7 @@ package com.surecn.familymoive.common.samba.httpd;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import com.surecn.familymoive.common.http.NanoHTTPD;
 import com.surecn.familymoive.common.samba.SambaUtil;
@@ -15,12 +16,8 @@ import java.io.PrintWriter;
 import java.util.Map;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
+import jcifs.util.transport.TransportException;
 
-/**
- * make sure <p/>
- * {@link com.surecn.familymoive.common.http.NanoHTTPD.Response#sendAsFixedLength(OutputStream, int) }<p/>
- * is protected
- */
 public class NanoStreamer extends NanoHTTPD implements IStreamer {
     public final static String TAG = "NanoStreamer";
     public final static int DEFAULT_SERVER_PORT = 12315;
@@ -79,8 +76,16 @@ public class NanoStreamer extends NanoHTTPD implements IStreamer {
     }
 
     private Response respond(Map<String, String> headers, String uri) {
+        uri = "smb://" + uri.substring(5);
+        int index = uri.lastIndexOf(".");
+        String extenstion = uri.substring(index + 1);
+        String mimeTypeForFile = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extenstion);
+        if (mimeTypeForFile == null) {
+            if (extenstion.equals("rmvb")) {
+                mimeTypeForFile = "video/vnd.rn-realvideo";
+            }
+        }
         Log.d(TAG, "respond uri=" + uri);
-        String mimeTypeForFile = SambaUtil.getVideoMimeType(uri);
         String smbUri = SambaUtil.cropStreamSmbURL(uri);
         Response response = null;
         try {
@@ -200,13 +205,17 @@ public class NanoStreamer extends NanoHTTPD implements IStreamer {
                 int BUFFER_SIZE = 16 * 1024;
                 byte[] buff = new byte[BUFFER_SIZE];
                 while (pending > 0) {
-                    // Note the ugly cast to int to support > 2gb files. If pending < BUFFER_SIZE we can safely cast anyway.
-                    int read = getData().read(buff, 0, ((pending > BUFFER_SIZE) ? BUFFER_SIZE : (int) pending));
-                    if (read <= 0) {
-                        break;
+                    try {
+                        // Note the ugly cast to int to support > 2gb files. If pending < BUFFER_SIZE we can safely cast anyway.
+                        int read = getData().read(buff, 0, ((pending > BUFFER_SIZE) ? BUFFER_SIZE : (int) pending));
+                        if (read <= 0) {
+                            break;
+                        }
+                        outputStream.write(buff, 0, read);
+                        pending -= read;
+                    } catch (TransportException transportException) {
+                        transportException.printStackTrace();
                     }
-                    outputStream.write(buff, 0, read);
-                    pending -= read;
                 }
             }
         }

@@ -13,10 +13,6 @@ public class TaskRecord {
 
     private long mDelayMillis;
 
-    private TaskPool mTaskPool;
-
-    public TaskRecord mNextRecord;
-
     public Object mObject;
 
     public boolean mNeedNotify;
@@ -26,7 +22,11 @@ public class TaskRecord {
         mDelayMillis = delayMillis;
     }
 
-    /*package*/Task getAction() {
+    public void setDelayMillis(long mDelayMillis) {
+        this.mDelayMillis = mDelayMillis;
+    }
+
+    /*package*/Task getTask() {
         return mTask;
     }
 
@@ -34,11 +34,4 @@ public class TaskRecord {
         return mDelayMillis;
     }
 
-    public TaskPool getActionPool() {
-        return mTaskPool;
-    }
-
-    public void setActionPool(TaskPool taskPool) {
-        this.mTaskPool = taskPool;
-    }
 }

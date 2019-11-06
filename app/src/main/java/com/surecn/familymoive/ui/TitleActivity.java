@@ -1,13 +1,23 @@
 package com.surecn.familymoive.ui;
 
 import android.app.ActionBar;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.surecn.familymoive.R;
+import com.surecn.familymoive.ui.view.FocusLayout;
+import com.surecn.familymoive.utils.DateUtils;
+
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 
@@ -16,12 +26,24 @@ import androidx.annotation.Nullable;
  * Date: 2019-10-15
  * Time: 13:17
  */
-public class TitleActivity extends BaseActivity implements View.OnClickListener {
+public class TitleActivity extends BaseActivity {
 
     private TextView mViewTitle;
 
     private ImageView mViewBack;
 
+    private TextView mViewTime;
+
+
+    //广播的注册，其中Intent.ACTION_TIME_CHANGED代表时间设置变化的时候会发出该广播
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.ACTION_TIME_TICK.equals(intent.getAction())){
+                updateTime();
+            }
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +55,30 @@ public class TitleActivity extends BaseActivity implements View.OnClickListener 
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setBackgroundDrawable(null);
         mViewBack = actionBar.getCustomView().findViewById(R.id.back);
-        mViewBack.setOnClickListener(this);
+        mViewTime = actionBar.getCustomView().findViewById(R.id.time);
+        mViewBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         getWindow().setBackgroundDrawableResource(R.mipmap.bg2);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        registerReceiver(broadcastReceiver, filter);
+
+        updateTime();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void updateTime() {
+        mViewTime.setText(DateUtils.toTime(new Date()));
     }
 
     protected void setTitle(String title) {
@@ -42,15 +86,19 @@ public class TitleActivity extends BaseActivity implements View.OnClickListener 
         mViewTitle.setText(title);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back:
-            onBackPressed();
-            break;
+    protected void setHiddenBack(boolean flag) {
+        View view = getActionBar().getCustomView().findViewById(R.id.back);
+        if (flag) {
+            view.setVisibility(View.GONE);
+        } else {
+            view.setVisibility(View.VISIBLE);
         }
     }
 
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+    }
 
 
 }

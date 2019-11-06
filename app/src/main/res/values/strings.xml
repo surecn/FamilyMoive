@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">FamilyMovie</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">FamilyPlayer</string>
     <string name="action_smb_home">Home</string>
     <string name="download">Download</string>
     <string name="upload">Upload</string>
     <string name="upload_video">Upload Video</string>
 
+    <string name="exit_msg">连按两次退出程序</string>
+
     <string name="family_net">家庭网络</string>
+
+    <string name="video_tip_down">按[↓]键显示播放列表</string>
+    <string name="video_tip_menu">按[菜单]键显示播放设置</string>
+    <string name="video_setting_subtitle">字幕匹配</string>
+    <string name="video_setting_subtitle_unknow">未匹配</string>
+    <string name="video_setting_scale">画面比例</string>
+    <string name="video_setting_play_order">播放设置</string>
+    <string name="video_setting_list_local">本地</string>
+    <string name="video_setting_list_network">网络</string>
+    <string name="unknow">未知</string>
+
+
+    <string name="setting">设置</string>
+    <string name="setting_title_online_subtitle">在线字幕</string>
+    <string name="setting_desc_online_subtitle">根据影片文件名匹配字幕</string>
+    <string name="setting_title_clear">清除历史</string>
+    <string name="setting_desc_clear">清除播放记录</string>
+    <string name="setting_title_about">关于</string>
+    <string name="setting_desc_about">邮箱:surecn@163.com</string>
+    <string name="setting_online_true">开</string>
+    <string name="setting_online_false">关</string>
+    <string name="setting_toast_msg">清理完成</string>
+
+
+    <string-array name="subtitle_values">
+        <item>适应屏幕</item>
+        <item>强制全屏</item>
+        <item>原始尺寸</item>
+        <item>16:9</item>
+        <item>4:3</item>
+    </string-array>
+
+    <string-array name="order_values">
+        <item>顺序</item>
+        <item>循环</item>
+    </string-array>
+
 
 </resources>

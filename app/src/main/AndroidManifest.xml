@@ -6,17 +6,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:name=".FMApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_config"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.FamilyNetActivity"
+
+        <activity android:name=".ui.MainActivity"
             android:screenOrientation="userLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +30,47 @@
         </activity>
 
         <activity
-            android:name=".ui.VideoActivity"
-            android:label="@string/app_name"
+            android:name=".ui.player.VideoActivity"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"
+            android:launchMode="singleTask"
+            android:screenOrientation="userLandscape"/>
+
+        <activity
+            android:name=".ui.FamilyNetActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity
+            android:name=".ui.DiskActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity
+            android:name=".ui.LocalFileActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity
+            android:name=".ui.SettingsActivity"
             android:screenOrientation="userLandscape"/>
 
         <service android:name=".common.StreamService" />
+
+        <provider
+            android:authorities="com.surecn.familymoive"
+            android:name=".data.AppProvider"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.surecn.familymoive.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"
+                />
+        </provider>
 
     </application>
 

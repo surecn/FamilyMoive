@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#fff"
+    android:textSize="@dimen/video_font_size"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clickable="true"
+    android:gravity="center"
+    android:background="@drawable/back_video_item"/>

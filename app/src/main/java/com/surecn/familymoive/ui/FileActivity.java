@@ -1,20 +1,23 @@
 package com.surecn.familymoive.ui;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.surecn.familymoive.R;
-import com.surecn.familymoive.utils.UriUtil;
+import com.surecn.familymoive.domain.FileItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,18 +43,35 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
 
     private void initView() {
         mViewList = findViewById(R.id.list);
-        mViewList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean requestChildRectangleOnScreen(@NonNull RecyclerView parent, @NonNull View child, @NonNull Rect rect, boolean immediate, boolean focusedChildVisible) {
+                return super.requestChildRectangleOnScreen(parent, child, rect, true, focusedChildVisible);
+            }
+        };
+        mViewList.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(this,R.mipmap.file_list_separator));
+        mViewList.addItemDecoration(divider);
         mList = new ArrayList<>();
         mAdapter = new FileAdapter();
         mViewList.setAdapter(mAdapter);
     }
 
-    protected FileAdapter getAdater() {
-        return mAdapter;
-    }
-
     protected ArrayList<FileItem> getData() {
         return mList;
+    }
+
+    protected void updateData(List<FileItem> list) {
+        mList.clear();
+        if (list != null) {
+            mList.addAll(list);
+        }
+    }
+
+    protected void updateList() {
+        mAdapter.notifyDataSetChanged();
+        mViewList.scrollToPosition(0);
     }
 
     @Override
@@ -61,7 +81,6 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
     }
 
     public void onClick(FileItem fileItem) {
-
     }
 
     public class FileAdapter extends RecyclerView.Adapter<FileItemHolder> {
@@ -77,8 +96,13 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
 
         @Override
         public void onBindViewHolder(@NonNull FileItemHolder holder, int position) {
-            holder.setData(mList.get(position));
-            holder.index = position;
+            try {
+                holder.setData(mList.get(position));
+                holder.index = position;
+            } catch (Exception e) {
+                e.printStackTrace();
+                notifyDataSetChanged();
+            }
         }
 
         @Override
@@ -115,6 +139,7 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
             extensionIcons.put("wma", R.mipmap.file_icon_wma);
             extensionIcons.put("wmw", R.mipmap.file_icon_wmw);
             extensionIcons.put("zip", R.mipmap.file_icon_zip);
+
         }
 
         private TextView viewText;
@@ -136,27 +161,22 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
 
         public void setData(FileItem file) {
             viewText.setText(file.name);
-            viewTime.setText(file.lastModify);
             if (file.type == 1) {
                 imageView.setImageResource(R.mipmap.file_icon_folder);
+                viewTime.setText(file.lastModify);
             } else if (file.type == 0) {
                 imageView.setImageResource(R.mipmap.file_icon_lanfolder);
+                viewTime.setText("");
             } else {
                 Integer integer = extensionIcons.get(file.extension);
                 if (integer == null) {
                     integer = R.mipmap.file_icon_default;
                 }
                 imageView.setImageResource(integer);
+                viewTime.setText(file.lastModify);
             }
         }
     }
 
-    public static class FileItem {
-        public int type;
-        public String name;
-        public String path;
-        public String extension;
-        public String lastModify;
-    }
 
 }

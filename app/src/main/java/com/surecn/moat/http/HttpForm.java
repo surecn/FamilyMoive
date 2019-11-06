@@ -1,7 +1,5 @@
 package com.surecn.moat.http;
 
-import com.surecn.moat.utils.StringUtils;
-
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStream;
@@ -239,7 +237,7 @@ public class HttpForm implements HttpRequestData {
 	@Override
 	public String getRequestUrl() {
 		if (mMethod == HttpMethod.GET) {
-			return mUrl + "?" + urlEncode(parameterToString());
+			return mUrl + "?" + parameterToString();
 		}
 		return mUrl;
 	}
@@ -260,7 +258,20 @@ public class HttpForm implements HttpRequestData {
 	}
 
 	public String parameterToString() {
-		return StringUtils.hashMapToUrlString(getTextParameters());
+		return hashMapToUrlString(getTextParameters());
+	}
+
+	//将hashmap中得参数用url方式连接
+	public String hashMapToUrlString(HashMap<String, String> parameters) {
+		StringBuffer urlbuff = new StringBuffer();
+		if (parameters != null && parameters.size() > 0) {
+			Set<String> keySet = parameters.keySet();
+			for (String key : keySet) {
+				urlbuff.append(urlEncode(key)).append("=").append(urlEncode(parameters.get(key))).append("&");
+			}
+			urlbuff.deleteCharAt(urlbuff.length() - 1);
+		}
+		return urlbuff.toString();
 	}
 
 

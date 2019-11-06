@@ -24,7 +24,7 @@ public class LifeManager implements Application.ActivityLifecycleCallbacks {
         return sLifeManager;
     }
 
-    private HashMap<Context, List<TaskPool>> mTaskList = new HashMap<>();
+    private HashMap<Context, List<TaskSchedule>> mTaskList = new HashMap<>();
 
     private boolean mIsInit = false;
 
@@ -33,7 +33,7 @@ public class LifeManager implements Application.ActivityLifecycleCallbacks {
         mIsInit = true;
     }
 
-    public void watch(TaskPool taskPool) {
+    public void watch(TaskSchedule taskPool) {
         if (!mIsInit) {
             throw new RuntimeException("LifeManager need init");
         }
@@ -42,7 +42,7 @@ public class LifeManager implements Application.ActivityLifecycleCallbacks {
             return;
         }
         if (context instanceof Activity) {
-            List<TaskPool> taskPools = mTaskList.get(context);
+            List<TaskSchedule> taskPools = mTaskList.get(context);
             if (taskPools == null) {
                 taskPools = new ArrayList<>();
                 mTaskList.put(context, taskPools);
@@ -83,13 +83,13 @@ public class LifeManager implements Application.ActivityLifecycleCallbacks {
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        List<TaskPool> list = mTaskList.get(activity);
+        List<TaskSchedule> list = mTaskList.get(activity);
         if (list == null || list.size() <= 0) {
             return;
         }
         for (int i = list.size() - 1; i >= 0; i--) {
-            TaskPool taskPool = list.get(i);
-            taskPool.cancel();
+            TaskSchedule taskSchedule = list.get(i);
+            taskSchedule.cancel();
             list.remove(i);
         }
     }

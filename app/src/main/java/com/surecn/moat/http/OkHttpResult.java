@@ -1,6 +1,6 @@
 package com.surecn.moat.http;
 
-import com.surecn.moat.rest.IHttpResult;
+import com.surecn.moat.net.IHttpResult;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,6 +2,7 @@ package com.surecn.moat.http;
 
 
 import com.surecn.moat.exception.HttpResponseException;
+import com.surecn.moat.tools.log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -48,10 +49,17 @@ public class OKHttpUtils {
                     }
                 }
             }
-            Set<String> set = form.getHeaderParameters().keySet();
-            for (String key : set) {
-                requestBuilder.header(key, form.getHeaderParameters().get(key));
+            log.d("HTTP URL:" + form.getRequestUrl());
+            if (log.LOG_DEBUG) {
+                HashMap<String, String> textParamaters = form.getTextParameters();
+                for (String key : textParamaters.keySet()) {
+                    log.d("HTTP PARAM:" + key + "=" + textParamaters.get(key));
+                }
             }
+//            Set<String> set = form.getHeaderParameters().keySet();
+//            for (String key : set) {
+//                requestBuilder.header(key, form.getHeaderParameters().get(key));
+//            }
             Request request = requestBuilder.build();
             HttpClientConfig clientConfig = getHttpClientConfig(form);
             OkHttpClient okHttpClient = getOkHttpClient(clientConfig);
@@ -60,7 +68,7 @@ public class OKHttpUtils {
                 throw new HttpResponseException(response.code());
             return response;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.e(e);
         }
         return null;
     }

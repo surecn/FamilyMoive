@@ -2,8 +2,8 @@ package com.surecn.moat.http;
 
 import android.util.Log;
 
-import com.surecn.moat.rest.IHttpResult;
-import com.surecn.moat.utils.IOUtils;
+import com.surecn.moat.net.IHttpResult;
+import com.surecn.moat.tools.utils.AppUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +44,7 @@ public class HttpResult implements IHttpResult {
 	
 	public String getResponseText() {
 		try {
-			return IOUtils.readString(mUrlConnection.getInputStream());
+			return AppUtils.IOUtils.readString(mUrlConnection.getInputStream());
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage(), e);
 		} finally {

@@ -133,16 +133,6 @@ public class UriUtil {
 
 
 	public static String getUriParent(String uri) {
-		uri = uri.replace("//", "/");
-		if (uri.endsWith("/")) {
-			uri = uri.substring(0, uri.length() - 1);
-		}
-		int index = uri.lastIndexOf("/");
-		return uri.substring(0, index);
-	}
-
-	public static String getUriName(String uri) {
-		uri = uri.replace("//", "/");
 		if (uri.endsWith("/")) {
 			uri = uri.substring(0, uri.length() - 1);
 		}
@@ -150,11 +140,49 @@ public class UriUtil {
 		if (index < 0) {
 			return null;
 		}
-		return uri.substring(index);
+		return uri.substring(0, index + 1);
+	}
+
+	public static String getUriName(String uri) {
+		if (uri.endsWith("/")) {
+			uri = uri.substring(0, uri.length() - 1);
+		}
+		int index = uri.lastIndexOf("/");
+		if (index < 0) {
+			return uri;
+		}
+		return uri.substring(index + 1);
+	}
+
+	public static String getUriSimpleName(String uri) {
+		if (uri.endsWith("/")) {
+			uri = uri.substring(0, uri.length() - 1);
+		}
+		int index = uri.lastIndexOf("/");
+		if (index < 0) {
+			return uri;
+		}
+		int last = uri.lastIndexOf(".");
+		if (last < 0) {
+			last = uri.length();
+		}
+		return uri.substring(index + 1, last);
+	}
+
+	public static String getUriHost(String uri) {
+		int start = uri.indexOf("//");
+		if (start < 0) {
+			return null;
+		}
+		start += 2;
+		int end = uri.indexOf("/", start);
+		if (end < 0) {
+			end = uri.length();
+		}
+		return uri.substring(start, end);
 	}
 
 	public static String getUriExtension(String uri) {
-		uri = uri.replace("//", "/");
 		if (uri.endsWith("/")) {
 			uri = uri.substring(0, uri.length() - 1);
 		}
@@ -163,5 +191,12 @@ public class UriUtil {
 			return null;
 		}
 		return uri.substring(index + 1);
+	}
+
+	public static String uriNameFormat(String name) {
+		if (name.endsWith("/")) {
+			return name.substring(0, name.length() - 1);
+		}
+		return name;
 	}
 }
