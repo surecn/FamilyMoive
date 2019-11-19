@@ -20,44 +20,39 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#代码混淆压缩比，在0~7之间，默认为5，一般不做修改
+-optimizationpasses 5
+#把混淆类中的方法名也混淆了
+-useuniqueclassmembernames
+#优化时允许访问并修改有修饰符的类和类的成员
+-allowaccessmodification
+# 避免混淆内部类、泛型、匿名类
+-keepattributes InnerClasses,Signature,EnclosingMethod
+#抛出异常时保留代码行号
+-keepattributes SourceFile,LineNumberTable
+#重命名抛出异常时的文件名称为"SourceFile"
+-renamesourcefileattribute SourceFile
+#保持所有实现 Serializable 接口的类成员
+-keepclassmembers class * implements java.io.Serializable {
+ static final long serialVersionUID;
+ private static final java.io.ObjectStreamField[] serialPersistentFields;
+ private void writeObject(java.io.ObjectOutputStream);
+ private void readObject(java.io.ObjectInputStream);
+ java.lang.Object writeReplace();
+ java.lang.Object readResolve();
+}
+#保留support下的所有类及其内部类
+-keep class android.support.** {*;}
+# 保留继承的support类
+-keep public class * extends androidx.annotation.**
+#保留我们自定义控件（继承自View）不被混淆
+-keep public class * extends android.view.View{
+     public <init>(android.content.Context);
+     public <init>(android.content.Context, android.util.AttributeSet);
+     public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+#保留友盟所在包
 -keep class com.umeng.** {*;}
-
--keepclassmembers class * {
-   public <init> (org.json.JSONObject);
-}
-
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-
--keep public class com.surecn.familymovie.R$*{
-    public static final int *;
-}
-
--keepclasseswithmembernames class * {
-native <methods>;
-}
--keepclasseswithmembers class * {
-public <init>(android.content.Context, android.util.AttributeSet);
-}
--keepclasseswithmembers class * {
-public <init>(android.content.Context, android.util.AttributeSet, int);
-}
-
--keep class * implements android.os.Parcelable {
-public static final android.os.Parcelable$Creator *;
-}
-
--keepclassmembers class * {
-void (OnEvent);
-void (OnListener);
-}
-
--keep class com.nodepp.smartnode.view.*{;}
-
--keepattributes Signature
--keepattributes EnclosingMethod
--keepattributes Annotation
--dontoptimize
--dontpreverify
+#保留ijkplayer所在包
+-keep class tv.danmaku.ijk.** {*;}

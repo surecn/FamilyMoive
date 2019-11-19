@@ -9,6 +9,22 @@
     android:paddingBottom="20dp">
 
     <LinearLayout
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/setting_item">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            android:text="@string/feedback"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@mipmap/file_list_separator"></View>
+    <LinearLayout
         android:id="@+id/online_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

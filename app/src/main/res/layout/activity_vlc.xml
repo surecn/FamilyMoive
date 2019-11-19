@@ -86,7 +86,7 @@
             android:textSize="@dimen/video_font_size"
             android:textColor="#fff"/>
 
-        <com.surecn.familymoive.ui.player.ProgressView
+        <com.surecn.familymovie.ui.player.ProgressView
             android:id="@+id/progress_ui"
             android:layout_width="0dp"
             android:layout_height="30dp"

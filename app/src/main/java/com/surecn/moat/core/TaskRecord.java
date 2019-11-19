@@ -17,6 +17,8 @@ public class TaskRecord {
 
     public boolean mNeedNotify;
 
+    private TaskSchedule.State mNextState = TaskSchedule.State.next;
+
     /*package*/TaskRecord(Task task, long delayMillis) {
         mTask = task;
         mDelayMillis = delayMillis;
@@ -34,4 +36,11 @@ public class TaskRecord {
         return mDelayMillis;
     }
 
+    public TaskSchedule.State getNextState() {
+        return mNextState;
+    }
+
+    public void setNextState(TaskSchedule.State nextState) {
+        this.mNextState = nextState;
+    }
 }

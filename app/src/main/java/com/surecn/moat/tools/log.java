@@ -6,7 +6,6 @@ import android.util.Log;
 public class log {
 	public static String tag = "";
 
-	private final static int logLevel = Log.VERBOSE;
 	public static boolean LOG_DEBUG = true;
 
 	public static void init(Context context, boolean debug) {
@@ -54,13 +53,11 @@ public class log {
 	 */
 	public static void i(String str) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.INFO) {
-				String name = getFunctionName();
-				if (name != null) {
-					Log.i(tag, name + " " + str);
-				} else {
-					Log.i(tag, str);
-				}
+			String name = getFunctionName();
+			if (name != null) {
+				Log.i(tag, name + " " + str);
+			} else {
+				Log.i(tag, str);
 			}
 		}
 	}
@@ -72,13 +69,11 @@ public class log {
 	 */
 	public static void d(String str) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.DEBUG) {
-				String name = getFunctionName();
-				if (name != null) {
-					Log.d(tag, name + " " + str);
-				} else {
-					Log.d(tag, str);
-				}
+			String name = getFunctionName();
+			if (name != null) {
+				Log.d(tag, name + " " + str);
+			} else {
+				Log.d(tag, str);
 			}
 		}
 	}
@@ -90,13 +85,11 @@ public class log {
 	 */
 	public static void v(String str) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.VERBOSE) {
-				String name = getFunctionName();
-				if (name != null) {
-					Log.v(tag, name + " " + str);
-				} else {
-					Log.v(tag, str);
-				}
+			String name = getFunctionName();
+			if (name != null) {
+				Log.v(tag, name + " " + str);
+			} else {
+				Log.v(tag, str);
 			}
 		}
 	}
@@ -108,13 +101,11 @@ public class log {
 	 */
 	public static void w(String str) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.WARN) {
-				String name = getFunctionName();
-				if (name != null) {
-					Log.w(tag, name + " " + str);
-				} else {
-					Log.w(tag, str);
-				}
+			String name = getFunctionName();
+			if (name != null) {
+				Log.w(tag, name + " " + str);
+			} else {
+				Log.w(tag, str);
 			}
 		}
 	}
@@ -126,27 +117,22 @@ public class log {
 	 */
 	public static void e(String str) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.ERROR) {
-				String name = getFunctionName();
-				if (name != null) {
-					Log.e(tag, name + " " + str);
-				} else {
-					Log.e(tag, str);
-				}
+			String name = getFunctionName();
+			if (name != null) {
+				Log.e(tag, name + " " + str);
+			} else {
+				Log.e(tag, str);
 			}
 		}
 	}
 
 	/**
 	 * The Log Level:e
-	 * 
-	 * @param ex
+	 *
 	 */
 	public static void e(Exception e) {
 		if (LOG_DEBUG) {
-			if (logLevel <= Log.ERROR) {
-				Log.e(tag, "error:", e);
-			}
+			Log.e(tag, "error:", e);
 		}
 	}
 

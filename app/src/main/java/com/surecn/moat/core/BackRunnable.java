@@ -39,6 +39,7 @@ public class BackRunnable implements Runnable {
                     return;
                 } else {
                     record.getTask().run(mTaskSchedule, record.mObject);
+                    mTaskSchedule.setCurrentState(record.getNextState());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

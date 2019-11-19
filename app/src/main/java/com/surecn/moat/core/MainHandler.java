@@ -83,6 +83,7 @@ class MainHandler extends Handler {
                 return;
             }
             taskRecord.getTask().run(taskSchedule, taskRecord.mObject);
+            taskSchedule.setCurrentState(taskRecord.getNextState());
             if (!taskSchedule.hasNext()) {
                 return;
             }

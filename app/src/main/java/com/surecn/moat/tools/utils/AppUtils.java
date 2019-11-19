@@ -19,6 +19,7 @@ import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by surecn on 15/7/7.
@@ -35,6 +36,16 @@ public class AppUtils {
 
     public static boolean isUserApp(ApplicationInfo pInfo) {
         return (!isSystemApp(pInfo) && !isSystemUpdateApp(pInfo));
+    }
+
+    /**
+     * 获得一个UUID
+     * @return String UUID
+     */
+    public static String getUUID(){
+        String uuid = java.util.UUID.randomUUID().toString();
+        //去掉“-”符号
+        return uuid.replaceAll("-", "");
     }
 
     public static int getAppVersionCode(Context context) {

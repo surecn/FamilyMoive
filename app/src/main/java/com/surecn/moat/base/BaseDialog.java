@@ -1,21 +1,17 @@
 package com.surecn.moat.base;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDialogFragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 
-import com.surecn.familymoive.R;
-import com.surecn.familymoive.ui.view.FocusLayout;
-import com.surecn.moat.base.inject.Injector;
+import com.surecn.familymovie.R;
+import com.surecn.familymovie.ui.view.FocusLayout;
 
 
 /**

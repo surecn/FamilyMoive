@@ -2,6 +2,8 @@ package com.surecn.moat.sqliteadmin;
 
 import android.content.Context;
 
+import java.io.IOException;
+
 /**
  * Created by surecn on 17/1/3.
  */
@@ -24,6 +26,12 @@ public class SQLiteAdmin {
     }
 
     public void init(int port) {
-        new HttpServer(port).setOnHttpRequest(new SQLiteListHttpHandler(mContext));
+        HttpServer httpServer = new HttpServer(port);
+        httpServer.setOnHttpRequest(new SQLiteListHttpHandler(mContext));
+        try {
+            httpServer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

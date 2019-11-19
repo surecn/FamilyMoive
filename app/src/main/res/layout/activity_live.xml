@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.surecn.familymovie.common.player.media.IjkVideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:fitsSystemWindows="false"/>
+    
+    <com.surecn.familymovie.ui.live.ChannelListView
+        android:id="@+id/channel_list"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:visibility="gone">
+        
+        <com.surecn.familymovie.ui.base.TvRecyclerView
+            android:id="@+id/first_list"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="#cc000000"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:padding="8dp"/>
+
+        <View
+            android:id="@+id/first_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ddffffff"/>
+
+        <com.surecn.familymovie.ui.base.TvRecyclerView
+            android:id="@+id/second_list"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:background="#cc000000"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:padding="8dp"/>
+
+        <View
+            android:id="@+id/second_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ddffffff"/>
+        
+        <TextView
+            android:id="@+id/lable_program"
+            android:layout_width="15dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/live_program"
+            android:background="#cc000000"
+            android:textColor="#fff"
+            android:textSize="18dp"/>
+
+        <com.surecn.familymovie.ui.base.TvRecyclerView
+            android:id="@+id/third_list"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:background="#cc000000"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:padding="8dp"/>
+        
+    </com.surecn.familymovie.ui.live.ChannelListView>
+
+    <com.surecn.familymovie.ui.live.LiveSettingPanel
+        android:id="@+id/setting"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:background="#cc000000"
+        android:padding="10dp"
+        android:visibility="gone"
+        ></com.surecn.familymovie.ui.live.LiveSettingPanel>
+    
+    
+</androidx.constraintlayout.widget.ConstraintLayout>

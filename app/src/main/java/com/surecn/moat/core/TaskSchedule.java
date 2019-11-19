@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.surecn.moat.core.task.Task;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
@@ -38,7 +36,11 @@ public class TaskSchedule<R> {
     }
 
     /*package*/synchronized State getCurrentState() {
-        return mState;
+        return this.mState;
+    }
+
+    /*package*/synchronized State setCurrentState(State state) {
+        return this.mState = state;
     }
 
 
@@ -52,6 +54,14 @@ public class TaskSchedule<R> {
         } if (mTaskList.size() > 1) {
             mTaskList.get(1).mObject = result;
         }
+    }
+
+    public void repeat() {
+        mTaskList.get(0).setNextState(State.repeat);
+    }
+
+    public void cancel() {
+        mTaskList.get(0).setNextState(State.cancel);
     }
 
     protected TaskSchedule append(Task task, long delayMillis) {
@@ -84,15 +94,11 @@ public class TaskSchedule<R> {
         return current();
     }
 
-    public void onCancel() {
+    private void onCancel() {
         mTaskList.clear();
     }
 
     public void start() {
 
-    }
-
-    public void cancel() {
-        mState = State.cancel;
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.surecn.familymoive"
+    package="com.surecn.familymovie"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
-        android:name=".FMApplication"
+        android:name="com.surecn.familymovie.FMApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".ui.MainActivity"
+        <activity android:name="com.surecn.familymovie.ui.MainActivity"
             android:screenOrientation="userLandscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,40 +30,49 @@
         </activity>
 
         <activity
-            android:name=".ui.player.VideoActivity"
+            android:name="com.surecn.familymovie.ui.player.VideoActivity"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar.Fullscreen"
             android:launchMode="singleTask"
             android:screenOrientation="userLandscape"/>
 
         <activity
-            android:name=".ui.FamilyNetActivity"
+            android:name="com.surecn.familymovie.ui.browser.LanActivity"
             android:screenOrientation="userLandscape"/>
 
         <activity
-            android:name=".ui.HistoryActivity"
+            android:name="com.surecn.familymovie.ui.browser.SmbActivity"
             android:screenOrientation="userLandscape"/>
 
         <activity
-            android:name=".ui.DiskActivity"
+            android:name="com.surecn.familymovie.ui.HistoryActivity"
             android:screenOrientation="userLandscape"/>
 
         <activity
-            android:name=".ui.LocalFileActivity"
+            android:name="com.surecn.familymovie.ui.browser.DiskActivity"
             android:screenOrientation="userLandscape"/>
 
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name="com.surecn.familymovie.ui.browser.LocalFileActivity"
             android:screenOrientation="userLandscape"/>
 
-        <service android:name=".common.StreamService" />
+        <activity
+            android:name="com.surecn.familymovie.ui.SettingsActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity android:name="com.surecn.familymovie.ui.live.LiveActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity android:name="com.surecn.familymovie.ui.FeedbackActivity"
+            android:screenOrientation="userLandscape"/>
 
         <provider
-            android:authorities="com.surecn.familymoive"
-            android:name=".data.AppProvider"/>
+            android:authorities="com.surecn.familymovie"
+            android:name="com.surecn.familymovie.data.AppProvider"
+            android:exported="true"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.surecn.familymoive.fileprovider"
+            android:authorities="com.surecn.familymovie.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -71,6 +80,9 @@
                 android:resource="@xml/filepaths"
                 />
         </provider>
+
+        <service android:name="com.surecn.familymovie.common.StreamService"/>
+
 
     </application>
 
