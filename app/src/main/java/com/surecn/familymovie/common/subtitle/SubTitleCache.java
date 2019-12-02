@@ -1,12 +1,15 @@
 package com.surecn.familymovie.common.subtitle;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.surecn.familymovie.utils.MD5Util;
+import com.surecn.familymovie.utils.UriUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 
 /**
@@ -20,35 +23,49 @@ public class SubTitleCache {
 
     private File mFolder;
 
-    private static SubTitleCache mSubTitleCache;
-
     public SubTitleCache(Context context) {
         mContext = context;
         mFolder = new File(context.getCacheDir(), "subtitle");
         if (!mFolder.exists()) {
             mFolder.mkdir();
         }
+
     }
 
-    public File getCache(String url) {
-        File file = getCacheFile(url);
-        if (file.exists()) {
+    public File getCache(String url, String extension) {
+        File file = getCacheFile(url, extension);
+        if (file != null && file.exists()) {
             return file;
         }
         return null;
     }
 
-    public File getCacheFile(String url) {
-        File file = new File(mFolder, MD5Util.md5ToString(url.getBytes()));
-        return file;
+    private File getCacheFile(String url, String extension) {
+        if (TextUtils.isEmpty(extension)) {
+            String name = MD5Util.MD5(url) + ".";
+            File [] files = mFolder.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File file, String s) {
+                    return s.equalsIgnoreCase(name + "srt") || s.equalsIgnoreCase(name + "ass") || s.equalsIgnoreCase(name + "ssa");
+                }
+            });
+            if (files != null && files.length > 0) {
+                return files[0];
+            } else {
+                return null;
+            }
+        } else {
+            File file = new File(mFolder, MD5Util.MD5(url) + "." + extension);
+            return file;
+        }
     }
 
     public SubTitleWriter getWriter(File file) {
         return new SubTitleWriter(file);
     }
 
-    public SubTitleWriter getWriter(String key) {
-        return new SubTitleWriter(getCacheFile(key));
+    public SubTitleWriter getWriter(String key, String extension) {
+        return new SubTitleWriter(getCacheFile(key, extension));
     }
 
     public static class SubTitleWriter {
@@ -57,6 +74,9 @@ public class SubTitleCache {
 
         private SubTitleWriter(File file) {
             try {
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
                 bufferedWriter = new BufferedWriter(new FileWriter(file));
             } catch (IOException e) {
                 e.printStackTrace();

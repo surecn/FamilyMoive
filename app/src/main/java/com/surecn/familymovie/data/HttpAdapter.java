@@ -4,14 +4,13 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.surecn.familymovie.BuildConfig;
 import com.surecn.moat.exception.HttpResponseException;
 import com.surecn.moat.http.HttpForm;
 import com.surecn.moat.net.IHttpResult;
@@ -21,15 +20,9 @@ import com.surecn.moat.net.interceptor.RequestInterceptor;
 import com.surecn.moat.net.interceptor.ResponseInterceptor;
 import com.surecn.moat.tools.log;
 import com.surecn.moat.tools.utils.AppUtils;
-
-import org.json.JSONArray;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.TreeMap;
 
 /**
  * Created by surecn on 15/7/29.
@@ -97,7 +90,14 @@ public class HttpAdapter {
     public static PlayerService getPlayerService() {
         if (sPlayerService == null) {
             sPlayerService = NetProxyFactory.getInstance(sContext).createHttpProxyBuilder()
-                    .setUrl("http://192.168.6.41:8080/")//"https://www.smyyh.cn/"
+                    .setUrl(BuildConfig.SERVER_URL)//"https://www.smyyh.cn/"
+                    .setRequestInterceptor(new RequestInterceptor() {
+                        @Override
+                        public boolean intercept(HttpForm form) {
+                            form.addTextParameter("channel", BuildConfig.CHANNEL);
+                            return false;
+                        }
+                    })
                     .setResponseInterceptor(new ResponseInterceptor() {
                         @Override
                         public Object intercept(IHttpResult result, Type t) {

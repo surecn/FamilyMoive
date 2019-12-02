@@ -7,6 +7,8 @@ package com.surecn.familymovie;
  */
 public class Setting {
 
+    public static int fileShowStyle = 0;
+
     public static int onlineSubtitle = 1;
 
     public static long updateChannelTime;

@@ -1,6 +1,8 @@
 package com.surecn.moat.http;
 
 
+import android.util.Log;
+
 import com.surecn.moat.exception.HttpResponseException;
 import com.surecn.moat.tools.log;
 
@@ -64,8 +66,10 @@ public class OKHttpUtils {
             HttpClientConfig clientConfig = getHttpClientConfig(form);
             OkHttpClient okHttpClient = getOkHttpClient(clientConfig);
             Response response = okHttpClient.newCall(request).execute();
-            if (!response.isSuccessful())
+            if (!response.isSuccessful()) {
+                log.d("HTTP ERROR CODE:" + response.code());
                 throw new HttpResponseException(response.code());
+            }
             return response;
         } catch (Exception e) {
             log.e(e);

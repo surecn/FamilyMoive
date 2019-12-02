@@ -1,13 +1,11 @@
 package com.surecn.familymovie.common.samba.httpd;
 
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
-
+import com.surecn.familymovie.common.SmbManager;
 import com.surecn.familymovie.common.http.NanoHTTPD;
 import com.surecn.familymovie.common.samba.SambaUtil;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,10 +61,10 @@ public class NanoStreamer extends NanoHTTPD {
     private Response respond(Map<String, String> headers, String uri) {
         uri = "smb://" + uri.substring(5);
         int index = uri.lastIndexOf(".");
-        String extenstion = uri.substring(index + 1);
+        String extenstion = uri.substring(index + 1).toLowerCase();
         String mimeTypeForFile = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extenstion);
         if (mimeTypeForFile == null) {
-            if (extenstion.equals("rmvb")) {
+            if (extenstion.equalsIgnoreCase("rmvb")) {
                 mimeTypeForFile = "video/vnd.rn-realvideo";
             }
         }
@@ -75,7 +73,7 @@ public class NanoStreamer extends NanoHTTPD {
         Response response = null;
         try {
             if (SambaUtil.isSmbUrl(smbUri) && !TextUtils.isEmpty(mimeTypeForFile)) {
-                SmbFile smbFile = new SmbFile(smbUri);
+                SmbFile smbFile = SmbManager.createSmbFile(smbUri);
                 InputStream copyStream = new BufferedInputStream(new SmbFileInputStream(smbFile));
                 response = serveSmbFile(smbUri, headers, copyStream, smbFile, mimeTypeForFile);
             } else {

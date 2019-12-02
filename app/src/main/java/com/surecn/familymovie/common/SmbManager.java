@@ -4,6 +4,7 @@ import com.surecn.familymovie.common.samba.SambaUtil;
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.familymovie.utils.DateUtils;
 import com.surecn.familymovie.utils.UriUtil;
+import com.surecn.moat.tools.log;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -63,7 +64,7 @@ public class SmbManager {
             }
             FileItem fileItem = new FileItem();
             fileItem.name = UriUtil.uriNameFormat(f.getName());
-            fileItem.path = f.getCanonicalPath();
+            fileItem.path = f.getPath();
             fileItem.lastModify = DateUtils.toDate(f.lastModified());
             if (f.isFile()) {
                 fileItem.type = 2;
@@ -118,5 +119,9 @@ public class SmbManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static SmbFile createSmbFile(String path) throws MalformedURLException {
+        return new SmbFile(path.replace("+", "%2B"));
     }
 }

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.gson.internal.LinkedTreeMap;
 import com.surecn.familymovie.R;
 import com.surecn.familymovie.domain.Channel;
 import com.surecn.familymovie.domain.LiveRoot;
@@ -38,6 +40,8 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
     private List<LiveRoot> mSection;
 
     private int mSelectIndex = -1;
+
+    private int mFocusIndex = -1;
 
     private boolean mRequestFocus = false;
 
@@ -141,6 +145,7 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
         if (!hasFocus) {
             return;
         }
+        mFocusIndex = index;
         int section = -1;
         for (int i = mSection.size() - 1; i >= 0; i--) {
             if (mSection.get(i).getChannelPosition() <= index) {
@@ -172,6 +177,13 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
     }
 
     public Channel getCurrentChannel() {
+        if (mList == null) {
+            return null;
+        }
+        return mList.get(mSelectIndex);
+    }
+
+    public Channel getFocusChannel() {
         return mList.get(mSelectIndex);
     }
 

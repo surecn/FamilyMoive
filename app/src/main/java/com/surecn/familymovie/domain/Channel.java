@@ -33,6 +33,8 @@ public class Channel implements Serializable {
 
     private TreeMap<Long, ChannelProgram> programMaps;
 
+    @Expose
+    @SerializedName("programs")
     private ArrayList<ChannelProgram> programs;
 
     private int index;
@@ -40,6 +42,8 @@ public class Channel implements Serializable {
     private String lastDate;
 
     private String currentProgram;
+
+    private boolean favorite = false;
 
     public Channel() {
         this.section = 0;
@@ -131,5 +135,13 @@ public class Channel implements Serializable {
 
     public void setPrograms(ArrayList<ChannelProgram> programs) {
         this.programs = programs;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 }

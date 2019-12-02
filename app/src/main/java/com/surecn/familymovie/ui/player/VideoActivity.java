@@ -20,7 +20,7 @@ import com.surecn.familymovie.BuildConfig;
 import com.surecn.familymovie.R;
 import com.surecn.familymovie.common.FileManager;
 import com.surecn.familymovie.common.SmbManager;
-import com.surecn.familymovie.common.subtitle.SubTitlePlug;
+import com.surecn.familymovie.common.subtitle.SubTitle;
 import com.surecn.familymovie.common.player.media.IRenderView;
 import com.surecn.familymovie.common.player.media.IjkVideoView;
 import com.surecn.familymovie.data.HistoryModel;
@@ -99,6 +99,8 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
 
     private int mShortPress = 0;
 
+    private long mLastPress = 0;
+
     private long mInitPosition = 0;
 
     private int mSelectSubtitleIndex;
@@ -110,7 +112,11 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
 
     private List<SettingListPanel.TrackItem> mSubTitleTrack;
 
-    private SubTitlePlug mSubTitlePlug;
+    private SubTitle mSubTitle;
+
+    private long mSeekPosition = -1;
+
+    private int mSeekStep = 30000;
 
     //广播的注册，其中Intent.ACTION_TIME_CHANGED代表时间设置变化的时候会发出该广播
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -146,6 +152,9 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
 
+        IjkMediaPlayer.loadLibrariesOnce(null);
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
+
         initView();
 
         mUrl = getIntent().getStringExtra("url");
@@ -155,7 +164,6 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             mUrl = savedInstanceState.getString("url");
             mInitPosition = savedInstanceState.getLong("position");
         }
-
 
     }
 
@@ -227,7 +235,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mViewProgress = findViewById(R.id.progress_ui);
         findViewById(R.id.back).setOnClickListener(this);
 
-        mSubTitlePlug = new SubTitlePlug(mViewSubTitle);
+        mSubTitle = new SubTitle(mViewSubTitle);
 
 
         if (BuildConfig.DEBUG) {
@@ -276,8 +284,8 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             }
         });
         mVideoView.start();
-        if (mSubTitlePlug != null) {
-            mSubTitlePlug.reset();
+        if (mSubTitle != null) {
+            mSubTitle.reset();
             mViewSubTitle.setText("");
         }
     }
@@ -289,10 +297,11 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mViewTime.setText(DateUtils.toTime(new Date()));
         mViewProgressTotal.setText(DateUtils.toTimeLength(mVideoView.getDuration()));
         mViewProgress.setMaxValue(mVideoView.getDuration());
+        mSeekStep = mVideoView.getDuration() / 120;
         if (mInitPosition > 0) {
             mVideoView.seekTo(mInitPosition);
         }
-        mSubTitlePlug.bind(iMediaPlayer);
+        mSubTitle.bind(iMediaPlayer);
         initSettingListData();
 
         saveHistory();
@@ -338,6 +347,28 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 }
             }
         });
+
+        iMediaPlayer.setOnSeekCompleteListener(new IMediaPlayer.OnSeekCompleteListener() {
+            @Override
+            public void onSeekComplete(IMediaPlayer iMediaPlayer) {
+                mSubTitle.update();
+                synchronized (VideoActivity.this) {
+                    if (mSeekPosition >= 0) {
+                        mVideoView.seekTo(mSeekPosition);
+                        mSeekPosition = -1;
+                    }
+                }
+            }
+        });
+        iMediaPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
+                if (i == IMediaPlayer.MEDIA_INFO_AUDIO_DECODED_START) {
+                    mVideoView.seekTo(mVideoView.getCurrentPosition() + 1);
+                }
+                return false;
+            }
+        });
         mHandler.removeMessages(MSG_UPDATE_TIME);
         mHandler.sendEmptyMessage(MSG_UPDATE_TIME);
     }
@@ -362,6 +393,14 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             }
         }
         Schedule.linear(new Task() {
+
+            private String getFileExtension(String url) {
+                int index = url.lastIndexOf("?");
+                if (index > 0) {
+                    url = url.substring(0, index);
+                }
+                return url.substring(url.lastIndexOf(".") + 1);
+            }
             @Override
             public void run(TaskSchedule work, Object result) {
                 String subtitle = null;
@@ -374,12 +413,12 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                     mSubTitleTrack.add(new SettingListPanel.TrackItem(-2, UriUtil.getUriName(subtitle), subtitle, 1));
                     return;
                 }
-                String cache = mSubTitlePlug.getByVideoPath(mUrl);
+                String cache = mSubTitle.getByVideoPath(mUrl);
                 if (cache != null) {
                     mSubTitleTrack.add(new SettingListPanel.TrackItem(-2, UriUtil.getUriName(cache), cache, 1));
                     return;
                 }
-                List<SubTitleItem> list = HttpAdapter.getSubTitleService().search(UriUtil.getUriName(mUrl), 1, 1, 1, 0);
+                List<SubTitleItem> list = HttpAdapter.getSubTitleService().search(UriUtil.getUriSimpleName(mUrl), 1, 1, 0, 1);
                 if (list != null) {
                     int vote_score = -1;
                     SubTitleItem item = null;
@@ -395,7 +434,13 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                                 details = details.subList(0, 3);
                             }
                             for (SubDetailItem subDetailItem : details) {
-                                mSubTitleTrack.add(new SettingListPanel.TrackItem(subDetailItem.getId(), subDetailItem.getNative_name(), subDetailItem.getUrl(), 2));
+                                for (SubDetailItem.SubUrl url : subDetailItem.getFilelist()) {
+                                    String extension = getFileExtension(url.getUrl());
+                                    if (extension.equalsIgnoreCase("srt") || extension.equalsIgnoreCase("ass") || extension.equalsIgnoreCase("ssa")) {
+                                        mSubTitleTrack.add(new SettingListPanel.TrackItem(subDetailItem.getId(), subDetailItem.getNative_name(), url.getUrl(), 2));
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -467,10 +512,17 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 if (canSeekVideo()) {
                     longEventHandler();
                     if (mShortPress > 1) {
-                        mViewProgress.setValue(mViewProgress.getValue() - 60000);
+                        mViewProgress.setValue(mViewProgress.getValue() - mSeekStep * 2);
+                        mSeekPosition = -1;
                     } else {
-                        mVideoView.seekTo(mVideoView.getCurrentPosition() - 30000);
+                        int step = mSeekStep;
+                        if (mLastPress > 0 && (System.currentTimeMillis() - mLastPress < 1000)) {
+                            step = mSeekStep * 2;
+                        }
+                        mSeekPosition = mVideoView.getCurrentPosition() - step;
+                        mViewProgress.setValue(mSeekPosition);
                     }
+                    mLastPress = System.currentTimeMillis();
                     showPlayController();
                 }
                 break;
@@ -478,10 +530,17 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 if (canSeekVideo()) {
                     longEventHandler();
                     if (mShortPress > 1) {
-                        mViewProgress.setValue(mViewProgress.getValue() + 60000);
+                        mViewProgress.setValue(mViewProgress.getValue() + mSeekStep * 2);
+                        mSeekPosition = -1;
                     } else {
-                        mVideoView.seekTo(mVideoView.getCurrentPosition() + 30000);
+                        int step = mSeekStep;
+                        if (mLastPress > 0 && (System.currentTimeMillis() - mLastPress < 1000)) {
+                            step = mSeekStep * 2;
+                        }
+                        mSeekPosition = mVideoView.getCurrentPosition() + step;
+                        mViewProgress.setValue(mSeekPosition);
                     }
+                    mLastPress = System.currentTimeMillis();
                     showPlayController();
                 }
                 break;
@@ -502,17 +561,14 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 showSetting();
                 break;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                if (canSeekVideo()) {
-                    if (mShortPress > 1) {
-                        mVideoView.seekTo(mViewProgress.getValue());
-                    }
-                    mShortPress = 0;
-                }
-                break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 if (canSeekVideo()) {
                     if (mShortPress > 1) {
                         mVideoView.seekTo(mViewProgress.getValue());
+                    } else {
+                        if (mVideoView.isPlaying() && mSeekPosition >= 0) {
+                            mVideoView.seekTo(mSeekPosition);
+                        }
                     }
                     mShortPress = 0;
                 }
@@ -544,8 +600,12 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         return mStatus == STATUS_NORMAL || mStatus == STATUS_SHOW_PLAYCONTROLLER;
     }
 
+    private void seek(long position) {
+        mVideoView.seekTo(position);
+    }
+
     public void updateTime() {
-        if (mViewProgressCurrent == null || mShortPress > 1) {
+        if (mViewProgressCurrent == null || mShortPress > 1 || mSeekPosition >= 0) {
             return;
         }
         mViewProgress.setValue(mVideoView.getCurrentPosition());
@@ -664,7 +724,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             mSelectSubtitleIndex = index;
             SettingListPanel.TrackItem trackItem = mSubTitleTrack.get(index);
             if (trackItem.tag == -1) {
-                mSubTitlePlug.reset();
+                mSubTitle.reset();
                 mViewSubTitle.setText("");
             } else if (trackItem.tag == 2 || trackItem.tag == 1) {
                 if (trackItem.value.startsWith("smb://")) {
@@ -672,7 +732,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void run(TaskSchedule taskSchedule, Object result) {
                             try {
-                                mSubTitlePlug.setSubTitle(trackItem.value, new SmbFileInputStream(trackItem.value));
+                                mSubTitle.setSubTitle(trackItem.value, new SmbFileInputStream(trackItem.value));
                             } catch (SmbException e) {
                                 e.printStackTrace();
                             } catch (MalformedURLException e) {
@@ -683,9 +743,9 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                         }
                     }).start();
                 } else if (URLUtil.isHttpUrl(trackItem.value) || URLUtil.isHttpsUrl(trackItem.value)) {
-                    mSubTitlePlug.download(trackItem.value, mUrl);
+                    mSubTitle.download(trackItem.value, mUrl);
                 } else {
-                    mSubTitlePlug.setSubTitle(trackItem.value);
+                    mSubTitle.setSubTitle(trackItem.value);
                 }
 
             } else {

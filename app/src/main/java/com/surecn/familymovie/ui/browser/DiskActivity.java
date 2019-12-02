@@ -75,9 +75,9 @@ public class DiskActivity extends TitleActivity implements View.OnClickListener 
                 }
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("icon", volume.isPrimary() ? R.mipmap.local : R.mipmap.usb);
-                map.put("name", volume.getDescription(this));
+                String name = volume.getDescription(this);
+                map.put("name", name == null ? getString(R.string.unknow) : name);
                 map.put("file", file);
-                System.out.println("===" + file.getPath() + "  " + volume.getState());
                 list.add(map);
             }
         }

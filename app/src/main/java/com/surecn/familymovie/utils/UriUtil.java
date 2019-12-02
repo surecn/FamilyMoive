@@ -190,7 +190,7 @@ public class UriUtil {
 		if (index < 0) {
 			return null;
 		}
-		return uri.substring(index + 1);
+		return uri.substring(index + 1).toLowerCase();
 	}
 
 	public static String uriNameFormat(String name) {

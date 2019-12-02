@@ -53,6 +53,34 @@
         android:layout_height="1dp"
         android:background="@mipmap/file_list_separator"></View>
     <LinearLayout
+        android:id="@+id/file_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/setting_item">
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="#fff"
+            android:text="@string/setting_file_style"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16dp"
+            android:textColor="#6D9DD9"
+            android:layout_marginLeft="10dp"
+            android:text="@string/setting_file_style_desc"/>
+        <TextView
+            android:id="@+id/file_style_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@mipmap/file_list_separator"></View>
+    <LinearLayout
         android:id="@+id/clean"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -3,6 +3,8 @@ package com.surecn.familymovie.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+
 /**
  * User: surecn(surecn@163.com)
  * Date: 2019-11-05
@@ -25,6 +27,10 @@ public class SubDetailItem {
     @Expose
     @SerializedName("id")
     private int id;
+
+    @Expose
+    @SerializedName("filelist")
+    private ArrayList<SubUrl> filelist;
 
     public int getId() {
         return id;
@@ -56,5 +62,27 @@ public class SubDetailItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public ArrayList<SubUrl> getFilelist() {
+        return filelist;
+    }
+
+    public void setFilelist(ArrayList<SubUrl> filelist) {
+        this.filelist = filelist;
+    }
+
+    public static class SubUrl {
+        @Expose
+        @SerializedName("url")
+        private String url;
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
     }
 }

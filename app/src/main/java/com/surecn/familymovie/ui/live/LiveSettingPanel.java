@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.surecn.familymovie.R;
+import com.surecn.familymovie.domain.Channel;
 import com.surecn.familymovie.ui.player.SettingListPanel;
 import com.surecn.familymovie.ui.player.VideoActivity;
 
@@ -78,7 +79,27 @@ public class LiveSettingPanel extends LinearLayout {
             view.setOnClickListener(onClickListener);
             addView(view);
         }
+    }
 
+    public void show(boolean isFavorite) {
+        update(isFavorite);
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getChildAt(0).requestFocus();
+            }
+        }, 50);
+    }
+
+    private void update(boolean isFavorite) {
+        for (int i = 0; i < getChildCount(); i++) {
+            View view = getChildAt(i);
+            SettingItem settingItem = (SettingItem) view.getTag();
+            if (settingItem != null && settingItem.key.equals("favorite")) {
+                settingItem.title = getResources().getString(isFavorite ? R.string.live_setting_unfavorite : R.string.live_setting_favorite);
+                fillData(view, settingItem);
+            }
+        }
     }
 
     public void fillData(View view, SettingItem item) {

@@ -18,6 +18,8 @@ public class SettingsActivity extends TitleActivity implements View.OnClickListe
 
     private TextView mViewValueOnlineSubtitle;
 
+    private TextView mViewValueFileStyle;
+
     private TextView mViewValueAbout;
 
     @Override
@@ -36,9 +38,11 @@ public class SettingsActivity extends TitleActivity implements View.OnClickListe
         findViewById(R.id.online_subtitle).setOnClickListener(this);
         findViewById(R.id.clean).setOnClickListener(this);
         findViewById(R.id.feedback).setOnClickListener(this);
+        findViewById(R.id.file_style).setOnClickListener(this);
 
         mViewValueOnlineSubtitle = findViewById(R.id.online_subtitle_value);
         mViewValueAbout = findViewById(R.id.about_value);
+        mViewValueFileStyle = findViewById(R.id.file_style_value);
 
         initData();
     }
@@ -49,6 +53,11 @@ public class SettingsActivity extends TitleActivity implements View.OnClickListe
         } else {
             mViewValueOnlineSubtitle.setText(R.string.setting_online_false);
         }
+        if (Setting.fileShowStyle == 1) {
+            mViewValueFileStyle.setText(R.string.setting_file_style_grid);
+        } else {
+            mViewValueFileStyle.setText(R.string.setting_file_style_list);
+        }
         mViewValueAbout.setText("v" + AppUtils.getAppVersionName(this));
     }
 
@@ -57,7 +66,7 @@ public class SettingsActivity extends TitleActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.online_subtitle:
-                Setting.onlineSubtitle = ~Setting.onlineSubtitle;
+                Setting.onlineSubtitle = Setting.onlineSubtitle == 0 ? 1 : 0;
                 break;
             case R.id.clean:
                 new HistoryModel(this).clear();
@@ -66,6 +75,9 @@ public class SettingsActivity extends TitleActivity implements View.OnClickListe
             case R.id.feedback:
                 Intent intent = new Intent(this, FeedbackActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.file_style:
+                Setting.fileShowStyle = Setting.fileShowStyle == 0 ? 1 : 0;
                 break;
         }
         SettingManager.getInstance(this).save(Setting.class);

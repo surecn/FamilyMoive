@@ -1,6 +1,7 @@
 package com.surecn.familymovie.common.subtitle;
 
 import com.surecn.familymovie.common.unicode.UnicodeReader;
+import com.surecn.familymovie.utils.CPDetector;
 import com.surecn.familymovie.utils.UriUtil;
 import com.surecn.moat.tools.log;
 import java.io.BufferedReader;
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.ZipEntry;
@@ -65,6 +67,8 @@ public class SubTitleLoader {
 
         private String mUrl;
 
+        private String mDefaultEnc = "utf-8";
+
         private SubTitleLoader mSubTitleLoader;
 
         public Task(String url) {
@@ -79,6 +83,10 @@ public class SubTitleLoader {
             mSubTitleLoader = subTitleLoader;
         }
 
+        public void setDefaultEnc(String mDefaultEnc) {
+            this.mDefaultEnc = mDefaultEnc;
+        }
+
         public abstract InputStream getInputStream();
 
         @Override
@@ -86,7 +94,7 @@ public class SubTitleLoader {
             OnDownloadListener onDownloadListener = mSubTitleLoader.mOnDownloadListener;
             onDownloadListener.onStart(mUrl);
             InputStream inputStream = getInputStream();
-            UnicodeReader unicodeReader = new UnicodeReader(inputStream, "gbk");
+            UnicodeReader unicodeReader = new UnicodeReader(inputStream, mDefaultEnc);
             BufferedReader br = new BufferedReader(unicodeReader);
             String line = null;
             try {
@@ -125,6 +133,7 @@ public class SubTitleLoader {
 
         @Override
         public InputStream getInputStream() {
+
             try {
                 URL url = new URL(getUrl());
                 mRealPath = url.getPath();
@@ -140,6 +149,8 @@ public class SubTitleLoader {
                         }
                     }
                 }
+                String encode = CPDetector.getFileEncode(url);
+                setDefaultEnc(encode);
                 return url.openStream();
             } catch (IOException e) {
                 e.printStackTrace();

@@ -40,7 +40,7 @@ public class FileManager {
             if (f.isFile()) {
                 fileItem.type = 2;
                 fileItem.extension = UriUtil.getUriExtension(f.getName());
-                if (fileItem.extension != null && VideoHelper.isVideoFile(fileItem.extension.toLowerCase())) {
+                if (fileItem.extension != null && VideoHelper.isVideoFile(fileItem.extension)) {
                     files.add(fileItem);
                 }
             } else {

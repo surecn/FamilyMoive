@@ -18,7 +18,6 @@ import com.surecn.familymovie.ui.base.TitleActivity;
 import com.surecn.familymovie.ui.player.VideoActivity;
 import com.surecn.familymovie.utils.DateUtils;
 import com.surecn.familymovie.utils.UriUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;

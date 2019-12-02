@@ -7,6 +7,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.surecn.familymovie.UserTrack;
 import com.surecn.familymovie.R;
 import com.surecn.familymovie.Setting;
 import com.surecn.familymovie.common.player.media.IRenderView;
@@ -20,14 +27,13 @@ import com.surecn.familymovie.domain.ChannelProgram;
 import com.surecn.familymovie.domain.Favorite;
 import com.surecn.familymovie.domain.LiveRoot;
 import com.surecn.familymovie.ui.base.BaseActivity;
-import com.surecn.familymovie.utils.WindowUtils;
 import com.surecn.moat.core.Schedule;
 import com.surecn.moat.core.TaskSchedule;
 import com.surecn.moat.core.task.Task;
 import com.surecn.moat.core.task.UITask;
 import com.surecn.moat.tools.log;
 import com.surecn.moat.tools.setting.SettingManager;
-
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +69,13 @@ public class LiveActivity extends BaseActivity {
 
     private boolean mShowSetting;
 
+    private static Gson sGson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
+        context) throws JsonParseException {
+            return new Date(json.getAsJsonPrimitive().getAsLong());
+        }
+    }).create();
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -78,7 +91,7 @@ public class LiveActivity extends BaseActivity {
     private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
         public void onChange(boolean selfChange) {
-            initData(false);
+            initData(false, false);
         }
     };
 
@@ -87,14 +100,19 @@ public class LiveActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
         setContentView(R.layout.activity_live);
+
+        IjkMediaPlayer.loadLibrariesOnce(null);
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
+
         initView();
         getContentResolver().registerContentObserver(AppProvider.getContentUri("FAVORITE"), true, mContentObserver);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        initData(false);
+        initData(false, true);
     }
 
     public void initView() {
@@ -107,12 +125,14 @@ public class LiveActivity extends BaseActivity {
                 startVideo(channel.getSrcs().get(0).getUrl());
                 Setting.liveSelectId = channel.getId();
                 SettingManager.getInstance(LiveActivity.this).save(Setting.class);
+                UserTrack.mark("channel", String.valueOf(channel.getId()));
             }
         });
     }
 
-    public void initData(boolean foreUpdate) {
-        showLoading();
+    public void initData(boolean foreUpdate, boolean loading) {
+        if (loading)
+            showLoading();
         Schedule.linear(new Task() {
             @Override
             public void run(TaskSchedule taskSchedule, Object result) {
@@ -120,23 +140,24 @@ public class LiveActivity extends BaseActivity {
                 Calendar day = Calendar.getInstance();
                 day.setTime(new Date(Setting.updateChannelTime));
                 Calendar toady = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 /*优先去缓存中的*/
-                if (!foreUpdate && day.get(Calendar.DAY_OF_MONTH) == toady.get(Calendar.DAY_OF_MONTH)
-                        && day.get(Calendar.MONTH) == toady.get(Calendar.MONTH)
-                        && day.get(Calendar.YEAR) == toady.get(Calendar.YEAR)) {
+
+                if (!foreUpdate && simpleDateFormat.format(toady.getTime()).compareTo(simpleDateFormat.format(day.getTime())) <= 0) {
                     channelList = (List<LiveRoot>) FileCache.getInstance().read(LiveActivity.this, FileCache.KEY_CHANNELDATA);
                 }
                 if (channelList == null) {
                     channelList = HttpAdapter.getPlayerService().getChannels();
                     FileCache.getInstance().save(LiveActivity.this, FileCache.KEY_CHANNELDATA, channelList);
                     String date = calculateLastDate(channelList);
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     try {
                         Setting.updateChannelTime = simpleDateFormat.parse(date).getTime();
                         SettingManager.getInstance(LiveActivity.this).save(Setting.class);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    calculateLastDate(channelList);
                 }
                 if (channelList != null) {
                     final LiveRoot liveRoot = new LiveRoot();
@@ -158,7 +179,7 @@ public class LiveActivity extends BaseActivity {
     }
 
     public void update() {
-        initData(true);
+        initData(true, true);
     }
 
     private List<Channel> getFavoriteChannel(List<LiveRoot> channelList) {
@@ -172,6 +193,7 @@ public class LiveActivity extends BaseActivity {
             for (LiveRoot root : channelList) {
                 for (Channel channel : root.getSubs()) {
                     if (channel.getId() == id) {
+                        channel.setFavorite(true);
                         list.add(channel);
                     }
                 }
@@ -186,10 +208,12 @@ public class LiveActivity extends BaseActivity {
         for (LiveRoot liveRoot : result) {
             for (Channel channel : liveRoot.getSubs()) {
                 TreeMap<Long, ChannelProgram> programTreeMap = new TreeMap<>();
-                for (ChannelProgram program : channel.getPrograms()) {
-                    programTreeMap.put(program.getStartTime().getTime(), program);
-                    if (!hasLastDate && program.getDate().compareTo(lastDate) > 0) {
-                        lastDate = program.getDate();
+                if (channel.getPrograms() != null) {
+                    for (ChannelProgram program : channel.getPrograms()) {
+                        programTreeMap.put(program.getStartTime().getTime(), program);
+                        if (!hasLastDate && program.getDate().compareTo(lastDate) > 0) {
+                            lastDate = program.getDate();
+                        }
                     }
                 }
                 channel.setProgramMaps(programTreeMap);
@@ -337,22 +361,32 @@ public class LiveActivity extends BaseActivity {
 
     public void favoriteCurrentChannel() {
         FavoriteModel favoriteModel = new FavoriteModel(this);
-        if(favoriteModel.addLive(mChannelListView.getCurrentChannel().getId())) {
-            showToast(R.string.msg_favorite_success);
+        Channel channel = mChannelListView.getCurrentChannel();
+        if (channel.isFavorite()) {
+            if (favoriteModel.deleteLive(channel.getId())){
+                showToast(R.string.msg_unfavorite_success);
+            } else{
+                showToast(R.string.msg_error);
+            }
         } else {
-            showToast(R.string.msg_favorite_live_error);
+            if (favoriteModel.addLive(channel.getId())){
+                showToast(R.string.msg_favorite_success);
+            } else{
+                showToast(R.string.msg_favorite_live_error);
+            }
         }
+        hideAll();
     }
 
     private void showSetting() {
+        Channel channel = mChannelListView.getCurrentChannel();
+        if (channel == null) {
+            return;
+        }
         mShowSetting = true;
+        mChannelListView.setVisibility(View.GONE);
         mLiveSettingPanel.setVisibility(View.VISIBLE);
-        mLiveSettingPanel.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mLiveSettingPanel.getChildAt(0).requestFocus();
-            }
-        }, 200);
+        mLiveSettingPanel.show(channel.isFavorite());
         delayHide();
     }
 

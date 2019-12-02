@@ -11,8 +11,6 @@ import com.surecn.familymovie.domain.ChannelProgram;
 import com.surecn.familymovie.domain.LiveRoot;
 import com.surecn.familymovie.ui.base.TVLinearLayoutManager;
 import com.surecn.familymovie.ui.base.TvRecyclerView;
-import com.surecn.moat.tools.log;
-
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.Nullable;
@@ -149,7 +147,11 @@ public class ChannelListView extends LinearLayout {
     private void showProgramList() {
         mLableProgram.setVisibility(View.GONE);
         mThirdListView.setVisibility(View.VISIBLE);
-        ArrayList<ChannelProgram> list = mSecondChannelAdapter.getCurrentChannel().getPrograms();
+        Channel channel = mSecondChannelAdapter.getFocusChannel();
+        if (channel == null) {
+            return;
+        }
+        ArrayList<ChannelProgram> list = channel.getPrograms();
         long time = System.currentTimeMillis();
         int index = 0;
         for (int i = 0, len = list.size(); i < len; i++) {

@@ -32,6 +32,10 @@ public class FavoriteModel extends BaseModel<Favorite> {
         return false;
     }
 
+    public boolean deleteLive(int id) {
+        return delete(TYPE_LIVE, String.valueOf(id)) > 0;
+    }
+
     public boolean addFolder(String url) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("type", TYPE_FOLDER);
@@ -58,8 +62,8 @@ public class FavoriteModel extends BaseModel<Favorite> {
         return query(null, "TYPE=?", new String[]{String.valueOf(TYPE_LIVE)}, "time desc");
     }
 
-    public void delete(String value) {
-        delete("value=?", new String[]{value});
+    public int delete(int type, String value) {
+        return delete("type=? and value=?", new String[]{String.valueOf(type), value});
     }
 
     public void clear() {

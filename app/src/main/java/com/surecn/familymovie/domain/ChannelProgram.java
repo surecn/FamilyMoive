@@ -1,18 +1,32 @@
 package com.surecn.familymovie.domain;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class ChannelProgram {
+public class ChannelProgram implements Serializable {
 
+    @Expose
+    @SerializedName("cid")
     private int cid;
 
+    @Expose
+    @SerializedName("date")
     private String date;
 
+    @Expose
+    @SerializedName("startTime")
     private Date startTime;
 
+    @Expose
+    @SerializedName("endTime")
     private Date endTime;
 
+    @Expose
+    @SerializedName("title")
     private String title;
 
     public int getCid() {

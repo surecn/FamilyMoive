@@ -22,9 +22,16 @@ import static com.surecn.familymovie.BuildConfig.DEBUG;
  */
 public class FMApplication extends Application {
 
+    private static FMApplication sFMApplication;
+
+    public static FMApplication getApplication() {
+        return sFMApplication;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        sFMApplication = this;
         log.init(this, DEBUG);
 
         if (!getCurProcessName(this).equals(getPackageName())) {

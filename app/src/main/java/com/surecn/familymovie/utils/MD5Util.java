@@ -12,34 +12,35 @@ import java.security.MessageDigest;
 
 public class MD5Util {
 
-    public static String getMd5ByFile(InputStream fis) {
-        byte[] buffer = new byte[1024 * 1024];
-        int numRead = 0;
-        MessageDigest md5;
+    /**
+     *
+     * MD5加密算法
+     *
+     * @param s
+     * @return
+     * @see [类、类#方法、类#成员]
+     */
+    public final static String MD5(String s) {
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         try {
-            md5 = MessageDigest.getInstance("MD5");
-            while ((numRead = fis.read(buffer)) > 0) {
-                md5.update(buffer, 0, numRead);
-                log.e("==getMd5ByFile===");
+            byte[] btInput = s.getBytes();
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            mdInst.update(btInput);
+            byte[] md = mdInst.digest();
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++)
+            {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
             }
-            fis.close();
-            return md5ToString(md5.digest());
+            return new String(str).toLowerCase();
         } catch (Exception e) {
-            System.out.println("error");
+            e.printStackTrace();
             return null;
         }
-    }
-
-    public static String md5ToString(byte[] md5Bytes) {
-        StringBuffer hexValue = new StringBuffer();
-        for (int i = 0; i < md5Bytes.length; i++) {
-            int val = ((int) md5Bytes[i]) & 0xff;
-            if (val < 16) {
-                hexValue.append("0");
-            }
-            hexValue.append(Integer.toHexString(val));
-        }
-        return hexValue.toString();
     }
 
 }

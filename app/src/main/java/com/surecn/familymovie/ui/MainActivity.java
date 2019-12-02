@@ -167,7 +167,7 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         if (mBackPressTime == -1) {
             mBackPressTime = System.currentTimeMillis();
             showToast(R.string.exit_msg);
-        } else if ((System.currentTimeMillis() - mBackPressTime) > 1000) {
+        } else if ((System.currentTimeMillis() - mBackPressTime) > 1500) {
             mBackPressTime = -1;
         } else {
             super.onBackPressed();
