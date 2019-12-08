@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.surecn.familymovie.common.subtitle.interpreter.ContextExpression;
 import com.surecn.familymovie.common.subtitle.interpreter.TimedText;
+import com.surecn.moat.tools.log;
 
 /**
  * User: surecn(surecn@163.com)

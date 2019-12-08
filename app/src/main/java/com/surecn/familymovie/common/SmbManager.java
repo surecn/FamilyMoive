@@ -6,13 +6,16 @@ import com.surecn.familymovie.utils.DateUtils;
 import com.surecn.familymovie.utils.UriUtil;
 import com.surecn.moat.tools.log;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import jcifs.netbios.NbtAddress;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFilenameFilter;
@@ -24,11 +27,58 @@ import jcifs.smb.SmbFilenameFilter;
  */
 public class SmbManager {
 
+    public static FileItem getServer(String ip) {
+        try {
+            SmbFile smbFile = new SmbFile("smb://"+ip+"/");
+            SmbFile[] smbFiles = smbFile.listFiles();
+            if (smbFiles != null && smbFiles.length > 0) {
+
+                FileItem fileItem = new FileItem();
+                fileItem.name = smbFile.getServer();
+                fileItem.path = smbFile.getPath();
+                fileItem.type = 0;
+                fileItem.canAccess = smbFile.getAllowUserInteraction();
+                return fileItem;
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (SmbException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static ArrayList<FileItem> listWorkGroup() {
         ArrayList<FileItem> list = new ArrayList<>();
         SmbFile f = null;
         try {
             f = new SmbFile("smb://workgroup/");
+            SmbFile[] smbFiles = f.listFiles();
+            if (smbFiles != null) {
+                for (SmbFile p : smbFiles) {
+                    FileItem fileItem = new FileItem();
+                    fileItem.name = p.getName();
+                    fileItem.path = p.getCanonicalPath();
+                    fileItem.type = 0;
+                    fileItem.canAccess = p.getAllowUserInteraction();
+                    list.add(fileItem);
+                }
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (SmbException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static ArrayList<FileItem> listServer() {
+        ArrayList<FileItem> list = new ArrayList<>();
+        SmbFile f = null;
+        try {
+            f = new SmbFile("smb://");
             SmbFile[] smbFiles = f.listFiles();
 
             if (smbFiles != null) {
@@ -123,5 +173,43 @@ public class SmbManager {
 
     public static SmbFile createSmbFile(String path) throws MalformedURLException {
         return new SmbFile(path.replace("+", "%2B"));
+    }
+
+    public static List<String> getIPs() {
+        List<String> list = new ArrayList<String>();
+        boolean flag = false;
+        int count=0;
+        Runtime r = Runtime.getRuntime();
+        Process p;
+        try {
+            p = r.exec("arp -a");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p
+                    .getInputStream()));
+            String inline;
+            while ((inline = br.readLine()) != null) {
+                if(inline.indexOf("at") > -1){
+                    flag = !flag;
+                    if(!flag){
+                        //碰到下一个"接口"退出循环
+                        break;
+                    }
+                }
+                if(flag){
+                    count++;
+                    if(count > 2){
+                        //有效IP
+                        String[] str=inline.split(" {4}");
+                        list.add(str[0]);
+                    }
+                }
+                System.out.println(inline);
+            }
+            br.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println(list);
+        return list;
     }
 }

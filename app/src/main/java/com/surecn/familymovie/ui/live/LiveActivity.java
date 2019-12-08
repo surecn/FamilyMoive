@@ -41,7 +41,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
-
 import androidx.annotation.Nullable;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
@@ -61,6 +60,8 @@ public class LiveActivity extends BaseActivity {
 
     private LiveSettingPanel mLiveSettingPanel;
 
+    private ChannelInfoView mChannelInfoView;
+
     private String mUrl;
 
     private boolean mBackPressed;
@@ -68,6 +69,8 @@ public class LiveActivity extends BaseActivity {
     private boolean mShowChannelList;
 
     private boolean mShowSetting;
+
+    private boolean mFirstShowChannelList;
 
     private static Gson sGson = new GsonBuilder().registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
         public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext
@@ -119,11 +122,16 @@ public class LiveActivity extends BaseActivity {
         mLiveSettingPanel = findViewById(R.id.setting);
         mVideoView = findViewById(R.id.video_view);
         mChannelListView = findViewById(R.id.channel_list);
+        mChannelInfoView = findViewById(R.id.channelInfo);
         mChannelListView.setOnChannelChangeListener(new SecondChannelAdapter.OnChannelChangeListener() {
             @Override
             public void onChannelChange(Channel channel) {
                 startVideo(channel.getSrcs().get(0).getUrl());
                 Setting.liveSelectId = channel.getId();
+                if (!mFirstShowChannelList) {
+                    showProgram();
+                }
+                mFirstShowChannelList = false;
                 SettingManager.getInstance(LiveActivity.this).save(Setting.class);
                 UserTrack.mark("channel", String.valueOf(channel.getId()));
             }
@@ -142,8 +150,8 @@ public class LiveActivity extends BaseActivity {
                 Calendar toady = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 /*优先去缓存中的*/
-
-                if (!foreUpdate && simpleDateFormat.format(toady.getTime()).compareTo(simpleDateFormat.format(day.getTime())) <= 0) {
+                if (!foreUpdate && simpleDateFormat.format(toady.getTime()).compareTo(simpleDateFormat.format(day.getTime())) >= 0) {
+                    long a = System.currentTimeMillis();
                     channelList = (List<LiveRoot>) FileCache.getInstance().read(LiveActivity.this, FileCache.KEY_CHANNELDATA);
                 }
                 if (channelList == null) {
@@ -221,6 +229,7 @@ public class LiveActivity extends BaseActivity {
                 hasLastDate = true;
             }
         }
+        log.e("====calculateLastDate===" + lastDate);
         return lastDate;
     }
 
@@ -236,25 +245,28 @@ public class LiveActivity extends BaseActivity {
                 LiveRoot liveRoot = result.get(i);
                 liveRoot.setChannelPosition(channels.size());
                 if (liveRoot.getSubs() != null && liveRoot.getSubs().size() > 0) {
-                    Channel channel = new Channel(liveRoot.getTitle(), 1, i);
+                    Channel channel = new Channel(liveRoot.getTitle(), Channel.SECTION_ROOT, i);
                     channels.add(channel);
+                    for (Channel ch : liveRoot.getSubs()) {
+                        ch.setSelectIndex(i);
+                    }
                     channels.addAll(liveRoot.getSubs());
                 }
             }
-            int index = 0;
+            int sectionIndex = 0;
             for (int i = 0, len = channels.size(); i < len; i++) {
                 Channel channel = channels.get(i);
-                if (channel.getSection() == 1) {
-                    index = channel.getIndex();
+                if (channel.getSection() == Channel.SECTION_ROOT) {
+                    sectionIndex = channel.getSelectIndex();
                     continue;
                 }
                 if (channel.getId() == Setting.liveSelectId) {
-                    rootSelect = index;
+                    rootSelect = sectionIndex;
                     channelSelect = i;
                     return;
                 }
                 if (firstRootSelect < 0 && channel.getSrcs() != null && channel.getSrcs().size() > 0) {
-                    firstRootSelect = index;
+                    firstRootSelect = sectionIndex;
                     firstChannelSelect = i;
                 }
             }
@@ -265,6 +277,7 @@ public class LiveActivity extends BaseActivity {
             mChannelListView.setData(result, channels);
             log.d("rootIndex:" + rootSelect);
             log.d("channelIndex:" + channelSelect);
+            mFirstShowChannelList = true;
             mChannelListView.setSelectIndex(rootSelect, channelSelect);
         }
     }
@@ -340,6 +353,15 @@ public class LiveActivity extends BaseActivity {
                 if (mChannelListView.getVisibility() == View.VISIBLE) {
                     return mChannelListView.onKeyDown(keyCode, event);
                 }
+                break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (mChannelListView.getVisibility() == View.VISIBLE) {
+                    if (mChannelListView.onKeyDown(keyCode, event)) {
+                        return true;
+                    }
+                }
+                break;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -353,6 +375,18 @@ public class LiveActivity extends BaseActivity {
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
                 showChannelListView();
+                break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if (mChannelListView.getVisibility() == View.GONE &&
+                    mLiveSettingPanel.getVisibility() == View.GONE) {
+                    mChannelListView.selectPrev();
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (mChannelListView.getVisibility() == View.GONE &&
+                        mLiveSettingPanel.getVisibility() == View.GONE) {
+                    mChannelListView.selectNext();
+                }
                 break;
         }
         delayHide();
@@ -398,18 +432,28 @@ public class LiveActivity extends BaseActivity {
         delayHide();
     }
 
-    private void showProgramList() {
-
+    private void showProgram() {
+        Channel channel = mChannelListView.getCurrentChannel();
+        if (channel != null) {
+            mChannelInfoView.show(channel);
+            mChannelInfoView.setVisibility(View.VISIBLE);
+            mChannelListView.setVisibility(View.GONE);
+            delayHide();
+        }
     }
 
     private void hideAll() {
         mShowChannelList = false;
         mShowSetting = false;
         mLiveSettingPanel.setVisibility(View.GONE);
-        mChannelListView.setVisibility(View.INVISIBLE);
+        mChannelListView.setVisibility(View.GONE);
+        mChannelInfoView.setVisibility(View.GONE);
     }
 
     public void delayHide() {
+        if (mHandler == null) {
+            return;
+        }
         mHandler.removeMessages(MSG_HIDE_ALL_LAYER);
         mHandler.sendEmptyMessageDelayed(MSG_HIDE_ALL_LAYER, 10000);
     }

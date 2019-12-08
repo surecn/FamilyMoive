@@ -1,5 +1,8 @@
 package com.surecn.familymovie.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,7 +16,10 @@ import java.util.TreeMap;
  * Date: 2019-11-08
  * Time: 15:26
  */
-public class Channel implements Serializable {
+public class Channel implements Parcelable {
+
+    public final static int SECTION_ROOT = 1;
+    public final static int SECTION_CHANNEL = 0;
 
     @Expose
     @SerializedName("id")
@@ -37,7 +43,7 @@ public class Channel implements Serializable {
     @SerializedName("programs")
     private ArrayList<ChannelProgram> programs;
 
-    private int index;
+    private int selectIndex;
 
     private String lastDate;
 
@@ -49,10 +55,10 @@ public class Channel implements Serializable {
         this.section = 0;
     }
 
-    public Channel(String title, int section, int index) {
+    public Channel(String title, int section, int selectIndex) {
         this.title = title;
         this.section = section;
-        this.index = index;
+        this.selectIndex = selectIndex;
     }
 
     private int section;
@@ -97,12 +103,12 @@ public class Channel implements Serializable {
         this.section = section;
     }
 
-    public int getIndex() {
-        return index;
+    public int getSelectIndex() {
+        return selectIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setSelectIndex(int selectIndex) {
+        this.selectIndex = selectIndex;
     }
 
     public String getLastDate() {
@@ -144,4 +150,49 @@ public class Channel implements Serializable {
     public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeInt(this.order);
+        dest.writeList(this.srcs);
+        dest.writeList(this.programs);
+        dest.writeString(this.lastDate);
+        dest.writeString(this.currentProgram);
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.section);
+    }
+
+    protected Channel(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.order = in.readInt();
+        this.srcs = new ArrayList<ChannelSource>();
+        in.readList(this.srcs, ChannelSource.class.getClassLoader());
+        this.programs = new ArrayList<ChannelProgram>();
+        in.readList(this.programs, ChannelProgram.class.getClassLoader());
+        this.lastDate = in.readString();
+        this.currentProgram = in.readString();
+        this.favorite = in.readByte() != 0;
+        this.section = in.readInt();
+    }
+
+    public static final Parcelable.Creator<Channel> CREATOR = new Parcelable.Creator<Channel>() {
+        @Override
+        public Channel createFromParcel(Parcel source) {
+            return new Channel(source);
+        }
+
+        @Override
+        public Channel[] newArray(int size) {
+            return new Channel[size];
+        }
+    };
 }

@@ -1,13 +1,6 @@
 package com.surecn.moat.core;
 
-import android.os.Handler;
-import android.os.Message;
-
-import com.surecn.moat.core.task.SyncUITask;
 import com.surecn.moat.core.task.UITask;
-import com.surecn.moat.core.task.Task;
-
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * User: surecn(surecn@163.com)

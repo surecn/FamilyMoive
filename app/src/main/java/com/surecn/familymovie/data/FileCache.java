@@ -1,17 +1,15 @@
 package com.surecn.familymovie.data;
 
 import android.content.Context;
-
-import java.io.BufferedInputStream;
+import android.os.Parcel;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintStream;
+import java.util.List;
 
 /**
  * User: surecn(surecn@163.com)
@@ -20,7 +18,9 @@ import java.io.PrintStream;
  */
 public class FileCache {
 
-    public final static String KEY_CHANNELDATA = "channel_data";
+    public final static String KEY_CHANNELDATA = "channel_parcelable";
+
+    public final static String KEY_LANSERVER = "lanserver_parcelable";
 
     private static FileCache mInstance;
 
@@ -31,7 +31,7 @@ public class FileCache {
         return mInstance;
     }
 
-    public void save(Context context, String key, Object obj) {
+    public void save(Context context, String key, List obj) {
         FileOutputStream fileOutputStream = null;
         ObjectOutputStream objectOutputStream = null;
         try {
@@ -40,9 +40,14 @@ public class FileCache {
                 file.createNewFile();
             }
             fileOutputStream = new FileOutputStream(file, false);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(obj);
-            objectOutputStream.flush();
+            BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream);
+            Parcel parcel = Parcel.obtain();
+            parcel.writeList(obj);
+            bos.write(parcel.marshall());
+            bos.flush();
+            bos.close();
+            fileOutputStream.flush();
+            fileOutputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -65,31 +70,25 @@ public class FileCache {
         }
     }
 
-    public Object read(Context context, String key) {
+    public List read(Context context, String key) {
         FileInputStream fileInputStream = null;
-        ObjectInputStream objectInputStream = null;
         try {
             File file = new File(context.getCacheDir(), key);
             fileInputStream = new FileInputStream(file);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-            return objectInputStream.readObject();
+            byte[] bytes = new byte[fileInputStream.available()];
+            fileInputStream.read(bytes);
+            Parcel parcel = Parcel.obtain();
+            parcel.unmarshall(bytes, 0, bytes.length);
+            parcel.setDataPosition(0);
+            return parcel.readArrayList(Thread.currentThread().getContextClassLoader());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             if (fileInputStream != null) {
                 try {
                     fileInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

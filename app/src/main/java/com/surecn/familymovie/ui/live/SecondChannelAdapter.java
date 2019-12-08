@@ -37,8 +37,6 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
 
     private List<Channel> mList;
 
-    private List<LiveRoot> mSection;
-
     private int mSelectIndex = -1;
 
     private int mFocusIndex = -1;
@@ -67,8 +65,7 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
         this.mOnSectionChangeListener = listener;
     }
 
-    public void setData(List<LiveRoot> section, List<Channel> list) {
-        this.mSection = section;
+    public void setData(List<Channel> list) {
         this.mList = list;
     }
 
@@ -81,10 +78,24 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
             this.notifyItemChanged(this.mSelectIndex);
         }
         this.mSelectIndex = selectIndex;
+        this.mFocusIndex = selectIndex;
         this.notifyItemChanged(selectIndex);
         if (this.mOnChannelChangeListener != null && notify) {
             this.mOnChannelChangeListener.onChannelChange(mList.get(selectIndex));
         }
+    }
+
+    public void setFocusIndex(int selectIndex) {
+        this.mFocusIndex = selectIndex;
+        //notifyItemChanged(selectIndex);
+    }
+
+    public int getFocusIndex() {
+        return mFocusIndex;
+    }
+
+    public int getSelectIndex() {
+        return mSelectIndex;
     }
 
     @NonNull
@@ -109,12 +120,12 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
         holder.setData(mList.get(position), position, mSelectIndex);
         holder.index = position;
         holder.itemView.setTag(position);
-        if (mRequestFocus && position == mSelectIndex) {
+        if (mRequestFocus && position == mFocusIndex) {
             holder.itemView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    holder.itemView.requestFocus();
                     mRequestFocus = false;
+                    holder.itemView.requestFocus();
                 }
             }, 0);
         }
@@ -132,7 +143,7 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
 
     public void setRequestFocus(boolean requestFocus) {
         this.mRequestFocus = requestFocus;
-        notifyItemChanged(mSelectIndex);
+        notifyItemChanged(mFocusIndex);
     }
 
     @Override
@@ -146,13 +157,7 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
             return;
         }
         mFocusIndex = index;
-        int section = -1;
-        for (int i = mSection.size() - 1; i >= 0; i--) {
-            if (mSection.get(i).getChannelPosition() <= index) {
-                section = i;
-                break;
-            }
-        }
+        int section =mList.get(index).getSelectIndex();
         if (section >= 0) {
             mOnSectionChangeListener.onSectionChange(section);
         }
@@ -209,15 +214,17 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
         }
 
         public void setData(final Channel channel, int index, int selectIndex) {
-            if (channel.getSection() == 0) {
+            if (channel.getSection() == Channel.SECTION_CHANNEL) {
                 viewId.setText(String.format("%04d", channel.getId()));
                 viewTitle.setText(channel.getTitle());
 
-                Map.Entry entry = channel.getProgramMaps().floorEntry(System.currentTimeMillis());
-                if (entry != null)
-                viewProgram.setText(channel.getProgramMaps().floorEntry(System.currentTimeMillis()).getValue().getTitle());
-                else
-                    viewProgram.setText(null);
+                if (channel.getProgramMaps() != null) {
+                    Map.Entry entry = channel.getProgramMaps().floorEntry(System.currentTimeMillis());
+                    if (entry != null)
+                        viewProgram.setText(channel.getProgramMaps().floorEntry(System.currentTimeMillis()).getValue().getTitle());
+                    else
+                        viewProgram.setText(null);
+                }
                 root.setSelected(selectIndex == index ? true : false);
 
                 viewProgram.setSelected(root.hasFocus() ? true : false);
@@ -225,6 +232,30 @@ public class SecondChannelAdapter extends RecyclerView.Adapter<SecondChannelAdap
                 viewTitle.setText(channel.getTitle());
             }
         }
+    }
+
+    public int getFirstValidIndex() {
+        if (mList == null) {
+            return -1;
+        }
+        for (int i = 0; i <mList.size(); i++) {
+            if (mList.get(i).getSection() == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int getLastValidIndex() {
+        if (mList == null) {
+            return -1;
+        }
+        for (int i = mList.size() - 1; i >= 0; i--) {
+            if (mList.get(i).getSection() == 0) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 }

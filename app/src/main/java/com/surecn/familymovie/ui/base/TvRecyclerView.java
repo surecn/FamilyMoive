@@ -3,8 +3,11 @@ package com.surecn.familymovie.ui.base;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -32,6 +35,11 @@ public class TvRecyclerView extends RecyclerView {
     protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
         //super.onRequestFocusInDescendants(direction, previouslyFocusedRect);
         return false;
+    }
+
+    @Override
+    public boolean requestChildRectangleOnScreen(View child, Rect rect, boolean immediate) {
+        return super.requestChildRectangleOnScreen(child, rect, true);
     }
 
 }

@@ -44,7 +44,11 @@ public class SubTitleContext {
 
 
     public void putLine(String line) {
-        mContextExpression.interpret(line);
+        try {
+            mContextExpression.interpret(line);
+        } catch (Exception e) {
+            log.e(e);
+        }
     }
 
 

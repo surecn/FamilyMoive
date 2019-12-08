@@ -30,6 +30,8 @@ public class TitleActivity extends BaseActivity {
 
     private TextView mViewTime;
 
+    private View mTitlebarLoading;
+
 
     //广播的注册，其中Intent.ACTION_TIME_CHANGED代表时间设置变化的时候会发出该广播
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -52,6 +54,7 @@ public class TitleActivity extends BaseActivity {
         actionBar.setBackgroundDrawable(null);
         mViewBack = actionBar.getCustomView().findViewById(R.id.back);
         mViewTime = actionBar.getCustomView().findViewById(R.id.time);
+        mTitlebarLoading = actionBar.getCustomView().findViewById(R.id.titlebar_loading);
         mViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,14 @@ public class TitleActivity extends BaseActivity {
         } else {
             view.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void showTitlebarLoading() {
+        mTitlebarLoading.setVisibility(View.VISIBLE);
+    }
+
+    public void hideTitlebarLoading() {
+        mTitlebarLoading.setVisibility(View.GONE);
     }
 
     @Override

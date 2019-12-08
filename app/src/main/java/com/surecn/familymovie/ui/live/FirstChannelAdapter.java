@@ -85,8 +85,8 @@ public class FirstChannelAdapter extends RecyclerView.Adapter<FirstChannelAdapte
             holder.itemView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    holder.itemView.requestFocus();
                     mRequestFocus = false;
+                    holder.itemView.requestFocus();
                 }
             }, 0);
         }
@@ -100,17 +100,10 @@ public class FirstChannelAdapter extends RecyclerView.Adapter<FirstChannelAdapte
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus) {
-            final int oldSelect = mSelectIndex;
             ItemHolder itemHolder = (ItemHolder) v.getTag();
             mSelectIndex = itemHolder.index;
-            v.post(new Runnable() {
-                @Override
-                public void run() {
-                    notifyItemChanged(oldSelect);
-                    notifyItemChanged(mSelectIndex);
-                }
-            });
         }
+        v.setSelected(hasFocus);
         if (mOnFocusChangeListener != null) {
             mOnFocusChangeListener.onFocusChange(v, hasFocus);
         }
@@ -136,4 +129,5 @@ public class FirstChannelAdapter extends RecyclerView.Adapter<FirstChannelAdapte
             viewText.setSelected(index == selectIndex);
         }
     }
+
 }

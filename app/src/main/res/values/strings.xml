@@ -51,6 +51,8 @@
     <string name="msg_favorite_file_error">改文件已经收藏过了</string>
 
 
+    <string name="live_channel_info_tool">按OK键调出频道列表,「上」、「下」键切换频道</string>
+
     <string name="play_history">播放历史</string>
 
     <string name="feedback">意见反馈</string>

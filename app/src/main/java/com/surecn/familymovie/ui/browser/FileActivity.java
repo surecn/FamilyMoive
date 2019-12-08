@@ -76,6 +76,10 @@ public class FileActivity extends TitleActivity implements View.OnClickListener 
         return mList;
     }
 
+    protected void setData(ArrayList<FileItem> list) {
+        mList = list;
+    }
+
     protected void updateData(List<FileItem> list) {
         mList.clear();
         if (list != null) {

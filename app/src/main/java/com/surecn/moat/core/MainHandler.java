@@ -95,17 +95,12 @@ class MainHandler extends Handler {
 
     private void execute(TaskExecutor taskExecutor, TaskSchedule taskSchedule, Throwable throwable) {
         try {
-            TaskRecord taskRecord = taskSchedule.current();
             if (mErrorInterceptor != null) {
                 mErrorInterceptor.interceptor(throwable);
-            }
-            if (!taskSchedule.hasNext()) {
-                return;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        taskExecutor.executeNext(taskSchedule);
     }
 
     public void performDelayExecute(TaskExecutor taskExecutor, TaskSchedule taskSchedule, long delay) {

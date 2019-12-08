@@ -1,9 +1,7 @@
 package com.surecn.familymovie;
 
 
-import com.surecn.familymovie.FMApplication;
 import com.umeng.analytics.MobclickAgent;
-
 import java.util.HashMap;
 
 /**
@@ -12,6 +10,16 @@ import java.util.HashMap;
 public class UserTrack {
 
     public final static boolean ENABLED_USERTRACK = true;
+
+    public final static String MAIN_HISTORY = "Aa";
+
+    public final static String MAIN_LOCAL = "Ab";
+
+    public final static String MAIN_LAN = "Ac";
+
+    public final static String MAIN_LIVE = "Ad";
+
+    public final static String MAIN_SETTTING = "Ae";
 
     public static void mark(String tag) {
         if (ENABLED_USERTRACK) {

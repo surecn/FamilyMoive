@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.surecn.familymovie.R;
 import com.surecn.familymovie.Setting;
+import com.surecn.familymovie.UserTrack;
 import com.surecn.familymovie.common.GridPaddingDecoration;
 import com.surecn.familymovie.data.HttpAdapter;
 import com.surecn.familymovie.domain.RecommendInfo;
@@ -146,7 +147,7 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         }).next(new UITask<UpdateInfo>() {
             @Override
             public void run(TaskSchedule taskSchedule, UpdateInfo result) {
-                if (result.update == 1) {
+                if (result != null && result.update == 1) {
                     UpdateManager updateManager = new UpdateManager(MainActivity.this);
                     updateManager.checkUpdateInfo(result);
                 }
@@ -180,18 +181,23 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         if (item.key.equals("history")) {
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_HISTORY);
         } else if (item.key.equals("local")) {
             Intent intent = new Intent(this, DiskActivity.class);
             startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_LOCAL);
         } else if (item.key.equals("lan")) {
             Intent intent = new Intent(this, LanActivity.class);
             startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_LAN);
         } else if (item.key.equals("setting")) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_SETTTING);
         } else if (item.key.equals("live")) {
             Intent intent = new Intent(this, LiveActivity.class);
             startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_LIVE);
         }
     }
 

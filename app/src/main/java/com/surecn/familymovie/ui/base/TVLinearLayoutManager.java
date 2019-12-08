@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,4 +32,8 @@ public class TVLinearLayoutManager extends LinearLayoutManager {
         return super.requestChildRectangleOnScreen(parent, child, rect, true, focusedChildVisible);
     }
 
+    @Override
+    public void scrollToPosition(int position) {
+        super.scrollToPosition(position);
+    }
 }

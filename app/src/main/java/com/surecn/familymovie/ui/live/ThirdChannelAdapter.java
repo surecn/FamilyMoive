@@ -5,17 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.surecn.familymovie.R;
-import com.surecn.familymovie.domain.Channel;
 import com.surecn.familymovie.domain.ChannelProgram;
-import com.surecn.familymovie.domain.LiveRoot;
-import com.surecn.moat.tools.log;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
