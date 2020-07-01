@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,6 +83,12 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
      */
     AlertDialog mPermissionDialog;
 
+    private int mItemWidth;
+
+    private int mItemHeight;
+
+    private int mIconSize;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +98,6 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         setHiddenBack(true);
         register();
         initView();
-        //delayFocus(findViewById(R.id.history));
         initData();
     }
 
@@ -107,6 +114,26 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         mAdapter = new ItemAdapter();
         mViewList.setAdapter(mAdapter);
         mViewList.addItemDecoration(new GridPaddingDecoration(this, DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20), DensityUtils.dp2px(this, 20)));
+
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point outSize = new Point();
+        display.getSize(outSize);
+        int x = outSize.x;
+        int y = outSize.y;
+
+        int dp20 = DensityUtils.dp2px(this, 20);
+        int dp50 = DensityUtils.dp2px(this, 50);
+        int dp30 = DensityUtils.dp2px(this, 30);
+        mItemWidth = (x - dp20 * 2) / 5;
+        mItemHeight = (y - dp30 - dp50 * 2 - dp20 * 2) / 2;
+
+        if (mItemHeight * 35 / 31 < mItemWidth) {
+            mItemWidth = mItemHeight * 35 / 31;
+        } else {
+            mItemHeight = mItemWidth * 31 / 35;
+        }
+
     }
 
     private void register() {
@@ -121,9 +148,10 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         mList.add(new MainItem("history", R.mipmap.main_history, Color.parseColor("#2FE487"), R.string.main_history));
         mList.add(new MainItem("local", R.mipmap.main_file, Color.parseColor("#2F9CFF"), R.string.main_local));
         mList.add(new MainItem("lan", R.mipmap.main_lan, Color.parseColor("#FD8723"), R.string.main_lan));
+        mList.add(new MainItem("favorite", R.mipmap.favorite, Color.parseColor("#9E9D24"), R.string.main_favorite));
         mList.add(new MainItem("live", R.mipmap.live, Color.parseColor("#009688"), R.string.main_live));
         mList.add(new MainItem("setting", R.mipmap.main_setting, Color.parseColor("#FB4C2B"), R.string.main_setting));
-        mList.add(new MainItem("setting", 0, Color.GRAY, R.string.main_future));
+
         mAdapter.notifyDataSetChanged();
 
 //        Schedule.linear(new Task() {
@@ -198,6 +226,10 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
             Intent intent = new Intent(this, LiveActivity.class);
             startActivity(intent);
             UserTrack.mark(UserTrack.MAIN_LIVE);
+        } else if (item.key.equals("favorite")) {
+            Intent intent = new Intent(this, FavoriteActivity.class);
+            startActivity(intent);
+            UserTrack.mark(UserTrack.MAIN_FAVORITE);
         }
     }
 
@@ -206,6 +238,7 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
         @Override
         public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.item_main, parent, false);
+            view.setLayoutParams(new RecyclerView.LayoutParams(mItemWidth, mItemHeight));
             view.setOnClickListener(MainActivity.this);
             ItemHolder itemHolder = new ItemHolder(view);
             view.setTag(itemHolder);
@@ -262,11 +295,12 @@ public class MainActivity extends TitleActivity implements View.OnClickListener 
             if (item.icon > 0) {
                 viewIcon.setImageResource(item.icon);
                 root.setEnabled(true);
-                root.setFocusable(true);
             } else {
                 viewIcon.setImageDrawable(null);
                 root.setEnabled(false);
                 root.setFocusable(false);
+                root.setFocusableInTouchMode(false);
+                root.setClickable(false);
             }
             viewTitle.setText(item.title);
             GradientDrawable drawable=new GradientDrawable();

@@ -62,7 +62,9 @@ public class AppProvider extends ContentProvider {
         String tableName = uri.getPathSegments().get(0);
         long id = mDataBase.insert(tableName, "", values);
         Uri res =  Uri.withAppendedPath(uri, id + "");
-        this.getContext().getContentResolver().notifyChange(uri, null);
+        if ("true".equals(uri.getQueryParameter("notify"))) {
+            this.getContext().getContentResolver().notifyChange(uri, null);
+        }
         return res;
     }
 
@@ -70,7 +72,9 @@ public class AppProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         String tableName = uri.getPathSegments().get(0);
         int res = mDataBase.delete(tableName, selection, selectionArgs);
-        this.getContext().getContentResolver().notifyChange(uri, null);
+        if ("true".equals(uri.getQueryParameter("notify"))) {
+            this.getContext().getContentResolver().notifyChange(uri, null);
+        }
         return res;
     }
 
@@ -79,7 +83,9 @@ public class AppProvider extends ContentProvider {
         String tableName = uri.getPathSegments().get(0);
         int id = mDataBase.update(tableName, values, selection, selectionArgs);
         Uri res =  Uri.withAppendedPath(uri, id + "");
-        this.getContext().getContentResolver().notifyChange(uri, null);
+        if ("true".equals(uri.getQueryParameter("notify"))) {
+            this.getContext().getContentResolver().notifyChange(uri, null);
+        }
         return id;
     }
 

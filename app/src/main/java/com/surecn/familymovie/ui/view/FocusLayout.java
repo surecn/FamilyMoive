@@ -1,23 +1,25 @@
 package com.surecn.familymovie.ui.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.surecn.familymovie.R;
 import com.surecn.moat.tools.log;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by pengyuntao on 16/3/21.
  */
-public class FocusLayout extends RelativeLayout implements ViewTreeObserver.OnGlobalFocusChangeListener {
-    private LayoutParams mFocusLayoutParams;
-    private View mFocusView;
+public class FocusLayout extends FrameLayout implements ViewTreeObserver.OnGlobalFocusChangeListener {
+    private FrameLayout.LayoutParams mFocusLayoutParams;
+    private ImageView mFocusView;
 
     public FocusLayout(Context context) {
         super(context);
@@ -34,13 +36,30 @@ public class FocusLayout extends RelativeLayout implements ViewTreeObserver.OnGl
         init(context);
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+    }
+
+    public void bindListener(View view) {
+        //获取根元素
+        View mContainerView = view;//.findViewById(android.R.id.content);
+        //得到整个view树的viewTreeObserver
+        ViewTreeObserver viewTreeObserver = mContainerView.getViewTreeObserver();
+        //给观察者设置焦点变化监听
+        viewTreeObserver.addOnGlobalFocusChangeListener(this);
+    }
+
     private void init(Context context) {
-        this.mFocusLayoutParams = new LayoutParams(0, 0);
-        this.mFocusView = new View(context);
+        this.mFocusLayoutParams = new FrameLayout.LayoutParams(0, 0);
+        this.mFocusView = new ImageView(context);
         this.mFocusView.setBackgroundResource(R.mipmap.hover);
         setFocusable(false);
         setFocusableInTouchMode(false);
         setClickable(false);
+        this.mFocusView.setFocusable(false);
+        this.mFocusView.setFocusableInTouchMode(false);
+        this.mFocusView.setClickable(false);
         this.addView(this.mFocusView, this.mFocusLayoutParams);
     }
 
@@ -92,6 +111,6 @@ public class FocusLayout extends RelativeLayout implements ViewTreeObserver.OnGl
         this.mFocusLayoutParams.height = height;
         this.mFocusLayoutParams.leftMargin = left;
         this.mFocusLayoutParams.topMargin = top;
-        this.mFocusView.layout(left, top, right, bottom);
+        this.mFocusView.setLayoutParams(this.mFocusLayoutParams);
     }
 }

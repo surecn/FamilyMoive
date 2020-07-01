@@ -3,7 +3,6 @@ package com.surecn.familymovie.common;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-
 import com.surecn.familymovie.common.http.NanoHTTPD;
 import com.surecn.familymovie.common.samba.httpd.NanoStreamer;
 

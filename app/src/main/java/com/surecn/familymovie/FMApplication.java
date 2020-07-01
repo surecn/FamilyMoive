@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
+import com.dangbei.euthenia.manager.DangbeiAdManager;
 import com.surecn.familymovie.common.StreamService;
 import com.surecn.familymovie.data.HttpAdapter;
 import com.surecn.moat.core.Schedule;
@@ -52,6 +53,8 @@ public class FMApplication extends Application {
         startService(new Intent(this, StreamService.class));
 
         UMConfigure.init(this, "5dc2580f570df3adbb000688", BuildConfig.CHANNEL, UMConfigure.DEVICE_TYPE_BOX, null);
+
+//        DangbeiAdManager.init(this, "E2JO2Ti5FAvMnZ88bEG8GMm0APEs9MlwyHuMpQpV22CVWOMP", "7Q7d3799KVlgG05t", BuildConfig.CHANNEL);
     }
 
     private String getCurProcessName(Context context) {

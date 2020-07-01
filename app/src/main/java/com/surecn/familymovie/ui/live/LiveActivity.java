@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.FrameLayout;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -16,6 +18,7 @@ import com.google.gson.JsonParseException;
 import com.surecn.familymovie.UserTrack;
 import com.surecn.familymovie.R;
 import com.surecn.familymovie.Setting;
+import com.surecn.familymovie.common.player.application.Settings;
 import com.surecn.familymovie.common.player.media.IRenderView;
 import com.surecn.familymovie.common.player.media.IjkVideoView;
 import com.surecn.familymovie.data.AppProvider;
@@ -136,6 +139,9 @@ public class LiveActivity extends BaseActivity {
                 UserTrack.mark("channel", String.valueOf(channel.getId()));
             }
         });
+
+        FrameLayout frameLayout = findViewById(R.id.ad);
+
     }
 
     public void initData(boolean foreUpdate, boolean loading) {
@@ -327,8 +333,8 @@ public class LiveActivity extends BaseActivity {
             hideAll();
             return;
         }
-        super.onBackPressed();
         mBackPressed = true;
+        super.onBackPressed();
     }
 
     @Override

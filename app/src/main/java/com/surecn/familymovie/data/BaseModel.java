@@ -20,32 +20,16 @@ public abstract class BaseModel<T> {
     private Context mContext;
 
     private Uri mUri;
+    private Uri mUriNoNotify;
 
     protected BaseModel(Context context, String tableName) {
         mTable = tableName;
         mContext = context;
         mUri = AppProvider.getContentUri(tableName);
+        mUriNoNotify = AppProvider.getContentUriNoNotification(tableName);
     }
 
-//    protected void save(ContentValues values, String whereClause, String[] whereArgs) {
-//        SQLiteDatabase database = null;
-//        try {
-//            database = DBHelper.getHelper(mContext).getWritableDatabase();
-//            if (whereClause == null) {
-//                whereClause = BaseColumns._ID + "=" + values.get(BaseColumns._ID);
-//            }
-//            int i = database.update(mTable, values, whereClause, whereArgs);
-//            if (i <= 0) {
-//                database.insert(mTable, null, values);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (database != null) {
-//                database.close();
-//            }
-//        }
-//    }
+
 
 //    protected long count(String where) {
 //        SQLiteDatabase database = null;
@@ -107,17 +91,40 @@ public abstract class BaseModel<T> {
         return null;
     }
 
+    protected void save(ContentValues values, String where, String[] whereArgs, boolean notify) {
+        if (update(values, where, whereArgs, notify) <= 0) {
+            insert(values, notify);
+        }
+    }
+
+    protected int delete(String whereClause, String[] whereArgs, boolean notify) {
+        return mContext.getContentResolver().delete(notify ? mUri : mUriNoNotify, whereClause, whereArgs);
+    }
+
+    protected Uri insert(ContentValues values, boolean notify) {
+        return mContext.getContentResolver().insert(notify ? mUri : mUriNoNotify, values);
+    }
+
+    protected int update(ContentValues values, String where, String[] whereArgs, boolean notify) {
+        return mContext.getContentResolver().update(notify ? mUri : mUriNoNotify, values, where, whereArgs);
+    }
+
     protected int delete(String whereClause, String[] whereArgs) {
-        return mContext.getContentResolver().delete(mUri, whereClause, whereArgs);
+        return delete(whereClause, whereArgs, true);
     }
 
     protected Uri insert(ContentValues values) {
-        return mContext.getContentResolver().insert(mUri, values);
+        return insert(values, true);
     }
 
     protected int update(ContentValues values, String where, String[] whereArgs) {
-        return mContext.getContentResolver().update(mUri, values, where, whereArgs);
+        return update(values, where, whereArgs, true);
     }
+
+    protected void save(ContentValues values, String where, String[] whereArgs) {
+        save(values, where, whereArgs, true);
+    }
+
 
     protected abstract T getRowByCursor(Cursor cursor);
 }

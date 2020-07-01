@@ -162,6 +162,7 @@ public class SubTitle implements ContextExpression.OnSubTitleListener {
         mSubTitleWriter = null;
         mHander.removeMessages(MSG_Hide_TIMEDTEXT);
         mHander.removeMessages(MSG_UPDATE_TIMEDTEXT);
+        mTimedTextData.clear();
     }
 
     private void hideTimedText() {

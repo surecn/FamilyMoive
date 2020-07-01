@@ -9,7 +9,9 @@
     android:background="@drawable/back_file"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
-    android:focusable="true">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/icon"

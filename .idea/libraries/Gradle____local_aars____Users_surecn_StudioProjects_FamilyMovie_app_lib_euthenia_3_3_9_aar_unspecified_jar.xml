@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: __local_aars__:/Users/surecn/StudioProjects/FamilyMovie/app/lib/euthenia-3.3.9.aar:unspecified@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c4cbcf6ef5ccbd7553d994d443e514ea/jetified-euthenia-3.3.9/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c4cbcf6ef5ccbd7553d994d443e514ea/jetified-euthenia-3.3.9/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -11,6 +11,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+<!--    <uses-feature android:name="android.hardware.type.television" android:required="true" ></uses-feature>-->
+
     <application
         android:name="com.surecn.familymovie.FMApplication"
         android:allowBackup="true"
@@ -45,6 +54,9 @@
 
         <activity
             android:name="com.surecn.familymovie.ui.HistoryActivity"
+            android:screenOrientation="userLandscape"/>
+
+        <activity android:name="com.surecn.familymovie.ui.FavoriteActivity"
             android:screenOrientation="userLandscape"/>
 
         <activity
@@ -84,6 +96,31 @@
         <service android:name="com.surecn.familymovie.common.StreamService"/>
 
 
+        <!---->
+        <receiver android:name="com.dangbei.euthenia.receiver.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.dangbei.euthenia.receiver.InstalledReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <meta-data android:value="znds" android:name="euthenia_channel"/>
+
+        <provider
+            android:name="com.dangbei.provider.DBFileProvider"
+            android:authorities="${applicationId}.dbfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/dbprovider_paths" />
+        </provider>
     </application>
 
 </manifest>

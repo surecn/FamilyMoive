@@ -113,7 +113,7 @@ public class HistoryActivity extends TitleActivity implements View.OnClickListen
         HistoryHolder historyHolder = (HistoryHolder) v.getTag();
         if (mList.get(historyHolder.index) instanceof History) {
             History history = (History) mList.get(historyHolder.index);
-            VideoActivity.startActivity(this, history.getUrl(), history.getPosition());
+            VideoActivity.startActivity(this, history.getUrl(), history.getPosition(), history.getRoot());
         }
     }
 

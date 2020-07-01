@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class FavoriteModel extends BaseModel<Favorite> {
 
-    private final static int TYPE_LIVE = 0;
-    private final static int TYPE_FOLDER = 1;
-    private final static int TYPE_FILE = 2;
+    public final static int TYPE_LIVE = 0;
+    public final static int TYPE_FOLDER_LAN = 1;
+    public final static int TYPE_FOLDER_LOCAL = 2;
 
     public FavoriteModel(Context context) {
         super(context, "FAVORITE");
@@ -36,30 +36,64 @@ public class FavoriteModel extends BaseModel<Favorite> {
         return delete(TYPE_LIVE, String.valueOf(id)) > 0;
     }
 
-    public boolean addFolder(String url) {
+    public boolean isExist(String url) {
+        List list = query(null, "value=?", new String[]{String.valueOf(url)}, "time desc");
+        if (list == null || list.size() <=0) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean addLanFolder(String url, String extra) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("type", TYPE_FOLDER);
+        contentValues.put("type", TYPE_FOLDER_LAN);
         contentValues.put("value", url);
         contentValues.put("time", System.currentTimeMillis());
+        contentValues.put("extra", extra);
         if(insert(contentValues) != null) {
             return true;
         }
         return false;
     }
 
-    public boolean addFile(String url) {
+    public boolean addLocalFolder(String url, String extra) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("type", TYPE_FILE);
+        contentValues.put("type", TYPE_FOLDER_LOCAL);
         contentValues.put("value", url);
         contentValues.put("time", System.currentTimeMillis());
+        contentValues.put("extra", extra);
         if(insert(contentValues) != null) {
             return true;
         }
         return false;
     }
+
+    public boolean deleteLanFolder(String value) {
+        return delete(TYPE_FOLDER_LAN, value) > 0;
+    }
+
+    public boolean deleteLocalFolder(String value) {
+        return delete(TYPE_FOLDER_LOCAL, value) > 0;
+    }
+
+
+//    public boolean addFile(String url) {
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("type", TYPE_FILE);
+//        contentValues.put("value", url);
+//        contentValues.put("time", System.currentTimeMillis());
+//        if(insert(contentValues) != null) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     public List<Favorite> getFavoriteLives() {
         return query(null, "TYPE=?", new String[]{String.valueOf(TYPE_LIVE)}, "time desc");
+    }
+
+    public List<Favorite> getFavoriteFolders() {
+        return query(null, "TYPE=? or TYPE=?", new String[]{String.valueOf(TYPE_FOLDER_LAN), String.valueOf(TYPE_FOLDER_LOCAL)}, "time desc");
     }
 
     public int delete(int type, String value) {
@@ -80,6 +114,7 @@ public class FavoriteModel extends BaseModel<Favorite> {
         obj.setType(cursor.getInt(cursor.getColumnIndex("TYPE")));
         obj.setValue(cursor.getString(cursor.getColumnIndex("VALUE")));
         obj.setTime(cursor.getLong(cursor.getColumnIndex("TIME")));
+        obj.setExtra(cursor.getString(cursor.getColumnIndex("EXTRA")));
         return obj;
     }
 }

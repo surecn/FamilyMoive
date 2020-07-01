@@ -1,5 +1,6 @@
 package com.surecn.familymovie.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -26,7 +27,7 @@ public class FeedbackActivity extends BaseActivity {
         setContentView(R.layout.activity_feedback);
 
         ImageView imageView = findViewById(R.id.image);
-        String url = "https://www.smyyh.cn/player/feedback/mobile?uuid="+ Setting.uuid +"&versionName=" + AppUtils.getAppVersionName(this) + "&versionCode=" + AppUtils.getAppVersionCode(this);
+        String url = "https://www.huitaoyouhui.com/player/feedback/mobile?uuid="+ Setting.uuid +"&versionName=" + AppUtils.getAppVersionName(this) + "&versionCode=" + AppUtils.getAppVersionCode(this) + "&phoneModel=" + Build.MODEL + "&androidVersion=" + Build.VERSION.RELEASE;
         imageView.setImageBitmap(ZXingUtils.createQRImage(url, DensityUtils.dp2px(this, 200), DensityUtils.dp2px(this, 200)));
     }
 }

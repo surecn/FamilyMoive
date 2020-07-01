@@ -13,6 +13,16 @@ public class Favorite {
 
     private long time;
 
+    private String extra;
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
     public int getType() {
         return type;
     }

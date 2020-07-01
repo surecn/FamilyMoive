@@ -19,6 +19,8 @@ public class History {
 
     private int length;
 
+    private String root;
+
     public int getLength() {
         return length;
     }
@@ -65,5 +67,13 @@ public class History {
 
     public void setTime(long time) {
         this.time = time;
+    }
+
+    public String getRoot() {
+        return root;
+    }
+
+    public void setRoot(String root) {
+        this.root = root;
     }
 }

@@ -10,15 +10,19 @@
     <string name="main_lan">家庭网络</string>
     <string name="main_live">电视直播</string>
     <string name="main_setting">设置</string>
-    <string name="main_future">敬请期待</string>
+    <string name="main_favorite">收藏</string>
 
-    <string name="video_tip_down">按[↓]键显示播放列表</string>
-    <string name="video_tip_menu">按[菜单]键显示播放设置</string>
+    <string name="video_tip_down">按[↓]显示播放列表</string>
+    <string name="video_tip_menu">按[菜单]显示播放设置</string>
+    <string name="video_tip_left">按或长按[←]后退</string>
+    <string name="video_tip_right">按或长按[→]前进</string>
+    <string name="video_setting_playmode">播放模式</string>
     <string name="video_setting_audio">音频选择</string>
     <string name="video_setting_subtitle">字幕选择</string>
     <string name="video_setting_subtitle_unknow">未匹配</string>
     <string name="video_setting_scale">画面比例</string>
     <string name="video_setting_play_order">播放设置</string>
+    <string name="video_setting_play_speed">播放速度</string>
     <string name="video_setting_list_local">本地</string>
     <string name="video_setting_list_network">网络</string>
     <string name="video_subtitle_shutdown">关闭字幕</string>
@@ -70,11 +74,33 @@
         <item>顺序</item>
         <item>循环</item>
     </string-array>
-    
+
+    <string name="favorite_list">收藏列表</string>
+    <string name="favorite">收藏</string>
+    <string name="unfavorite">取消收藏</string>
+    <string name="favorite_tip_menu">在文件夹列表按菜单键显示收藏</string>
+    <string name="file_tip_menu">按[菜单键]显示收藏菜单</string>
+
     
     <string name="live_setting_favorite">收藏该频道</string>
     <string name="live_setting_unfavorite">取消收藏该频道</string>
     <string name="live_setting_update">节目源更新</string>
 
+    <string name="lan_title_add_server">输入设备名称</string>
+    <string name="lan_label_add_server">设备地址</string>
+    <string name="lan_button_add">添加</string>
+
+    <string name="user">用户名</string>
+    <string name="pass">密码</string>
+    <string name="auth_title">请输入验证信息</string>
+    <string name="msg_empty_user">用户名不能为空</string>
+
+    <string name="msg_favorite_empty">没有任何收藏的文件夹，请前往「本地」或者「家庭网络」中收藏文件夹</string>
+    <string name="msg_file_empty">没有任何文件</string>
+
+    <string-array name="model_values">
+        <item>兼容模式</item>
+        <item>性能优先</item>
+    </string-array>
 
 </resources>

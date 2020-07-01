@@ -67,6 +67,24 @@ public class FileManager {
         return folders;
     }
 
+    public static FileItem getFileItem(String path) {
+        File f = new File(path);
+        FileItem fileItem = new FileItem();
+        fileItem.name = UriUtil.uriNameFormat(f.getName());
+        fileItem.path = f.getPath();
+        fileItem.lastModify = DateUtils.toDate(f.lastModified());
+        if (f.isFile()) {
+            fileItem.type = 2;
+            fileItem.extension = UriUtil.getUriExtension(f.getName());
+//            if (fileItem.extension != null && VideoHelper.isVideoFile(fileItem.extension)) {
+//                files.add(fileItem);
+//            }
+        } else {
+            fileItem.type = 1;
+        }
+        return fileItem;
+    }
+
     public static String searchSubtitle(String filepath) {
         try {
             String _name = UriUtil.getUriSimpleName(filepath);

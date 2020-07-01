@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidConfiguredLogFilters">
+    <filters>
+      <filter>
+        <option name="logLevel" value="verbose" />
+        <option name="logMessagePattern" value="" />
+        <option name="logTagPattern" value="ActivityManager" />
+        <option name="name" value="ActivityManager" />
+        <option name="packageNamePattern" value="" />
+        <option name="pid" value="" />
+      </filter>
+    </filters>
+  </component>
   <component name="AndroidLayouts">
     <shared>
       <config />
@@ -7,17 +19,34 @@
   </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d654e427-0dc5-4eca-9278-82ae16334304" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__eu_agno3_jcifs_jcifs_ng_2_1_3_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_bouncycastle_bcprov_jdk15on_1_61_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_samba_jcifs_jcifs_1_3_3_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_24_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/CIFSSearcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/LanManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelInfoView.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/RootChannelListView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_StudioProjects_FamilyMovie_app_lib_euthenia_3_3_9_aar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_StudioProjects_FamilyMovie_app_lib_euthenia_aar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_Work_StudioProjects_FamilyMovie_app_lib_antlr_2_7_6_jar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_Work_StudioProjects_FamilyMovie_app_lib_cpdetector_1_0_10_jar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_Work_StudioProjects_FamilyMovie_app_lib_euthenia_aar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle____local_aars____Users_surecn_Work_StudioProjects_FamilyMovie_app_lib_jchardet_1_0_jar_unspecified_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_gridlayout_gridlayout_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_hierynomus_asn_one_0_4_0_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_hierynomus_smbj_0_10_0_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_owen_tv_focusborder_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__eu_agno3_jcifs_jcifs_ng_2_1_4_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_engio_mbassador_1_3_0_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_bouncycastle_bcprov_jdk15on_1_60_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_1_7_25_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/lib/euthenia.aar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FavoriteActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/Setting1Dialog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_favorite.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_smbauth.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/base.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_setting_panel.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/favorite.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -30,42 +59,58 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_8_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_gifdecoder_4_8_0_aar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_8_0_aar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_github_bumptech_glide_glide_4_8_0_aar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/app/proguard-rules.pro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/FMApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/FMApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/Setting.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/Setting.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/UserTrack.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/UserTrack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/LanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/LanManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/SubTitleContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/SubTitleContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/srt/SrtContextExpression.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/srt/SrtContextExpression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FileCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FileCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Channel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelProgram.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/StreamService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/StreamService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/VideoHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/VideoHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/application/Settings.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/application/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/application/Settings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IjkVideoView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IjkVideoView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitle.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/AppProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/AppProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/BaseModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/BaseModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/DBHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/DBHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FavoriteModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FavoriteModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HistoryModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HistoryModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HttpAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HttpAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Favorite.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Favorite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/LiveRoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/LiveRoot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/History.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/History.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FeedbackActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FeedbackActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/HistoryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/HistoryActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TvRecyclerView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TvRecyclerView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/UpdateManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/UpdateManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/BaseActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/FirstChannelAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/FirstChannelAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ThirdChannelAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ThirdChannelAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/BackRunnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/BackRunnable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/MainHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/MainHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/PlaySettingPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/PlaySettingPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/view/FocusLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/view/FocusLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_file.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_file.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_live.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_live.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_title.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_title.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_video.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_video.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/video_menu_decode.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/appcompat/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/constraintlayout/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/test/espresso/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/androidx/test/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/com/android/support/group-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/maven.google/master-index.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/intermediates/lint-cache/sdk-registry.xml/sdk-registry.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +121,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="192.168.6.162:5555" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="3UQBB17B30505175" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -104,74 +149,108 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="238" column="46" lean-forward="true" selection-start-line="238" selection-start-column="46" selection-end-line="238" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5104#5105#0" expanded="true" />
-                <element signature="e#5203#5204#0" expanded="true" />
-                <element signature="e#7086#7087#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#499#500#0" expanded="true" />
-                <element signature="e#529#530#0" expanded="true" />
-                <element signature="e#1206#1207#0" expanded="true" />
-                <element signature="e#1254#1255#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="130" column="9" lean-forward="true" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.0.0/2151d26c3b241f0a887f2dadb9ab091649fcf020/recyclerview-1.0.0-sources.jar!/androidx/recyclerview/widget/LinearLayoutManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="221" column="16" selection-start-line="221" selection-start-column="16" selection-end-line="221" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TvRecyclerView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="30" selection-start-column="19" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="430" column="28" selection-start-line="430" selection-start-column="28" selection-end-line="430" selection-end-column="28" />
+            <state relative-caret-position="855">
+              <caret line="105" column="24" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="159" column="25" selection-start-line="159" selection-start-column="25" selection-end-line="159" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="9" column="8" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7060#7061#0" expanded="true" />
-                <element signature="e#7096#7097#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IjkVideoView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16125">
+              <caret line="1164" column="30" selection-start-line="1164" selection-start-column="15" selection-end-line="1164" selection-end-column="36" />
+              <folding>
+                <element signature="e#6929#6930#0" expanded="true" />
+                <element signature="e#6964#6965#0" expanded="true" />
+                <element signature="e#44860#44861#0" expanded="true" />
+                <element signature="e#44904#44905#0" expanded="true" />
+                <element signature="e#44941#44942#0" expanded="true" />
+                <element signature="e#45004#45005#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/java/net/URLConnection.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6330">
+              <caret line="462" column="14" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="14" />
+              <folding>
+                <element signature="e#17907#17908#0" expanded="true" />
+                <element signature="e#17937#17938#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.17/1a2f0e28cc9497fb4927ea2422605fb8023969b6/jcifs-1.3.17.jar!/jcifs/smb/Handler.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer2" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4320">
+              <caret line="336" column="13" selection-start-line="336" selection-start-column="13" selection-end-line="336" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -181,10 +260,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="layoutResourceFile" />
         <option value="valueResourceFile" />
-        <option value="layoutResourceFile_vertical" />
         <option value="resourceFile" />
+        <option value="layoutResourceFile_vertical" />
+        <option value="layoutResourceFile" />
         <option value="Class" />
       </list>
     </option>
@@ -194,36 +273,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>KEY_CHANNELDATA</find>
-      <find>error</find>
-      <find>interfaceName</find>
-      <find>Enumeration&lt;NetworkInterface&gt; enNetworkInterface = NetworkInterface.getNetworkInterfaces();</find>
-      <find>getNetworkInterfaces</find>
-      <find>==sendUDP==</find>
-      <find>update</find>
-      <find>MSG_EXECUTE_ERROR</find>
-      <find>mSubTitleContext</find>
-      <find>===</find>
-      <find>mRequestFocus</find>
-      <find>onFocusChange</find>
-      <find>setSelected</find>
-      <find>mSelectIndex</find>
-      <find>onSectionChange</find>
-      <find>selectIndex</find>
-      <find>mList</find>
-      <find>mViewLoading</find>
-      <find>==onBindViewHolder=====</find>
-      <find>mOnSectionChangeListener</find>
-      <find>mFocusIndex</find>
-      <find>mPendingScrollPosition</find>
-      <find>setselection</find>
-      <find>immediately</find>
-      <find>immedia</find>
-      <find>imme</find>
-      <find>mFirstLayoutComplete</find>
-      <find>immediate</find>
-      <find>parent</find>
-      <find>requestChildRectangleOnScreen</find>
+      <find>packageName</find>
+      <find>mSelectedFileItem</find>
+      <find>fileItem</find>
+      <find>onFavorite</find>
+      <find>executorService</find>
+      <find>mFavoriteModel</find>
+      <find>packet-buffering</find>
+      <find>mediacodec</find>
+      <find>mVideoView.getMediaPlayer().getMediaInfo()</find>
+      <find>mMeta</find>
+      <find>mStreams</find>
+      <find>mAudioTrack</find>
+      <find>initView</find>
+      <find>pref_key_player</find>
+      <find>mPlayerModel</find>
+      <find>order_values</find>
+      <find>settingItem.value</find>
+      <find>setting</find>
+      <find>mCurrentAspectRatio</find>
+      <find>mVideoView</find>
+      <find>protected void onFavorite(boolean isFavorite, FileItem selectedFileItem)</find>
+      <find>mListener</find>
+      <find>mygesture</find>
+      <find>mChannelInfoView</find>
+      <find>ChannelInfoView</find>
+      <find>workgroup</find>
+      <find>.mapping</find>
+      <find>mSelectSubtitleIndex</find>
+      <find>mSelectAudioIndex</find>
+      <find>mBackPressed</find>
     </findStrings>
     <replaceStrings>
       <replace>com.surecn.familymoive</replace>
@@ -232,22 +311,23 @@
       <replace>moat.moat</replace>
       <replace>com.surecn</replace>
       <replace>com.surecn.familymovie.common.nanohttpd</replace>
+      <replace />
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymoive/common</dir>
       <dir>$PROJECT_DIR$/app/src/main/java</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymoive/common/media</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymoive/data</dir>
-      <dir>$PROJECT_DIR$/app/src/main/java/com/surecn</dir>
-      <dir>$PROJECT_DIR$/app/src/main</dir>
       <dir>$PROJECT_DIR$/app</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/nanohttpd</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player</dir>
-      <dir>$PROJECT_DIR$/app/src</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/http</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba</dir>
-      <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie</dir>
       <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle</dir>
+      <dir>$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie</dir>
+      <dir>$PROJECT_DIR$/app/src/main/java/com/surecn</dir>
+      <dir>$PROJECT_DIR$/app/src</dir>
+      <dir>$PROJECT_DIR$/app/src/main</dir>
       <dir>$PROJECT_DIR$</dir>
     </dirStrings>
   </component>
@@ -264,64 +344,64 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/Setting.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/FMApplication.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/a.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/UserTrack.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/utils/MD5Util.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/http/OKHttpUtils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/unicode/a.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/utils/CPDetector.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitle.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitleLoader.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/SubDetailItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/HistoryActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/UpdateManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitleCache.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HttpAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/VideoHelper.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/DiskActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/LiveRoot.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelSource.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/ChannelProgram.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ThirdChannelAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/UserTrack.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelInfo.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Channel.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelInfoView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/BackRunnable.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/a.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FileCache.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/LanManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/MainHandler.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/SubTitleContext.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/srt/SrtContextExpression.java" />
-        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/base.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/view/FocusLayout.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HttpAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_smbauth.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FeedbackActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/HistoryActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/History.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/HistoryModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/BaseActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/DBHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Favorite.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/Setting1Dialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_setting_panel.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingDialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_setting.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/item_setting.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/BaseModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/AppProvider.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_favorite.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingPanel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FavoriteModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/FileManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/ServerModel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/UserTrack.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/StreamService.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/Setting.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/application/Settings.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IjkVideoView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/PlaySettingPanel.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_file.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FavoriteActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/layout_title.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelInfoView.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_live.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/RootChannelListView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/FirstChannelAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TvRecyclerView.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/FMApplication.java" />
+        <option value="$PROJECT_DIR$/app/proguard-rules.pro" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java" />
+        <option value="$PROJECT_DIR$/app/build.gradle" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="2" />
     <option name="y" value="23" />
-    <option name="width" value="1392" />
+    <option name="width" value="1388" />
     <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -369,6 +449,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -442,53 +524,26 @@
               <item name="surecn" type="462c0819:PsiDirectoryNode" />
               <item name="familymovie" type="462c0819:PsiDirectoryNode" />
               <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="live" type="462c0819:PsiDirectoryNode" />
+              <item name="browser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="FamilyMoive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FamilyMovie" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="surecn" type="462c0819:PsiDirectoryNode" />
-              <item name="familymovie" type="462c0819:PsiDirectoryNode" />
-              <item name="ui" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FamilyMoive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FamilyMovie" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FamilyMoive" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FamilyMovie" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="app" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="res" type="462c0819:PsiDirectoryNode" />
-              <item name="values" type="462c0819:PsiDirectoryNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="DEBUGGABLE_DEVICE" value="xiaomi-mibox3-192.168.6.162:5555" />
+    <property name="DEBUGGABLE_DEVICE" value="huawei-sla_al00-3UQBB17B30505175" />
     <property name="DEBUGGABLE_PROCESS" value="com.surecn.familymovie" />
     <property name="DEBUGGER_ID" value="Auto" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="FA7470300136" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2019-12-07T10:56:22.156Z" />
-    <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app/build/outputs" />
-    <property name="ExportApk.BuildVariants" value="dangbeiDebug&#10;dangbeiRelease&#10;qipaDebug&#10;qipaRelease&#10;xiaomiDebug&#10;xiaomiRelease" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="192.168.6.162:5555" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-04-26T09:23:29.549Z" />
+    <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/output" />
+    <property name="ExportApk.BuildVariants" value="dangbeiRelease&#10;kuanRelease&#10;qipaRelease&#10;tencentRelease" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="ExportApk.SignV2" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
@@ -504,7 +559,7 @@
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="android.sdk.path" value="$USER_HOME$/Tools/android-sdk" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymoive/common" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/utils" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="options.lastSelected" value="gradle.experimental" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
@@ -512,6 +567,7 @@
     <property name="project.structure.last.edited" value="SDK Location" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="diff.external" />
     <property name="show.do.not.ask.upgrade.gradle.plugin" value="3.5.0" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/http/NanoHTTPD.java" />
@@ -531,18 +587,18 @@
       <recent name="" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.surecn.familymovie.ui.browser" />
       <recent name="com.surecn.familymovie.data" />
       <recent name="com.surecn.familymovie.ui.live" />
       <recent name="com.surecn.familymovie.common" />
       <recent name="com.surecn.familymovie.common.newsubtitle.interpreter.skt" />
-      <recent name="com.surecn.familymovie.common.newsubtitle.interpreter" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/utils" />
       <recent name="$PROJECT_DIR$/app/lib" />
+      <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/layout" />
+      <recent name="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/utils" />
       <recent name="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba" />
-      <recent name="$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -743,31 +799,31 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="2" y="23" width="1392" height="877" extended-state="0" />
+    <frame x="2" y="23" width="1388" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49170125" visible="true" weight="0.2488889" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.48280254" visible="true" weight="0.19242199" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" sideWeight="0.50851583" side_tool="true" weight="0.2325926" />
-      <window_info id="Build Variants" order="4" sideWeight="0.50829875" side_tool="true" weight="0.2325926" />
+      <window_info id="Build Variants" order="4" sideWeight="0.51719743" side_tool="true" weight="0.25037146" />
       <window_info id="Image Layers" order="5" />
       <window_info id="Designer" order="6" />
       <window_info id="Resources Explorer" order="7" />
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Version Control" order="0" sideWeight="0.49890432" weight="0.54140127" />
-      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.48719823" weight="0.5464968" />
-      <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49963477" weight="0.32866243" />
-      <window_info anchor="bottom" id="Find" order="3" weight="0.38598725" />
-      <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.4981685" weight="0.41273886" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49233016" weight="0.29044586" />
+      <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.4858841" weight="0.5401274" />
+      <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49925706" weight="0.32866243" />
+      <window_info anchor="bottom" id="Find" order="3" weight="0.4955414" />
+      <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49777117" weight="0.41273886" />
+      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.48439822" weight="0.30828026" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="6" weight="0.32896462" />
-      <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.5150721" />
-      <window_info anchor="bottom" id="Run" order="8" weight="0.7070064" />
-      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49452156" weight="0.29044586" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.51280177" side_tool="true" weight="0.4343949" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" weight="0.5146497" />
+      <window_info anchor="bottom" id="Run" order="8" sideWeight="0.49405646" weight="0.6369427" />
+      <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.49452156" weight="0.41528663" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5163447" side_tool="true" weight="0.30828026" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
-      <window_info anchor="right" id="Gradle" order="1" sideWeight="0.49672347" weight="0.32943755" />
+      <window_info anchor="right" id="Gradle" order="1" sideWeight="0.49672347" weight="0.32912332" />
       <window_info anchor="right" id="Theme Preview" order="2" />
       <window_info anchor="right" id="Preview" order="3" weight="0.3293944" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
@@ -775,6 +831,7 @@
       <window_info anchor="right" id="SQLite Explorer" order="6" weight="0.32967034" />
       <window_info anchor="right" id="Assistant" order="7" weight="0.329188" />
       <window_info anchor="right" id="Device File Explorer" order="8" sideWeight="0.5032765" side_tool="true" weight="0.32943755" />
+      <window_info anchor="right" id="make" order="9" />
     </layout>
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -856,7 +913,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java</url>
-          <line>129</line>
+          <line>157</line>
           <properties />
           <option name="timeStamp" value="129" />
         </line-breakpoint>
@@ -915,18 +972,6 @@
           <option name="timeStamp" value="183" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/UpdateManager.java</url>
-          <line>194</line>
-          <properties />
-          <option name="timeStamp" value="189" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java</url>
-          <line>306</line>
-          <properties />
-          <option name="timeStamp" value="191" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/format/FormatSRT.java</url>
           <line>110</line>
           <properties />
@@ -952,7 +997,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java</url>
-          <line>405</line>
+          <line>411</line>
           <properties />
           <option name="timeStamp" value="282" />
         </line-breakpoint>
@@ -975,20 +1020,8 @@
           <option name="timeStamp" value="331" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java</url>
-          <line>40</line>
-          <properties />
-          <option name="timeStamp" value="335" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/AppProvider.java</url>
-          <line>64</line>
-          <properties />
-          <option name="timeStamp" value="339" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java</url>
-          <line>147</line>
+          <line>175</line>
           <properties />
           <option name="timeStamp" value="344" />
         </line-breakpoint>
@@ -1005,18 +1038,6 @@
           <option name="timeStamp" value="359" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java</url>
-          <line>438</line>
-          <properties />
-          <option name="timeStamp" value="364" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java</url>
-          <line>75</line>
-          <properties />
-          <option name="timeStamp" value="365" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/PlayerManager.java</url>
           <line>178</line>
           <properties />
@@ -1024,57 +1045,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java</url>
-          <line>130</line>
+          <line>133</line>
           <properties />
           <option name="timeStamp" value="370" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java</url>
-          <line>279</line>
-          <properties />
-          <option name="timeStamp" value="371" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java</url>
-          <line>213</line>
+          <line>198</line>
           <properties />
           <option name="timeStamp" value="372" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java</url>
-          <line>246</line>
+          <line>234</line>
           <properties />
           <option name="timeStamp" value="373" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java</url>
-          <line>53</line>
-          <properties />
-          <option name="timeStamp" value="375" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java</url>
-          <line>81</line>
+          <line>133</line>
           <properties />
           <option name="timeStamp" value="389" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>84</line>
-          <properties />
-          <option name="timeStamp" value="407" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>71</line>
-          <properties />
-          <option name="timeStamp" value="408" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>40</line>
-          <properties />
-          <option name="timeStamp" value="409" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/DiskActivity.java</url>
@@ -1089,46 +1080,76 @@
           <option name="timeStamp" value="411" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/MainHandler.java</url>
-          <line>97</line>
-          <properties />
-          <option name="timeStamp" value="418" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/BackRunnable.java</url>
-          <line>38</line>
-          <properties />
-          <option name="timeStamp" value="420" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>105</line>
-          <properties />
-          <option name="timeStamp" value="423" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>94</line>
-          <properties />
-          <option name="timeStamp" value="424" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java</url>
-          <line>103</line>
-          <properties />
-          <option name="timeStamp" value="425" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java</url>
           <line>240</line>
           <properties />
           <option name="timeStamp" value="427" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java</url>
-          <line>31</line>
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java</url>
+          <line>120</line>
           <properties />
-          <option name="timeStamp" value="431" />
+          <option name="timeStamp" value="434" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingPanel.java</url>
+          <line>57</line>
+          <properties />
+          <option name="timeStamp" value="466" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingPanel.java</url>
+          <line>83</line>
+          <properties />
+          <option name="timeStamp" value="467" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/http/NanoHTTPD.java</url>
+          <line>1188</line>
+          <properties />
+          <option name="timeStamp" value="481" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FavoriteActivity.java</url>
+          <line>84</line>
+          <properties />
+          <option name="timeStamp" value="491" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/MeasureHelper.java</url>
+          <line>222</line>
+          <properties />
+          <option name="timeStamp" value="495" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/MeasureHelper.java</url>
+          <line>223</line>
+          <properties />
+          <option name="timeStamp" value="496" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java</url>
+          <line>80</line>
+          <properties />
+          <option name="timeStamp" value="497" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java</url>
+          <line>48</line>
+          <properties />
+          <option name="timeStamp" value="498" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java</url>
+          <line>206</line>
+          <properties />
+          <option name="timeStamp" value="500" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java</url>
+          <line>101</line>
+          <properties />
+          <option name="timeStamp" value="501" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1213,488 +1234,442 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>file.canWrite()</expression-string>
+        <expression-string>mVideoView.getMediaPlayer().getMediaInfo().mAudioDecoder</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file.canRead()</expression-string>
+        <expression-string>mVideoView.getMediaPlayer().getMediaInfo().mMeta</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file.getTotalSpace()</expression-string>
+        <expression-string>mVideoView.getMediaPlayer().getMediaInfo()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file.listFiles()</expression-string>
+        <expression-string>avorite.getType()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file.getPath()</expression-string>
+        <expression-string>favorite.getValue()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file</expression-string>
+        <expression-string>favorite.getExtra()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>file.list()</expression-string>
+        <expression-string>mViewList.</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>getData()</expression-string>
+        <expression-string>smbFile.exists()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>networkInterface.get</expression-string>
+        <expression-string>smbFile.</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>p.getAddress().getHostAddress()</expression-string>
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.3/ac21feb5616f2f1b92cc4730f2323233844694b/jcifs-1.3.3-sources.jar!/jcifs/smb/SID.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/menu_subtitle.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/PlayerManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="597" column="47" selection-start-line="597" selection-start-column="31" selection-end-line="597" selection-end-column="47" />
+        <state relative-caret-position="176">
+          <caret line="216" column="30" lean-forward="true" selection-start-line="216" selection-start-column="30" selection-end-line="216" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.3/ac21feb5616f2f1b92cc4730f2323233844694b/jcifs-1.3.3-sources.jar!/jcifs/smb/SmbFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2335">
-          <caret line="1217" column="46" selection-start-line="1217" selection-start-column="32" selection-end-line="1217" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/eu.agno3.jcifs/jcifs-ng/2.1.3/4167ac05202c1962a613a0ba0a076b11261eab4e/jcifs-ng-2.1.3-sources.jar!/jcifs/smb/SmbFileInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="71" column="5" lean-forward="true" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/eu.agno3.jcifs/jcifs-ng/2.1.3/4167ac05202c1962a613a0ba0a076b11261eab4e/jcifs-ng-2.1.3-sources.jar!/jcifs/smb/NtlmPasswordAuthenticator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="93" column="11" selection-start-line="93" selection-start-column="11" selection-end-line="93" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/eu.agno3.jcifs/jcifs-ng/2.1.3/4167ac05202c1962a613a0ba0a076b11261eab4e/jcifs-ng-2.1.3-sources.jar!/jcifs/context/SingletonContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="52" column="46" selection-start-line="52" selection-start-column="42" selection-end-line="52" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.17/1a2f0e28cc9497fb4927ea2422605fb8023969b6/jcifs-1.3.17.jar!/jcifs/smb/SmbFile.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="87" column="11" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/eu.agno3.jcifs/jcifs-ng/2.1.3/4167ac05202c1962a613a0ba0a076b11261eab4e/jcifs-ng-2.1.3-sources.jar!/jcifs/smb/SmbFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="435" column="11" selection-start-line="435" selection-start-column="11" selection-end-line="435" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/CIFSSearcher.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="76" column="42" selection-start-line="76" selection-start-column="42" selection-end-line="76" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/data/FileCache.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="82" selection-start-line="82" selection-end-line="82" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/LanManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="31" column="27" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/FileItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="23" lean-forward="true" selection-start-line="16" selection-start-column="23" selection-end-line="16" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#426#427#0" expanded="true" />
-            <element signature="e#450#451#0" expanded="true" />
-            <element signature="e#1271#1272#0" expanded="true" />
-            <element signature="e#1322#1323#0" expanded="true" />
-            <element signature="e#1388#1389#0" expanded="true" />
-            <element signature="e#1437#1438#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="26" column="35" lean-forward="true" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/DiskActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="88" selection-start-line="88" selection-end-line="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/FileManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="21" column="3" lean-forward="true" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/java/util/LinkedList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="757" column="13" selection-start-line="757" selection-start-column="13" selection-end-line="757" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/TaskSchedule.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
-          <folding>
-            <element signature="e#1484#1485#0" expanded="true" />
-            <element signature="e#1528#1529#0" expanded="true" />
-            <element signature="e#1606#1607#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/TaskExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/MainHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="88" column="13" lean-forward="true" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/SubTitle.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="78" column="41" selection-start-line="78" selection-start-column="41" selection-end-line="78" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/moat/core/BackRunnable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/ass/AssContextExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="34" column="65" lean-forward="true" selection-start-line="34" selection-start-column="65" selection-end-line="34" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/SubTitleContext.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/subtitle/interpreter/srt/SrtContextExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/ViewGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="1165" column="16" selection-start-line="1165" selection-start-column="16" selection-end-line="1165" selection-end-column="16" />
-          <folding>
-            <element signature="e#45742#45743#0" expanded="true" />
-            <element signature="e#45773#45774#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/application/Settings.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/application/StreamUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="19" column="14" lean-forward="true" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/application/Settings.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="10" column="25" lean-forward="true" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="145">
-          <caret line="78" column="24" selection-start-line="78" selection-start-column="19" selection-end-line="78" selection-end-column="26" />
+        <state relative-caret-position="154">
+          <caret line="51" column="5" lean-forward="true" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
           <folding>
-            <element signature="e#2961#2962#0" expanded="true" />
-            <element signature="e#2989#2990#0" expanded="true" />
-            <element signature="e#3045#3046#0" expanded="true" />
-            <element signature="e#3073#3074#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/PlayListView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="775">
+          <caret line="165" column="46" selection-start-line="165" selection-start-column="46" selection-end-line="165" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/samba/httpd/NanoStreamer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="151" column="24" lean-forward="true" selection-start-line="151" selection-start-column="24" selection-end-line="151" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/StreamService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="17" selection-start-line="17" selection-start-column="17" selection-end-line="17" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IRenderView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="46" column="9" selection-start-line="46" selection-start-column="9" selection-end-line="46" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/MeasureHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="217" column="27" selection-start-line="217" selection-start-column="8" selection-end-line="217" selection-end-column="27" />
+          <folding>
+            <element signature="e#9372#9373#0" expanded="true" />
+            <element signature="e#9421#9422#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/http/NanoHTTPD.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-384">
-          <caret line="41" column="13" lean-forward="true" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+          <caret line="915" column="16" lean-forward="true" selection-start-line="915" selection-start-column="16" selection-end-line="915" selection-end-column="16" />
           <folding>
-            <element signature="e#1943#1944#0" expanded="true" />
-            <element signature="e#1990#1991#0" expanded="true" />
-            <element signature="e#3034#3035#0" expanded="true" />
-            <element signature="e#3082#3083#0" expanded="true" />
-            <element signature="e#3139#3140#0" expanded="true" />
-            <element signature="e#3199#3200#0" expanded="true" />
+            <element signature="e#21037#21038#0" expanded="true" />
+            <element signature="e#21057#21058#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/BaseActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/PlaySettingPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="54" column="42" lean-forward="true" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_title.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="25" column="44" lean-forward="true" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_loading.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="153" column="32" selection-start-line="153" selection-start-column="32" selection-end-line="153" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="93" column="47" selection-start-line="93" selection-start-column="47" selection-end-line="93" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3">
-          <caret line="17" column="32" lean-forward="true" selection-start-line="17" selection-start-column="32" selection-end-line="17" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_live.xml">
-      <provider editor-type-id="android-designer2" />
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="31" column="52" lean-forward="true" selection-start-line="31" selection-start-column="52" selection-end-line="31" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/domain/Channel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-          <folding>
-            <element signature="e#1902#1903#0" expanded="true" />
-            <element signature="e#1932#1933#0" expanded="true" />
-            <element signature="e#2048#2049#0" expanded="true" />
-            <element signature="e#2082#2083#0" expanded="true" />
-            <element signature="e#2797#2798#0" expanded="true" />
-            <element signature="e#2828#2829#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="423">
+          <caret line="120" column="31" selection-start-line="120" selection-start-column="31" selection-end-line="120" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TVLinearLayoutManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="345">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SettingDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="26" column="11" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#499#500#0" expanded="true" />
-            <element signature="e#529#530#0" expanded="true" />
-            <element signature="e#1206#1207#0" expanded="true" />
-            <element signature="e#1254#1255#0" expanded="true" />
+            <element signature="e#831#832#0" expanded="true" />
+            <element signature="e#861#862#0" expanded="true" />
+            <element signature="e#1066#1067#0" expanded="true" />
+            <element signature="e#1102#1103#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/androidx/recyclerview/widget/RecyclerView.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_file.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="4149" column="28" selection-start-line="4149" selection-start-column="8" selection-end-line="4149" selection-end-column="28" />
+        <state relative-caret-position="201">
+          <caret line="31" column="33" lean-forward="true" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/FavoriteActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="59" column="41" selection-start-line="59" selection-start-column="41" selection-end-line="59" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1236#1258#0" expanded="true" />
+            <element signature="e#1281#1307#0" expanded="true" />
+            <element signature="e#3223#3224#0" expanded="true" />
+            <element signature="e#3240#3267#0" expanded="true" />
+            <element signature="e#3273#3274#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/HistoryActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="68" column="25" lean-forward="true" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LocalFileActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="36" column="33" lean-forward="true" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/SmbActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="64" column="19" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/UserTrack.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="29" column="31" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/android/app/Activity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="2987" column="19" selection-start-line="2987" selection-start-column="19" selection-end-line="2987" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/SurfaceRenderView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="708">
+          <caret line="110" selection-start-line="110" selection-end-line="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/android/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="708">
+          <caret line="23073" column="16" selection-start-line="23073" selection-start-column="16" selection-end-line="23073" selection-end-column="16" />
+          <folding>
+            <element signature="e#915700#915701#0" expanded="true" />
+            <element signature="e#915726#915727#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/captures/com.surecn.familymovie_2020.04.26_17.02.li" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/layout_title.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-108">
+          <caret line="8" column="28" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="28" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/captures/com.surecn.familymovie_2020.04.26_17.03.li" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/item_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="28" lean-forward="true" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/main_history.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_video.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="35" selection-start-line="10" selection-start-column="25" selection-end-line="10" selection-end-column="35" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/android/view/GestureDetector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="337" column="40" selection-start-line="337" selection-start-column="40" selection-end-line="337" selection-end-column="40" />
+          <folding>
+            <element signature="e#12964#12965#0" expanded="true" />
+            <element signature="e#13006#13007#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/device-2020-04-26-202405.png" />
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="50" column="17" lean-forward="true" selection-start-line="50" selection-start-column="17" selection-end-line="50" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_live.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2190">
+          <caret line="146" column="48" selection-start-line="146" selection-start-column="48" selection-end-line="146" selection-end-column="48" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelInfoView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="14" column="28" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/FileActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1935">
+          <caret line="164" column="39" selection-start-line="164" selection-start-column="39" selection-end-line="164" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/proguard-rules.pro">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="370">
-          <caret line="68" column="62" selection-start-line="68" selection-start-column="62" selection-end-line="68" selection-end-column="62" />
+          <caret line="42" column="1" lean-forward="true" selection-start-line="42" selection-start-column="1" selection-end-line="42" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/FirstChannelAdapter.java">
+    <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/android/app/Instrumentation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="1032" column="28" lean-forward="true" selection-start-line="1032" selection-start-column="28" selection-end-line="1032" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/FMApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.17/1a2f0e28cc9497fb4927ea2422605fb8023969b6/jcifs-1.3.17.jar!/jcifs/smb/SmbFile.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="30" column="38" lean-forward="true" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
+          <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/RootChannelListView.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/player/VideoActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="47" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
+        <state relative-caret-position="115">
+          <caret line="60" lean-forward="true" selection-start-line="60" selection-end-line="60" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#352#353#0" expanded="true" />
-            <element signature="e#382#383#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.0.0/2151d26c3b241f0a887f2dadb9ab091649fcf020/recyclerview-1.0.0-sources.jar!/androidx/recyclerview/widget/LinearLayoutManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="221" column="16" selection-start-line="221" selection-start-column="16" selection-end-line="221" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TvRecyclerView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="30" selection-start-column="19" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-28/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="14303" column="21" selection-start-line="14303" selection-start-column="21" selection-end-line="14303" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.recyclerview/recyclerview/1.0.0/2151d26c3b241f0a887f2dadb9ab091649fcf020/recyclerview-1.0.0-sources.jar!/androidx/recyclerview/widget/RecyclerView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="1734" column="16" selection-start-line="1734" selection-start-column="16" selection-end-line="1734" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/SecondChannelAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="130" column="9" lean-forward="true" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/LiveActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="430" column="28" selection-start-line="430" selection-start-column="28" selection-end-line="430" selection-end-column="28" />
+        <state relative-caret-position="855">
+          <caret line="105" column="24" selection-start-line="105" selection-start-column="24" selection-end-line="105" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/player/media/IjkVideoView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16125">
+          <caret line="1164" column="30" selection-start-line="1164" selection-start-column="15" selection-end-line="1164" selection-end-column="36" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7060#7061#0" expanded="true" />
-            <element signature="e#7096#7097#0" expanded="true" />
+            <element signature="e#6929#6930#0" expanded="true" />
+            <element signature="e#6964#6965#0" expanded="true" />
+            <element signature="e#44860#44861#0" expanded="true" />
+            <element signature="e#44904#44905#0" expanded="true" />
+            <element signature="e#44941#44942#0" expanded="true" />
+            <element signature="e#45004#45005#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/live/ChannelListView.java">
+    <entry file="file://$USER_HOME$/tool/Android/sdk/sources/android-28/java/net/URLConnection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="238" column="46" lean-forward="true" selection-start-line="238" selection-start-column="46" selection-end-line="238" selection-end-column="46" />
+        <state relative-caret-position="6330">
+          <caret line="462" column="14" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="14" />
+          <folding>
+            <element signature="e#17907#17908#0" expanded="true" />
+            <element signature="e#17937#17938#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.samba.jcifs/jcifs/1.3.17/1a2f0e28cc9497fb4927ea2422605fb8023969b6/jcifs-1.3.17.jar!/jcifs/smb/Handler.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer2" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4320">
+          <caret line="336" column="13" selection-start-line="336" selection-start-column="13" selection-end-line="336" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/base/TitleActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/ui/browser/LanActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="159" column="25" selection-start-line="159" selection-start-column="25" selection-end-line="159" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="8" lean-forward="true" selection-start-line="9" selection-start-column="8" selection-end-line="9" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/surecn/familymovie/common/SmbManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5104#5105#0" expanded="true" />
-            <element signature="e#5203#5204#0" expanded="true" />
-            <element signature="e#7086#7087#0" expanded="true" />
           </folding>
         </state>
       </provider>

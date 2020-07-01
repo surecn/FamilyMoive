@@ -19,7 +19,15 @@ public class UserTrack {
 
     public final static String MAIN_LIVE = "Ad";
 
+    public final static String MAIN_FAVORITE= "Af";
+
     public final static String MAIN_SETTTING = "Ae";
+
+    public final static String VIDEO_PLAY= "B";
+
+    public final static String FILE_FAVORITE = "Ca";
+
+    public final static String FILE_UNFAVORITE = "Cb";
 
     public static void mark(String tag) {
         if (ENABLED_USERTRACK) {

@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +20,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import com.surecn.familymovie.BuildConfig;
 import com.surecn.familymovie.R;
+import com.surecn.familymovie.Setting;
+import com.surecn.familymovie.UserTrack;
 import com.surecn.familymovie.common.FileManager;
 import com.surecn.familymovie.common.SmbManager;
 import com.surecn.familymovie.common.subtitle.SubTitle;
@@ -25,6 +29,7 @@ import com.surecn.familymovie.common.player.media.IRenderView;
 import com.surecn.familymovie.common.player.media.IjkVideoView;
 import com.surecn.familymovie.data.HistoryModel;
 import com.surecn.familymovie.data.HttpAdapter;
+import com.surecn.familymovie.data.ServerModel;
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.familymovie.domain.SubDetailItem;
 import com.surecn.familymovie.domain.SubTitleItem;
@@ -43,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
@@ -79,7 +86,9 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
     private TextView mViewProgressTotal;
     private ProgressView mViewProgress;
 
+    private String mRoot;
     private String mUrl;
+    private FileItem mFileItem;
     private HistoryModel mHistoryModel;
 
     private TextView mSelectTitleView;
@@ -103,7 +112,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
 
     private long mInitPosition = 0;
 
-    private int mSelectSubtitleIndex;
+    private int mSelectSubtitleIndex = -1;
     private int mSelectAudioIndex;
 
     private List<FileItem> mList;
@@ -117,6 +126,9 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
     private long mSeekPosition = -1;
 
     private int mSeekStep = 30000;
+
+    private static final int FLING_MIN_DISTANCE = 20;// 移动最小距离
+    private static final int FLING_MIN_VELOCITY = 200;// 移动最大速度
 
     //广播的注册，其中Intent.ACTION_TIME_CHANGED代表时间设置变化的时候会发出该广播
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -147,6 +159,8 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         }
     };
 
+    private GestureDetector mygesture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,12 +172,18 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         initView();
 
         mUrl = getIntent().getStringExtra("url");
+        mRoot = getIntent().getStringExtra("root");
         mInitPosition = getIntent().getLongExtra("position", 0);
         mHistoryModel = new HistoryModel(this);
         if (savedInstanceState != null) {
             mUrl = savedInstanceState.getString("url");
+            mRoot = getIntent().getStringExtra("root");
             mInitPosition = savedInstanceState.getLong("position");
         }
+
+        mFileItem = new ServerModel(this).getByPath(mRoot);
+
+        UserTrack.mark(UserTrack.VIDEO_PLAY);
 
     }
 
@@ -192,8 +212,8 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             hideAll();
             return;
         }
-        super.onBackPressed();
         mBackPressed = true;
+        super.onBackPressed();
     }
 
     @Override
@@ -213,7 +233,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
 
     public void saveHistory() {
         if (mVideoView.getDuration() > 0) {
-            mHistoryModel.save(mUrl, mVideoView.getCurrentPosition(), mVideoView.getDuration());
+            mHistoryModel.save(mUrl, mVideoView.getCurrentPosition(), mVideoView.getDuration(), mFileItem != null ? mFileItem.path : "");
         }
     }
 
@@ -234,9 +254,16 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mViewProgressTotal = findViewById(R.id.progress_total);
         mViewProgress = findViewById(R.id.progress_ui);
         findViewById(R.id.back).setOnClickListener(this);
+        findViewById(R.id.video_view).setOnClickListener(this);
+        findViewById(R.id.video_view).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showSetting();
+                return false;
+            }
+        });
 
         mSubTitle = new SubTitle(mViewSubTitle);
-
 
         if (BuildConfig.DEBUG) {
             mHudView = (TableLayout) LayoutInflater.from(this).inflate(R.layout.ijkplayer_debug_panel, null);
@@ -246,6 +273,95 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(broadcastReceiver, filter);
+
+        mygesture = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if (e1.getY() - e2.getY() > FLING_MIN_DISTANCE){
+//                     && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
+
+                } else if (e2.getY() - e1.getY() > FLING_MIN_DISTANCE
+                        && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
+                    if (mStatus == STATUS_NORMAL
+                            || mStatus == STATUS_SHOW_PLAYCONTROLLER) {
+                        showPlayList();
+                    }
+                } else if (e2.getX() - e1.getX() > FLING_MIN_DISTANCE) {
+                    if (canSeekVideo()) {
+                        longEventHandler();
+                        if (mShortPress > 1) {
+                            mViewProgress.setValue(mViewProgress.getValue() - mSeekStep * 2);
+                            mSeekPosition = -1;
+                        } else {
+                            int step = mSeekStep;
+                            if (mLastPress > 0 && (System.currentTimeMillis() - mLastPress < 1000)) {
+                                step = mSeekStep * 2;
+                            }
+                            mSeekPosition = mVideoView.getCurrentPosition() - step;
+                            mViewProgress.setValue(mSeekPosition);
+                        }
+                        mLastPress = System.currentTimeMillis();
+                        showPlayController();
+                    }
+                } else if (e1.getX() - e2.getX() > FLING_MIN_DISTANCE) {
+                    if (canSeekVideo()) {
+                        longEventHandler();
+                        if (mShortPress > 1) {
+                            mViewProgress.setValue(mViewProgress.getValue() + mSeekStep * 2);
+                            mSeekPosition = -1;
+                        } else {
+                            int step = mSeekStep;
+                            if (mLastPress > 0 && (System.currentTimeMillis() - mLastPress < 1000)) {
+                                step = mSeekStep * 2;
+                            }
+                            mSeekPosition = mVideoView.getCurrentPosition() + step;
+                            mViewProgress.setValue(mSeekPosition);
+                        }
+                        mLastPress = System.currentTimeMillis();
+                        showPlayController();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    public void setPlayModel(int model) {
+        mVideoView.setPlayerModel(model);
+        long position = mInitPosition;
+        if (mVideoView != null) {
+            position = mVideoView.getCurrentPosition();
+        }
+        startVideo(mUrl, position);
+    }
+
+    public int getPlayModel() {
+        return mVideoView.getPlayerModel();
     }
 
     public void startVideo(String url, long initPosition) {
@@ -253,10 +369,19 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         this.mUrl = url;
         this.mInitPosition = initPosition;
         mVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
-        if (mUrl.startsWith("smb://")) {
-            mVideoView.setVideoPath("http://127.0.0.1:12315/smb" + URLEncoder.encode(mUrl.substring(5)));
-        } else {
-            mVideoView.setVideoPath(mUrl);
+        try {
+            if (mUrl.startsWith("smb://")) {
+                String auth = "";
+                if (mFileItem != null && !TextUtils.isEmpty(mFileItem.server) && !TextUtils.isEmpty(mFileItem.user)) {
+                    auth = "?server=" + mFileItem.server + "&user=" + mFileItem.user + "&pass=" + mFileItem.pass;
+                }
+                mVideoView.setVideoPath("http://127.0.0.1:12315/smb" + URLEncoder.encode(mUrl.substring(5)) + auth);
+            } else {
+                mVideoView.setVideoPath(mUrl);
+            }
+        } catch (Exception e) {
+            showToast("出错了");
+            finish();
         }
         mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
             @Override
@@ -313,7 +438,11 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                     SmbFile smbFile = null;
                     try {
                         smbFile = new SmbFile(mUrl);
-                        mList = SmbManager.listFile(smbFile.getParent(), 1);
+                        NtlmPasswordAuthentication ntlmPasswordAuthentication = null;
+                        if (mFileItem != null) {
+                            ntlmPasswordAuthentication = new NtlmPasswordAuthentication(mFileItem.server, mFileItem.user, mFileItem.pass);
+                        }
+                        mList = SmbManager.listFile(smbFile.getParent(), 1, ntlmPasswordAuthentication);
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     } catch (SmbException e) {
@@ -377,23 +506,32 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mAudioTrack = new ArrayList<>();
         mSubTitleTrack = new ArrayList<>();
         mSubTitleTrack.add(new SettingListPanel.TrackItem(-1, getString(R.string.video_subtitle_shutdown), "", -1));
-        ArrayList<IjkMediaMeta.IjkStreamMeta> streams = mVideoView.getMediaPlayer().getMediaInfo().mMeta.mStreams;
         int audioStreamIndex = mVideoView.getSelectedTrack(ITrackInfo.MEDIA_TRACK_TYPE_AUDIO);
         int subtitleStreamIndex = mVideoView.getSelectedTrack(ITrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT);
-        for (IjkMediaMeta.IjkStreamMeta streamMeta : streams) {
-            if (IjkMediaMeta.IJKM_KEY_AUDIO_STREAM.equals(streamMeta.mType)) {
-                mAudioTrack.add(new SettingListPanel.TrackItem(streamMeta.mIndex, streamMeta.mLanguage, streamMeta.mLanguage, 0));
-                if (streamMeta.mIndex == audioStreamIndex) {
-                    mSelectAudioIndex = mAudioTrack.size() - 1;
-                }
-            } else if (IjkMediaMeta.IJKM_KEY_TIMEDTEXT_STREAM.equals(streamMeta.mType)
+
+        mSelectSubtitleIndex = -1;
+        mSelectAudioIndex = 0;
+
+        IjkMediaMeta mediaMeta = mVideoView.getMediaPlayer().getMediaInfo().mMeta;
+        if (mediaMeta != null && Setting.playModel == 0) {
+            ArrayList<IjkMediaMeta.IjkStreamMeta> streams = mediaMeta.mStreams;
+            for (IjkMediaMeta.IjkStreamMeta streamMeta : streams) {
+                if (IjkMediaMeta.IJKM_KEY_AUDIO_STREAM.equals(streamMeta.mType)) {
+                    mAudioTrack.add(new SettingListPanel.TrackItem(streamMeta.mIndex, streamMeta.mLanguage, streamMeta.mLanguage, 0));
+                    if (streamMeta.mIndex == audioStreamIndex) {
+                        mSelectAudioIndex = mAudioTrack.size() - 1;
+                    }
+                } else if (IjkMediaMeta.IJKM_KEY_TIMEDTEXT_STREAM.equals(streamMeta.mType)
                     //&& subtitleStreamIndex == streamMeta.mIndex
-            ) {
-                mSubTitleTrack.add(new SettingListPanel.TrackItem(streamMeta.mIndex, streamMeta.mLanguage, streamMeta.mLanguage, 0));
+                ) {
+                    mSubTitleTrack.add(new SettingListPanel.TrackItem(streamMeta.mIndex, streamMeta.mLanguage, streamMeta.mLanguage, 0));
+                    if (streamMeta.mIndex == subtitleStreamIndex) {
+                        mSelectSubtitleIndex = mSubTitleTrack.size() - 1;
+                    }
+                }
             }
         }
         Schedule.linear(new Task() {
-
             private String getFileExtension(String url) {
                 int index = url.lastIndexOf("?");
                 if (index > 0) {
@@ -440,7 +578,6 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                                         mSubTitleTrack.add(new SettingListPanel.TrackItem(subDetailItem.getId(), subDetailItem.getNative_name(), url.getUrl(), 2));
                                     }
                                 }
-
                             }
                         }
                     }
@@ -449,25 +586,19 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         }).next(new UITask() {
             @Override
             public void run(TaskSchedule taskSchedule, Object result) {
-                int streamIndex = mVideoView.getSelectedTrack(ITrackInfo.MEDIA_TRACK_TYPE_TIMEDTEXT);
+                if (mSelectSubtitleIndex >= 0) {
+                    return;
+                }
                 for (int i = 0; i < mSubTitleTrack.size(); i++) {
                     SettingListPanel.TrackItem item = mSubTitleTrack.get(i);
-                    if (streamIndex >= 0) {
-                        if (item.streamIndex == streamIndex) {
-                            mSelectSubtitleIndex = i;
-                            return;
-                        }
-                        continue;
-                    } else {
-                        if (item.tag == 1) {
-                            mSelectSubtitleIndex = i;
-                            selectStream(1, mSelectSubtitleIndex);
-                            return;
-                        } else if (item.tag == 2) {
-                            mSelectSubtitleIndex = i;
-                            selectStream(1, mSelectSubtitleIndex);
-                            return;
-                        }
+                    if (item.tag == 1) {
+                        mSelectSubtitleIndex = i;
+                        selectStream(1, mSelectSubtitleIndex);
+                        return;
+                    } else if (item.tag == 2) {
+                        mSelectSubtitleIndex = i;
+                        selectStream(1, mSelectSubtitleIndex);
+                        return;
                     }
                 }
             }
@@ -479,6 +610,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("url", mUrl);
+        outState.putString("root", mRoot);
         if (mVideoView != null) {
             outState.putLong("position", mVideoView.getCurrentPosition());
         } else {
@@ -492,6 +624,9 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
             case R.id.back:
                 finish();
                 break;
+            case R.id.video_view:
+                showPlayStatus();
+                break;
         }
     }
 
@@ -502,7 +637,7 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 showPlayController();
                 break;
         }
-        return super.onTouchEvent(event);
+        return super.onTouchEvent(event) || mygesture.onTouchEvent(event);
     }
 
     @Override
@@ -575,21 +710,25 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 break;
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
-                if (mStatus == STATUS_SHOW_PLAYLIST) {
-                    //VideoActivity.startActivity(VideoActivity.this, mList.get(mAdapter.mPosition).path, 0);
-                } else if (mStatus == STATUS_SHOW_PLAYCONTROLLER) {
-                    if (mVideoView.isPlaying()) {
-                        mVideoView.pause();
-                    } else {
-                        mVideoView.start();
-                    }
-                } else {
-                    showPlayController();
-                }
+                showPlayStatus();
                 break;
         }
         delayHide();
         return super.onKeyUp(keyCode, event);
+    }
+
+    private void showPlayStatus() {
+        if (mStatus == STATUS_SHOW_PLAYLIST) {
+            //VideoActivity.startActivity(VideoActivity.this, mList.get(mAdapter.mPosition).path, 0);
+        } else if (mStatus == STATUS_SHOW_PLAYCONTROLLER) {
+            if (mVideoView.isPlaying()) {
+                mVideoView.pause();
+            } else {
+                mVideoView.start();
+            }
+        } else {
+            showPlayController();
+        }
     }
 
     private void longEventHandler() {
@@ -651,10 +790,10 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mPlaySettingPanel.setVisibility(View.VISIBLE);
         mSettingListPanel.setVisibility(View.GONE);
         SettingListPanel.TrackItem audio = null, subtitl = null;
-        if (mAudioTrack != null) {
+        if (mAudioTrack != null && mAudioTrack.size() > 0 && mSelectAudioIndex >= 0) {
             audio = mAudioTrack.get(mSelectAudioIndex);
         }
-        if (mSubTitleTrack != null) {
+        if (mSubTitleTrack != null && mAudioTrack.size() > 0 && mSelectSubtitleIndex >= 0) {
             subtitl = mSubTitleTrack.get(mSelectSubtitleIndex);
         }
         mPlaySettingPanel.update(audio, subtitl);
@@ -705,6 +844,20 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mViewPlayLoading.setVisibility(View.GONE);
     }
 
+    public void setSpeed(float speed) {
+        if (mVideoView == null) {
+            return;
+        }
+        mVideoView.setSpeed(speed);
+    }
+
+    public float getSpeed() {
+        if (mVideoView == null) {
+            return 1f;
+        }
+        return mVideoView.getSpeed();
+    }
+
     public void hideAll() {
         mStatus = STATUS_NORMAL;
         mViewPlayController.setVisibility(View.GONE);
@@ -747,10 +900,8 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 } else {
                     mSubTitle.setSubTitle(trackItem.value);
                 }
-
             } else {
                 mVideoView.selectTrack(trackItem.streamIndex);
-
             }
         }
     }
@@ -760,10 +911,11 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
         mHandler.sendEmptyMessageDelayed(1000, 10000);
     }
 
-    public static void startActivity(Context context, String url, long position) {
+    public static void startActivity(Context context, String url, long position, String root) {
         Intent intent = new Intent(context, VideoActivity.class);
         intent.putExtra("url", url);
         intent.putExtra("position", position);
+        intent.putExtra("root", root);
         context.startActivity(intent);
     }
 

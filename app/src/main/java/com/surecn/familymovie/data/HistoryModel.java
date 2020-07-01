@@ -27,31 +27,34 @@ public class HistoryModel extends BaseModel<History> {
         contentValues.put("time", history.getTime());
         contentValues.put("position", history.getPosition());
         contentValues.put("length", history.getLength());
+        contentValues.put("root", history.getRoot());
         Uri uri = insert(contentValues);
     }
 
-    public Uri addVideoHistory(String url, long position, long length) {
+    public Uri addVideoHistory(String url, long position, long length, String root) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("type", 0);
         contentValues.put("url", url);
         contentValues.put("time", System.currentTimeMillis());
         contentValues.put("position", position);
         contentValues.put("length", length);
+        contentValues.put("root", root);
         return insert(contentValues);
     }
 
-    public int update(String url, long position, long length) {
+    public int update(String url, long position, long length, String root) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("position", position);
         contentValues.put("length", length);
         contentValues.put("time", System.currentTimeMillis());
+        contentValues.put("root", root);
         int i = update(contentValues, "url=?", new String[]{url});
         return i;
     }
 
-    public void save(String url, long position, long length) {
-        if (update(url, position, length) <= 0) {
-            addVideoHistory(url, position, length);
+    public void save(String url, long position, long length, String root) {
+        if (update(url, position, length, root) <= 0) {
+            addVideoHistory(url, position, length, root);
         }
     }
 
@@ -71,6 +74,7 @@ public class HistoryModel extends BaseModel<History> {
         obj.setTime(cursor.getLong(cursor.getColumnIndex("TIME")));
         obj.setPosition(cursor.getInt(cursor.getColumnIndex("POSITION")));
         obj.setLength(cursor.getInt(cursor.getColumnIndex("LENGTH")));
+        obj.setRoot(cursor.getString(cursor.getColumnIndex("ROOT")));
         return obj;
     }
 }

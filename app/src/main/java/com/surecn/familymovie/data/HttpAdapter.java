@@ -90,7 +90,7 @@ public class HttpAdapter {
     public static PlayerService getPlayerService() {
         if (sPlayerService == null) {
             sPlayerService = NetProxyFactory.getInstance(sContext).createHttpProxyBuilder()
-                    .setUrl(BuildConfig.SERVER_URL)//"https://www.smyyh.cn/"
+                    .setUrl(BuildConfig.SERVER_URL)//"https://www.huitaoyouhui.com/"
                     .setRequestInterceptor(new RequestInterceptor() {
                         @Override
                         public boolean intercept(HttpForm form) {

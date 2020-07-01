@@ -61,6 +61,9 @@ import com.surecn.familymovie.R;
 import com.surecn.familymovie.common.player.application.*;
 import com.surecn.familymovie.common.services.MediaPlayerService;
 
+import static com.surecn.familymovie.common.player.application.Settings.PV_PLAYER__AndroidMediaPlayer;
+import static com.surecn.familymovie.common.player.application.Settings.PV_PLAYER__IjkMediaPlayer;
+
 public class IjkVideoView extends FrameLayout implements MediaController.MediaPlayerControl {
     private String TAG = "IjkVideoView";
     // settable by the client
@@ -128,6 +131,8 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
 
     private TextView subtitleDisplay;
 
+    private int mPlayerModel = 0;
+
     public IjkVideoView(Context context) {
         super(context);
         initVideoView(context);
@@ -180,6 +185,14 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 LayoutParams.WRAP_CONTENT,
                 Gravity.BOTTOM);
         addView(subtitleDisplay, layoutParams_txt);
+    }
+
+    public int getPlayerModel() {
+        return mPlayerModel;
+    }
+
+    public void setPlayerModel(int playerModel) {
+        this.mPlayerModel = playerModel;
     }
 
     public void setRenderView(IRenderView renderView) {
@@ -314,7 +327,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
         try {
-            mMediaPlayer = createPlayer(mSettings.getPlayer());
+            mMediaPlayer = createPlayer(mPlayerModel == 0 ? PV_PLAYER__IjkMediaPlayer : PV_PLAYER__AndroidMediaPlayer);
 
             // TODO: create SubtitleController in MediaPlayer, but we need
             // a context for the subtitle renderers
@@ -574,7 +587,18 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                                                 }
                                             }
                                         })
-                                .setCancelable(false)
+                                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        /* If we get here, there is no onError listener, so
+                                         * at least inform them that the video is over.
+                                         */
+                                        if (mOnCompletionListener != null) {
+                                            mOnCompletionListener.onCompletion(mMediaPlayer);
+                                        }
+                                    }
+                                })
+                                .setCancelable(true)
                                 .show();
                     }
                     return true;
@@ -981,6 +1005,21 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
         return mCurrentRender;
     }
 
+    public void setSpeed(float speed) {
+        if (mMediaPlayer instanceof  IjkMediaPlayer) {
+            IjkMediaPlayer ijkMediaPlayer = (IjkMediaPlayer) mMediaPlayer;
+            ijkMediaPlayer.setSpeed(speed);
+        }
+    }
+
+    public float getSpeed() {
+        if (mMediaPlayer instanceof  IjkMediaPlayer) {
+            IjkMediaPlayer ijkMediaPlayer = (IjkMediaPlayer) mMediaPlayer;
+            return ijkMediaPlayer.getSpeed(1);
+        }
+        return 1;
+    }
+
     @NonNull
     public static String getRenderText(Context context, int render) {
         String text;
@@ -1022,7 +1061,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
     public static String getPlayerText(Context context, int player) {
         String text;
         switch (player) {
-            case Settings.PV_PLAYER__AndroidMediaPlayer:
+            case PV_PLAYER__AndroidMediaPlayer:
                 text = context.getString(R.string.VideoView_player_AndroidMediaPlayer);
                 break;
             case Settings.PV_PLAYER__IjkMediaPlayer:
@@ -1047,7 +1086,7 @@ public class IjkVideoView extends FrameLayout implements MediaController.MediaPl
                 mediaPlayer = IjkExoMediaPlayer;
             }
             break;
-            case Settings.PV_PLAYER__AndroidMediaPlayer: {
+            case PV_PLAYER__AndroidMediaPlayer: {
                 AndroidMediaPlayer androidMediaPlayer = new AndroidMediaPlayer();
                 mediaPlayer = androidMediaPlayer;
             }

@@ -11,15 +11,10 @@ import com.surecn.familymovie.domain.ChannelProgram;
 import com.surecn.familymovie.domain.LiveRoot;
 import com.surecn.familymovie.ui.base.TVLinearLayoutManager;
 import com.surecn.familymovie.ui.base.TvRecyclerView;
-import com.surecn.moat.tools.log;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * User: surecn(surecn@163.com)
@@ -111,16 +106,6 @@ public class ChannelListView extends LinearLayout {
                 if (mFistListView.getFocusedChild() != null) {
                     int index = getFirstRootChildIndex();
                     mSecondChannelAdapter.setFocusIndex(index);
-//                    mSecondListView.getLayoutManager().addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                        @Override
-//                        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                            log.e("=========onScrollStateChanged===" + newState);
-//                            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-//                                mSecondListView.removeOnScrollListener(this);
-//                                mSecondChannelAdapter.setRequestFocus(true);
-//                            }
-//                        }
-//                    });
                     mSecondListView.scrollToPosition(index);
                     mSecondListView.postDelayed(new Runnable() {
                         @Override
@@ -212,6 +197,9 @@ public class ChannelListView extends LinearLayout {
 
     public void selectNext() {
         List<Channel> list = mSecondChannelAdapter.getData();
+        if (list == null) {
+            return;
+        }
         for (int i = mSecondChannelAdapter.getSelectIndex() + 1; i < list.size(); i++) {
             Channel channel = list.get(i);
             if (channel.getSection() == Channel.SECTION_CHANNEL) {
@@ -245,6 +233,9 @@ public class ChannelListView extends LinearLayout {
 
     public void selectPrev() {
         List<Channel> list = mSecondChannelAdapter.getData();
+        if (list == null) {
+            return;
+        }
         for (int i = mSecondChannelAdapter.getSelectIndex() - 1; i > 0; i--) {
             Channel channel = list.get(i);
             if (channel.getSection() == Channel.SECTION_CHANNEL) {

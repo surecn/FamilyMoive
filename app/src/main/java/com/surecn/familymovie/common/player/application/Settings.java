@@ -20,7 +20,6 @@ package com.surecn.familymovie.common.player.application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.surecn.familymovie.R;
 
 public class Settings {
@@ -44,13 +43,18 @@ public class Settings {
 
     public int getPlayer() {
         String key = mAppContext.getString(R.string.pref_key_player);
-        String value = mSharedPreferences.getString(key, "2");
+        String value = mSharedPreferences.getString(key, "1");
         try {
             return Integer.valueOf(value).intValue();
         } catch (NumberFormatException e) {
             return 0;
         }
     }
+
+//    public void setPlayerModel(int mode) {
+//        String key = mAppContext.getString(R.string.pref_key_player);
+//        mSharedPreferences.edit().putString(key, mode == 0 ? "2" : "1").commit();
+//    }
 
     public boolean getUsingMediaCodec() {
         String key = mAppContext.getString(R.string.pref_key_using_media_codec);

@@ -2,109 +2,58 @@ package com.surecn.familymovie.common;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.DhcpInfo;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.util.Log;
 
-import com.surecn.moat.tools.log;
+import com.surecn.familymovie.utils.NetAssistUtil;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
+import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 
 public class LanManager {
 
     // 根据ip 网段去 发送arp 请求
-    public static void discover(Context context) {
-        long [] res = getIpAddrMask();
-        if (res == null) {
-            return;
+    public static long[] discover(Context context) {
+        String sIP = NetAssistUtil.getIpAddress(context);
+        if (sIP == null) {
+            return null;
         }
-        long ip = res[0];
-        int length = (int) res[1];
+        long ip = ipToLong(sIP);
+        int length = 8;
 
         long min = ip & (0xffffffff << length);
         long max = ip | (0xffffffff >>> (32 - length));
 
-        for (ip = min; ip <= max;ip++) {
-            sendUDP(LongToIp(ip));
-        }
+        return new long[]{min, max};
     }
 
-    public static final byte[] NBREQ = { (byte) 0x82, (byte) 0x28, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x1,
-            (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x20, (byte) 0x43, (byte) 0x4B,
-            (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-            (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-            (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x41,
-            (byte) 0x41, (byte) 0x41, (byte) 0x41, (byte) 0x0, (byte) 0x0, (byte) 0x21, (byte) 0x0, (byte) 0x1 };
-
-    public static final short NBUDPP = 137;
-
-    public static void sendUDP(String target_ip) {
-        if (target_ip == null || target_ip.equals("")) return;
-        DatagramSocket socket = null;
-        InetAddress address = null;
-        DatagramPacket packet = null;
+    public static boolean pingHost(String ipAddress,int port) {
+        boolean isReachable = false;
+        Socket connect = new Socket();
         try {
-            address = InetAddress.getByName(target_ip);
-            packet = new DatagramPacket(NBREQ, NBREQ.length, address, NBUDPP);
-            socket = new DatagramSocket();
-            socket.setSoTimeout(200);
-            socket.send(packet);
-            socket.close();
-        } catch (SocketException se) {
-        } catch (UnknownHostException e) {
-        } catch (IOException e) {
+            InetSocketAddress endpointSocketAddr = new InetSocketAddress(ipAddress, port);
+            //此处3000是超时时间,单位 毫秒
+            connect.connect(endpointSocketAddr,1000);
+            isReachable = connect.isConnected();
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + ", ip = " + ipAddress + ", port = " +port);
         } finally {
-            if (socket != null) {
-                socket.close();
-            }
-        }
-    }
-
-    public static List<String> readArp() {
-        List<String> list = new ArrayList<>();
-        try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("/proc/net/arp"));
-            String line = "";
-            String ip = "";
-            String flag = "";
-            String mac = "";
-
-            while ((line = br.readLine()) != null) {
+            if (connect != null) {
                 try {
-                    line = line.trim();
-                    if (line.length() < 63) continue;
-                    if (line.toUpperCase(Locale.US).contains("IP")) continue;
-                    ip = line.substring(0, 17).trim();
-                    flag = line.substring(29, 32).trim();
-                    mac = line.substring(41, 63).trim();
-                    if (mac.contains("00:00:00:00:00:00")) continue;
-                    list.add(ip);
-                    Log.e("scanner", "readArp: mac= "+mac+" ; ip= "+ip+" ;flag= "+flag);
-                } catch (Exception e) {
+                    connect.close();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage() + ", ip = " + ipAddress + ", port = " +port);
                 }
             }
-            br.close();
-
-        } catch(Exception e) {
         }
-        return list;
+        return isReachable;
     }
 
     //IP转换为Long
@@ -138,22 +87,6 @@ public class LanManager {
         return sb.toString();
     }
 
-    private static long[] getIpAddrMask() {
-
-        String ip = getIpAddrForInterfaces("eth0");
-        long mask = getIpAddrMaskForInterfaces("eth0");
-        if (ip.equalsIgnoreCase("error")) {
-            ip = getIpAddrForInterfaces("wlan0");
-            mask = getIpAddrMaskForInterfaces("wlan0");
-        }
-        if ("error".equalsIgnoreCase(ip)) {
-            return null;
-        }
-        long []res = new long[2];
-        res[0] = ipToLong(ip);
-        res[1] = mask;
-        return res;
-    }
 
 
     private static int getIpAddrMaskForInterfaces(String interfaceName) {

@@ -1,21 +1,24 @@
 package com.surecn.familymovie.common;
 
-import com.surecn.familymovie.common.samba.SambaUtil;
+import android.text.TextUtils;
+
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.familymovie.utils.DateUtils;
 import com.surecn.familymovie.utils.UriUtil;
-import com.surecn.moat.tools.log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import jcifs.UniAddress;
 import jcifs.netbios.NbtAddress;
+import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFilenameFilter;
@@ -27,19 +30,37 @@ import jcifs.smb.SmbFilenameFilter;
  */
 public class SmbManager {
 
-    public static FileItem getServer(String ip) {
-        try {
-            SmbFile smbFile = new SmbFile("smb://"+ip+"/");
-            SmbFile[] smbFiles = smbFile.listFiles();
-            if (smbFiles != null && smbFiles.length > 0) {
+    private static Method getAddressMethod;
 
-                FileItem fileItem = new FileItem();
-                fileItem.name = smbFile.getServer();
-                fileItem.path = smbFile.getPath();
-                fileItem.type = 0;
-                fileItem.canAccess = smbFile.getAllowUserInteraction();
-                return fileItem;
+    static {
+        try {
+            getAddressMethod = SmbFile.class.getDeclaredMethod("getAddress");
+            getAddressMethod.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static FileItem getServer(String ip) {
+        FileItem fileItem = null;
+        try {
+            NbtAddress nbtAddress = NbtAddress.getByName(ip);
+            nbtAddress.firstCalledName();
+            String name = nbtAddress.nextCalledName();
+            SmbFile smbFile = new SmbFile("smb://"+ip+"/");
+            if (!smbFile.exists()) {
+                return null;
             }
+            fileItem = new FileItem();
+            fileItem.name = name;
+            fileItem.path = smbFile.getPath();
+            fileItem.type = 0;
+            fileItem.canAccess = false;
+            fileItem.needPass = true;
+            fileItem.server = ip;
+            smbFile.connect();
+            fileItem.canAccess = true;
+            fileItem.needPass = false;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (SmbException e) {
@@ -47,7 +68,7 @@ public class SmbManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return fileItem;
     }
 
     public static ArrayList<FileItem> listWorkGroup() {
@@ -64,6 +85,37 @@ public class SmbManager {
                     fileItem.type = 0;
                     fileItem.canAccess = p.getAllowUserInteraction();
                     list.add(fileItem);
+                }
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (SmbException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public static ArrayList<String> listWorkGroupIp() {
+        ArrayList<String> list = new ArrayList<>();
+        SmbFile f = null;
+        try {
+            f = new SmbFile("smb://workgroup/");
+            SmbFile[] smbFiles = f.listFiles();
+            if (smbFiles != null) {
+                for (SmbFile p : smbFiles) {
+                    FileItem fileItem = new FileItem();
+                    fileItem.name = p.getName();
+                    fileItem.path = p.getCanonicalPath();
+                    fileItem.type = 0;
+                    fileItem.canAccess = p.getAllowUserInteraction();
+                    try {
+                        UniAddress uniAddress = (UniAddress) getAddressMethod.invoke(p);
+                        list.add(uniAddress.getHostAddress());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } catch (MalformedURLException e) {
@@ -99,8 +151,8 @@ public class SmbManager {
         return list;
     }
 
-    public static List<FileItem> listFile(String path, int filter) throws SmbException, MalformedURLException {
-        SmbFile file = new SmbFile(path);
+    public static List<FileItem> listFile(String path, int filter, NtlmPasswordAuthentication ntlmPasswordAuthentication) throws SmbException, MalformedURLException {
+        SmbFile file = new SmbFile(path, ntlmPasswordAuthentication);
         ArrayList<FileItem> files = new ArrayList<>();
         ArrayList<FileItem> folders = new ArrayList<>();
 
@@ -146,6 +198,29 @@ public class SmbManager {
         return folders;
     }
 
+    public static FileItem getFileItem(String path, NtlmPasswordAuthentication ntlmPasswordAuthentication) {
+        try {
+            SmbFile f = new SmbFile(path, ntlmPasswordAuthentication);
+            FileItem fileItem = new FileItem();
+            fileItem.name = UriUtil.uriNameFormat(f.getName());
+            fileItem.path = f.getPath();
+            fileItem.lastModify = DateUtils.toDate(f.lastModified());
+            if (f.isFile()) {
+                fileItem.type = 2;
+                fileItem.extension = UriUtil.getUriExtension(f.getName());
+                if (fileItem.extension != null && VideoHelper.isVideoFile(fileItem.extension.toLowerCase())) {
+                    return fileItem;
+                }
+            } else {
+                fileItem.type = 1;
+                return fileItem;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String searchSubtitle(String filepath) {
         try {
             String _name = UriUtil.getUriSimpleName(filepath);
@@ -171,8 +246,8 @@ public class SmbManager {
         return null;
     }
 
-    public static SmbFile createSmbFile(String path) throws MalformedURLException {
-        return new SmbFile(path.replace("+", "%2B"));
+    public static SmbFile createSmbFile(String path, NtlmPasswordAuthentication ntlmPasswordAuthentication) throws MalformedURLException {
+        return new SmbFile(path.replace("+", "%2B"), ntlmPasswordAuthentication);
     }
 
     public static List<String> getIPs() {

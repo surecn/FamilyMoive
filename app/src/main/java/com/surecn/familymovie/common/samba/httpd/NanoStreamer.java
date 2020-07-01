@@ -6,12 +6,17 @@ import android.webkit.MimeTypeMap;
 import com.surecn.familymovie.common.SmbManager;
 import com.surecn.familymovie.common.http.NanoHTTPD;
 import com.surecn.familymovie.common.samba.SambaUtil;
+import com.surecn.moat.tools.log;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
+
+import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
 import jcifs.util.transport.TransportException;
@@ -55,13 +60,14 @@ public class NanoStreamer extends NanoHTTPD {
     public Response serve(IHTTPSession session) {
         Map<String, String> headers = session.getHeaders();
         String uri = session.getUri();
-        return respond(headers, uri);
+        return respond(headers, uri, session.getParms());
     }
 
-    private Response respond(Map<String, String> headers, String uri) {
+    private Response respond(Map<String, String> headers, String uri, Map<String, String> params) {
         uri = "smb://" + uri.substring(5);
-        int index = uri.lastIndexOf(".");
-        String extenstion = uri.substring(index + 1).toLowerCase();
+        int extensionIndex = uri.lastIndexOf(".");
+        NtlmPasswordAuthentication ntlmPasswordAuthentication = getAuth(params);
+        String extenstion = uri.substring(extensionIndex + 1).toLowerCase();
         String mimeTypeForFile = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extenstion);
         if (mimeTypeForFile == null) {
             if (extenstion.equalsIgnoreCase("rmvb")) {
@@ -73,7 +79,7 @@ public class NanoStreamer extends NanoHTTPD {
         Response response = null;
         try {
             if (SambaUtil.isSmbUrl(smbUri) && !TextUtils.isEmpty(mimeTypeForFile)) {
-                SmbFile smbFile = SmbManager.createSmbFile(smbUri);
+                SmbFile smbFile = SmbManager.createSmbFile(smbUri, ntlmPasswordAuthentication);
                 InputStream copyStream = new BufferedInputStream(new SmbFileInputStream(smbFile));
                 response = serveSmbFile(smbUri, headers, copyStream, smbFile, mimeTypeForFile);
             } else {
@@ -85,6 +91,18 @@ public class NanoStreamer extends NanoHTTPD {
         return response != null ? response : createResponse(
                 Response.Status.NOT_FOUND, MIME_PLAINTEXT,
                 "Error 404, file not found.");
+    }
+
+    private NtlmPasswordAuthentication getAuth(Map<String, String> params) {
+        if (params != null) {
+            String server = params.get("server");
+            String user = params.get("user");
+            String pass = params.get("pass");
+            if (!TextUtils.isEmpty(server) && !TextUtils.isEmpty(user)) {
+                return new NtlmPasswordAuthentication(server, user, pass);
+            }
+        }
+        return null;
     }
 
     // Announce that the file server accepts partial content requests
@@ -119,6 +137,7 @@ public class NanoStreamer extends NanoHTTPD {
                             endAt = Long.parseLong(range.substring(minus + 1));
                         }
                     } catch (NumberFormatException ignored) {
+                        ignored.printStackTrace();
                     }
                 }
             }

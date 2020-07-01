@@ -22,6 +22,7 @@ public class VideoHelper {
 
     static {
         extensions.add("avi");
+        extensions.add("navi");
         extensions.add("wmv");
         extensions.add("rm");
         extensions.add("rmvb");
@@ -40,6 +41,27 @@ public class VideoHelper {
         extensions.add("mkv");
         extensions.add("mts");
         extensions.add("ts");
+        extensions.add("aac");
+        extensions.add("gif");
+        extensions.add("mid");
+        extensions.add("wmw");
+        extensions.add("mpg");
+        extensions.add("asx");
+        extensions.add("dv");
+
+        extensions.add("mp3");
+        extensions.add("wma");
+        extensions.add("flac");
+        extensions.add("aac");
+        extensions.add("aac");
+        extensions.add("mmf");
+        extensions.add("amr");
+        extensions.add("m4a");
+        extensions.add("m4r");
+        extensions.add("ogg");
+        extensions.add("mp2");
+        extensions.add("wav");
+        extensions.add("wv");
 
         extensionIcons.put("aac", R.mipmap.file_icon_aac);
         extensionIcons.put("apk", R.mipmap.file_icon_apk);
@@ -73,7 +95,11 @@ public class VideoHelper {
     }
 
     public static Integer getVideoFileIcon(String extension) {
-        return extensionIcons.get(extension);
+        Integer icon = extensionIcons.get(extension);
+        if (icon == null) {
+            icon = R.mipmap.file_icon_default;
+        }
+        return icon;
     }
 
 }

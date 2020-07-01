@@ -2,6 +2,7 @@ package com.surecn.familymovie.ui.browser;
 
 import android.os.Bundle;
 import com.surecn.familymovie.common.FileManager;
+import com.surecn.familymovie.data.FavoriteModel;
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.familymovie.ui.browser.FileActivity;
 import com.surecn.familymovie.ui.player.VideoActivity;
@@ -20,9 +21,12 @@ public class LocalFileActivity extends FileActivity {
 
     private String root;
 
+    private FavoriteModel mFavoriteModel;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFavoriteModel = new FavoriteModel(this);
         setTitle(getIntent().getStringExtra("title"));
         updateData(FileManager.listFile(getIntent().getStringExtra("file"), 0));
         root = getIntent().getStringExtra("file");
@@ -40,14 +44,26 @@ public class LocalFileActivity extends FileActivity {
         updateList();
     }
 
+    @Override
+    protected void onFavorite(boolean isFavorite, FileItem selectedFileItem) {
+        if (!isFavorite) {
+            mFavoriteModel.addLocalFolder(selectedFileItem.path, selectedFileItem.server);
+            showToast("收藏成功");
+        } else {
+            mFavoriteModel.deleteLocalFolder(selectedFileItem.path);
+            showToast("取消收藏成功");
+        }
+    }
+
     public void onClick(FileItem fileItem) {
         if (fileItem.type == 2) {
-            VideoActivity.startActivity(this, fileItem.path, 0);
+            VideoActivity.startActivity(this, fileItem.path, 0, null);
         } else {
             setTitle(fileItem.name);
             path = fileItem.path;
             updateData(FileManager.listFile(fileItem.path, 0));
             updateList();
+            scrollTop();
         }
     }
 

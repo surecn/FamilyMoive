@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -22,10 +23,8 @@ import com.surecn.moat.core.Schedule;
 import com.surecn.moat.core.TaskSchedule;
 import com.surecn.moat.core.task.UITask;
 import com.umeng.analytics.MobclickAgent;
-
 import androidx.annotation.Nullable;
 
-import static android.widget.RelativeLayout.CENTER_IN_PARENT;
 
 public class BaseActivity extends Activity {
 
@@ -54,26 +53,25 @@ public class BaseActivity extends Activity {
 
     @Override
     public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        mFocusLayout = new FocusLayout(this);
-        bindListener();//绑定焦点变化事件
-        addContentView(mFocusLayout,
-                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
-        mViewLoading = LayoutInflater.from(this).inflate(R.layout.layout_loading, null);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(CENTER_IN_PARENT);
-        addContentView(mViewLoading, layoutParams);
-    }
+        View view = LayoutInflater.from(this).inflate(R.layout.base, null);
+        ViewStub viewStub = view.findViewById(R.id.content);
+        viewStub.setLayoutResource(layoutResID);
+        View content = viewStub.inflate();
 
-    private void bindListener() {
-        //获取根元素
-        View mContainerView = this.getWindow().getDecorView();//.findViewById(android.R.id.content);
-        //得到整个view树的viewTreeObserver
-        ViewTreeObserver viewTreeObserver = mContainerView.getViewTreeObserver();
-        //给观察者设置焦点变化监听
-        viewTreeObserver.addOnGlobalFocusChangeListener(mFocusLayout);
+        mFocusLayout = view.findViewById(R.id.focus);
+        mFocusLayout.bindListener(content);
+//        addContentView(mFocusLayout,
+//                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));//添加焦点层
+
+        mViewLoading = view.findViewById(R.id.loading);
+
+//
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT);
+//        layoutParams.addRule(CENTER_IN_PARENT);
+//        addContentView(mViewLoading, layoutParams);
+
+        super.setContentView(view);
     }
 
     public void showLoading() {

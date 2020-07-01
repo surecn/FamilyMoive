@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * 数据库版本
      */
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 7;
 
 
     private static DBHelper instance;
@@ -41,19 +41,41 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try {
-            db.execSQL("CREATE TABLE HISTORY ( TYPE INTEGER, URL TEXT PRIMARY KEY, TIME INTEGER, POSITION INTEGER, LENGTH INTEGER);");
-            db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, TIME INTEGER);");
+            db.execSQL("CREATE TABLE HISTORY ( TYPE INTEGER, URL TEXT PRIMARY KEY, TIME INTEGER, POSITION INTEGER, LENGTH INTEGER, ROOT TEXT);");
+            db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, EXTRA TEXT, TIME INTEGER);");
+            db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER, USER TEXT, PASSWORD TEXT, ACCESS TEXT, SER TEXT, NEEDPASS TEXT);");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (newVersion >= 2) {
+        if (oldVersion < 2) {
             db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, TIME INTEGER);");
         }
+        if (oldVersion < 3) {
+            db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER);");
+        }
+        if (oldVersion < 5) {
+            db.execSQL("ALTER TABLE HISTORY ADD ROOT TEXT");
+        }
+        if (oldVersion < 6) {
+            reCreateServerTable(db);
+        }
+        if (oldVersion < 7) {
+            reCreateFavoriteTable(db);
+        }
+    }
+
+    private void reCreateServerTable(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE SERVER");
+        db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER, USER TEXT, PASSWORD TEXT, ACCESS TEXT, SER TEXT, NEEDPASS TEXT);");
+    }
+
+    private void reCreateFavoriteTable(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE FAVORITE");
+        db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, EXTRA TEXT, TIME INTEGER);");
     }
 
 }

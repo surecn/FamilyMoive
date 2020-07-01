@@ -56,3 +56,8 @@
 -keep class com.umeng.** {*;}
 #保留ijkplayer所在包
 -keep class tv.danmaku.ijk.** {*;}
+
+#当贝点金
+-keep class com.dangbei.euthenia.**{*;}
+-keep class com.ant.downloader.**{*;}
+-keep class com.j256.ormlite.**{*;}

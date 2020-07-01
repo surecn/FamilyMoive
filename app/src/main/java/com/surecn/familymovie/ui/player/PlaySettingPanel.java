@@ -60,10 +60,12 @@ public class PlaySettingPanel extends LinearLayout {
         };
         Resources res = getResources();
         List<SettingItem> list = new ArrayList<>();
-        list.add(new SettingItem(getResources().getString(R.string.video_setting_audio), R.mipmap.menu_subtitle, "audio"));
+        list.add(new SettingItem(res.getString(R.string.video_setting_playmode), R.mipmap.menu_decode, "playmode", "0"));
+        list.add(new SettingItem(res.getString(R.string.video_setting_audio), R.mipmap.menu_subtitle, "audio"));
         list.add(new SettingItem(res.getString(R.string.video_setting_subtitle), R.mipmap.menu_subtitle, "subtitle"));
         list.add(new SettingItem(res.getString(R.string.video_setting_scale), R.mipmap.menu_scale, "scale"));
         list.add(new SettingItem(res.getString(R.string.video_setting_play_order), R.mipmap.menu_order, "order"));
+        list.add(new SettingItem(res.getString(R.string.video_setting_play_speed), R.mipmap.menu_order, "speed"));
         for (SettingItem settingItem : list) {
             View view = LayoutInflater.from(getContext()).inflate(R.layout.item_video_setting, this, false);
             view.setTag(settingItem);
@@ -78,7 +80,7 @@ public class PlaySettingPanel extends LinearLayout {
         for (int i = 0; i < getChildCount(); i++) {
             View view = getChildAt(i);
             SettingItem settingItem = (SettingItem) view.getTag();
-            if (settingItem.key.equals("audio")) {
+            if (settingItem.key.equals("audio") && audio != null) {
                 if (audio.tag == 0) {
                     settingItem.value = audio.text;
                 } else if (audio.tag == 1) {
@@ -87,7 +89,7 @@ public class PlaySettingPanel extends LinearLayout {
                     settingItem.value = getResources().getString(R.string.video_setting_list_network);
                 }
                 fillData(view, settingItem);
-            } else if (settingItem.key.equals("subtitle")) {
+            } else if (settingItem.key.equals("subtitle") && subtitle != null) {
                 if (subtitle.tag == 0) {
                     settingItem.value = subtitle.text;
                 } else if (subtitle.tag == 1) {
@@ -122,6 +124,26 @@ public class PlaySettingPanel extends LinearLayout {
             index = index == 1 ? 0 : 1;
             settingItem.value = String.valueOf(index);
             videoActivity.getSharedPreferences("video_setting", Context.MODE_PRIVATE).edit().putInt(settingItem.key, index).commit();
+        } else if (settingItem.key.equals("speed")) {
+            float value = videoActivity.getSpeed();
+            if (value == 1) {
+                value = 1.25f;
+            } else if (value == 1.25f) {
+                value = 1.5f;
+            } else if (value == 1.5f) {
+                value = 2f;
+            } else if (value == 2) {
+                value = 0.8f;
+            } else if (value == 0.8f) {
+                value = 1f;
+            }
+            videoActivity.setSpeed(value);
+            settingItem.value = value + "X";
+        } else if (settingItem.key.equals("playmode")) {
+            int index = videoActivity.getPlayModel();
+            index = (index == 1 ? 0 : 1);
+            settingItem.value = String.valueOf(index);
+            videoActivity.setPlayModel(index);
         }
     }
 
@@ -143,6 +165,16 @@ public class PlaySettingPanel extends LinearLayout {
         } else if (settingItem.key.equals("order")) {
             int index = sharedPreferences.getInt(settingItem.key, 0);
             return getResources().getStringArray(R.array.order_values)[index];
+        } else if (settingItem.key.equals("speed")) {
+            VideoActivity videoActivity = mActivityRef.get();
+            if (videoActivity == null) {
+                return "1X";
+            }
+            float value = videoActivity.getSpeed();
+            return value + "X";
+        } else if (settingItem.key.equals("playmode")) {
+            int index = Integer.parseInt(settingItem.value);
+            return getResources().getStringArray(R.array.model_values)[index];
         }
         return null;
     }
@@ -163,11 +195,15 @@ public class PlaySettingPanel extends LinearLayout {
         String value;
 
         public SettingItem(String title, int icon, String key) {
+            this(title, icon, key, "");
+        }
+
+        public SettingItem(String title, int icon, String key, String value) {
             this.title = title;
             this.icon = icon;
             this.key = key;
+            this.value = value;
         }
-
     }
 
 }

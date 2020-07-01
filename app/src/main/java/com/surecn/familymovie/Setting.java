@@ -15,6 +15,8 @@ public class Setting {
 
     public static int liveSelectId = -1;
 
+    public static int playModel = 0;
+
     public static String uuid;
 
 }

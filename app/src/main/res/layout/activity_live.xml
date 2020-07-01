@@ -161,6 +161,15 @@
                 android:textColor="#aaffffff"
                 android:textSize="22dp"
                 android:text="100"/>
+            
+            <FrameLayout
+                android:id="@+id/ad"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
