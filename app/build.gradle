@@ -16,7 +16,7 @@ android {
     signingConfigs {
         release {
             storeFile file("../../surecn.jks")      //签名文件
-            storePassword "surecn"
+            storePassword "xxx"
             keyAlias "xxx"
             keyPassword "xxx"  //签名密码
         }
