@@ -23,9 +23,10 @@ public class ServerModel extends BaseModel<FileItem> {
         contentValues.put("NAME", fileItem.getName());
         contentValues.put("PATH", fileItem.getPath());
         contentValues.put("TIME", System.currentTimeMillis());
-        contentValues.put("ACCESS", String.valueOf(fileItem.canAccess));
+        contentValues.put("ACCESS", fileItem.canAccess);
         contentValues.put("SER", fileItem.server);
-        contentValues.put("NEEDPASS", String.valueOf(fileItem.needPass));
+        contentValues.put("NEEDPASS", fileItem.needPass);
+        contentValues.put("CUSTOM", fileItem.custom);
         save(contentValues, "PATH=?", new String[]{fileItem.path});
     }
 
@@ -33,14 +34,15 @@ public class ServerModel extends BaseModel<FileItem> {
         ContentValues contentValues = new ContentValues();
         contentValues.put("USER", user);
         contentValues.put("PASSWORD", pass);
-        contentValues.put("ACCESS", String.valueOf(fileItem.canAccess));
+        contentValues.put("ACCESS", fileItem.canAccess);
+        contentValues.put("CUSTOM", fileItem.custom);
         if (update(contentValues, "PATH=?", new String[] {fileItem.path}, false) <= 0) {
             contentValues.put("TYPE", fileItem.getType());
             contentValues.put("NAME", fileItem.getName());
             contentValues.put("PATH", fileItem.getPath());
             contentValues.put("TIME", System.currentTimeMillis());
             contentValues.put("SER", fileItem.server);
-            contentValues.put("NEEDPASS", String.valueOf(fileItem.needPass));
+            contentValues.put("NEEDPASS", fileItem.needPass);
             save(contentValues, "PATH=?", new String[]{fileItem.path});
         }
     }
@@ -60,7 +62,7 @@ public class ServerModel extends BaseModel<FileItem> {
     }
 
     public List<FileItem> all() {
-        return query(null, null, null, "");
+        return query(null, "ACCESS=1", null, "");
     }
 
     @Override
@@ -71,9 +73,13 @@ public class ServerModel extends BaseModel<FileItem> {
         obj.setPath(cursor.getString(cursor.getColumnIndex("PATH")));
         obj.setUser(cursor.getString(cursor.getColumnIndex("USER")));
         obj.setPass(cursor.getString(cursor.getColumnIndex("PASSWORD")));
-        obj.setCanAccess(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("ACCESS"))));
+        obj.setCanAccess(cursor.getInt(cursor.getColumnIndex("ACCESS")));
         obj.setServer(cursor.getString(cursor.getColumnIndex("SER")));
-        obj.setNeedPass(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("NEEDPASS"))));
+        obj.setNeedPass(cursor.getInt(cursor.getColumnIndex("NEEDPASS")));
+        int customIndex = cursor.getColumnIndex("CUSTOM");
+        if (!cursor.isNull(customIndex)) {
+            obj.setCustom(cursor.getInt(customIndex));
+        }
         return obj;
     }
 }

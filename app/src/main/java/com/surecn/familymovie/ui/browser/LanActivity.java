@@ -1,13 +1,11 @@
 package com.surecn.familymovie.ui.browser;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -20,28 +18,38 @@ import com.surecn.familymovie.R;
 import com.surecn.familymovie.common.LanManager;
 import com.surecn.familymovie.common.SmbManager;
 import com.surecn.familymovie.data.AppProvider;
-import com.surecn.familymovie.data.FileCache;
 import com.surecn.familymovie.data.ServerModel;
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.moat.core.Schedule;
 import com.surecn.moat.core.TaskSchedule;
 import com.surecn.moat.core.task.UITask;
 import com.surecn.moat.core.task.Task;
+import com.surecn.moat.tools.log;
+import com.surecn.moat.tools.utils.IOUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import jcifs.CIFSContext;
+import jcifs.Configuration;
+import jcifs.config.PropertyConfiguration;
+import jcifs.context.BaseContext;
+import jcifs.context.SingletonContext;
 import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbNamedPipe;
 
 /**
  * User: surecn(surecn@163.com)
@@ -50,11 +58,11 @@ import jcifs.smb.SmbFile;
  */
 public class LanActivity extends FileActivity {
 
-    private HashSet<String> mGetName = new HashSet<>();
-
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     private ServerModel mServerModel;
+
+    private Map<String, FileItem> mServerMaps;
 
     private Handler handler = new Handler() {
         @Override
@@ -105,6 +113,10 @@ public class LanActivity extends FileActivity {
         if (list == null) {
             list = new ArrayList<>();
         }
+        mServerMaps = new HashMap<>();
+        for (FileItem fileItem : list) {
+            mServerMaps.put(fileItem.server, fileItem);
+        }
         FileItem fileItem = new FileItem();
         fileItem.name = "手动添加";
         fileItem.type = -1;
@@ -120,7 +132,7 @@ public class LanActivity extends FileActivity {
                 Schedule.linear(new Task() {
                     @Override
                     public void run(TaskSchedule taskSchedule, Object result) {
-                        if (!fileItem.canAccess || !tryEnterServer(fileItem)) {
+                        if (!tryEnterServer(fileItem)) {
                             showInputAuth(fileItem);
                             taskSchedule.sendNext(false);
                             return;
@@ -144,23 +156,29 @@ public class LanActivity extends FileActivity {
         }
     }
 
-
     private boolean tryEnterServer(FileItem fileItem) {
         try {
             SmbFile smbFile = null;
-            if (TextUtils.isEmpty(fileItem.user)) {
-                smbFile = new SmbFile(fileItem.path);
-            } else {
-                smbFile = new SmbFile(fileItem.path, new NtlmPasswordAuthentication(fileItem.server, fileItem.user, fileItem.pass));
+
+            CIFSContext cifsContext = SingletonContext.getInstance().withAnonymousCredentials();
+            if (!TextUtils.isEmpty(fileItem.user)) {
+                cifsContext = SingletonContext.getInstance().withCredentials(new NtlmPasswordAuthenticator(fileItem.server, fileItem.user, fileItem.pass));
             }
-            smbFile.connect();
-            fileItem.canAccess = true;
-            mServerModel.setAuth(fileItem, fileItem.user, fileItem.pass);
+
+            smbFile = new SmbFile(fileItem.path, cifsContext);
+            smbFile.list();
+//            InputStream inputStream = smbFile.openInputStream();
+//
+//            log.e("" + IOUtils.readString(inputStream));
             return true;
-        } catch (MalformedURLException e) {
+        } catch (final Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showToast(e.getMessage());
+                }
+            });
         }
         return false;
     }
@@ -176,16 +194,27 @@ public class LanActivity extends FileActivity {
                                 AlertDialog dia = (AlertDialog) dialog;
                                 EditText user = dia.findViewById(R.id.edit_user);
                                 EditText pass = dia.findViewById(R.id.edit_pass);
-                                if (user.length() <= 0) {
-                                    Toast.makeText(LanActivity.this, R.string.msg_empty_user, Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
+//                                if (user.length() <= 0) {
+//                                    Toast.makeText(LanActivity.this, R.string.msg_empty_user, Toast.LENGTH_SHORT).show();
+//                                    return;
+//                                }
                                 fileItem.user = user.getText().toString();
                                 fileItem.pass = pass.getText().toString();
+                                mServerModel.setAuth(fileItem, fileItem.user, fileItem.pass);
+                                showToast("server:" + fileItem.server + "  user:" + fileItem.user + " pass:" + fileItem.pass + " path:" + fileItem.path);
                                 Schedule.linear(new Task() {
                                     @Override
                                     public void run(TaskSchedule taskSchedule, Object result) {
-                                        tryEnterServer(fileItem);
+                                        taskSchedule.sendNext(tryEnterServer(fileItem));
+                                    }
+                                }).next(new UITask<Boolean>() {
+                                    @Override
+                                    public void run(TaskSchedule taskSchedule, Boolean result) {
+                                        if (result) {
+                                            Intent intent = new Intent(LanActivity.this, SmbActivity.class);
+                                            intent.putExtra("item", fileItem);
+                                            startActivity(intent);
+                                        }
                                     }
                                 }).start();
                             }
@@ -234,6 +263,7 @@ public class LanActivity extends FileActivity {
                         fileItem.type = 0;
                         fileItem.name = editText.getText().toString();
                         fileItem.path = "smb://" + fileItem.name;
+                        fileItem.custom = 1;
                         mServerModel.add(fileItem);
                     }
                 })
@@ -247,12 +277,51 @@ public class LanActivity extends FileActivity {
         Schedule.linear(new Task() {
             @Override
             public void run(TaskSchedule work, Object result) {
-                ArrayList<String> items = SmbManager.listWorkGroupIp();
-                for (String ip : items) {
-                    getServerName(ip);
+                List<String> items = SmbManager.listLanIp();
+                HashSet hashSet = new HashSet(items);
+                for (FileItem item : getData()) {
+                    hashSet.add(item.server);
                 }
-                getShareServer();
-
+                /*先扫描arp列表*/
+                long [] range = LanManager.discover(LanActivity.this);
+                CountDownLatch latch = new CountDownLatch((int) (range[1] - range[0] + 1));
+                Iterator<String> iterable = hashSet.iterator();
+                while (iterable.hasNext()) {
+                    getServerName(iterable.next());
+                    executorService.submit(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                getServerName(iterable.next());
+                            } finally {
+                                latch.countDown();
+                            }
+                        }
+                    });
+                }
+                /*扫描所有*/
+                for (long i = range[0]; i <= range[1]; i++) {
+                    final long j = i;
+                    final String ip = LanManager.LongToIp(i);
+                    if (!hashSet.contains(ip)) {
+                        executorService.submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    getServerName(ip);
+                                } finally {
+                                    latch.countDown();
+                                }
+                            }
+                        });
+                    }
+                }
+                try {
+                    latch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                executorService.shutdown();
             }
         }).next(new UITask() {
             @Override
@@ -264,42 +333,19 @@ public class LanActivity extends FileActivity {
         }).start();
     }
 
-    public void getShareServer() {
-        long [] range = LanManager.discover(LanActivity.this);
-        CountDownLatch latch = new CountDownLatch((int) (range[1] - range[0] + 1));
-        for (long i = range[0]; i <= range[1]; i++) {
-            final String ip = LanManager.LongToIp(i);
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if(LanManager.pingHost(ip, 445)) {
-                            getServerName(ip);
-                        }
-                    } finally {
-                        latch.countDown();
-                    }
-                }
-            });
-        }
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void getServerName(String ip) {
-        Schedule.linear(new Task() {
-            @Override
-            public void run(TaskSchedule taskSchedule, Object result) {
-                FileItem fileItem = SmbManager.getServer(ip);
-                if (fileItem != null) {
-                    mServerModel.add(fileItem);
-                }
+        FileItem fileItem = SmbManager.getServer(ip);
+        if (fileItem != null) {
+            fileItem.canAccess = 1;
+            mServerModel.add(fileItem);
+        } else {
+            FileItem fileItem1 = mServerMaps.get(ip);
+            if (fileItem1 != null) {
+                fileItem1.canAccess = 0;
+                mServerModel.add(fileItem1);
+                return;
             }
-        }).start();
-
+        }
     }
 
 }

@@ -11,13 +11,11 @@ public class SizeUtils {
     public final static long MB = 1024 * 1024;
     public final static long KB = 1024;
 
-    public static String toSimple(long size) {
+    public static String toSimple(final long size) {
         int gb = 0,mb = 0,kb = 0, b = 0;
         gb = (int) (size / GB);
-        size = size % GB;
-        mb = (int) (size / MB);
-        size = size % MB;
-        kb = (int) (size / KB);
+        mb = (int) ((size % GB) / MB);
+        kb = (int) ((size % MB) / KB);
         b = (int) (size % KB);
         if (size > GB) {
             float res = gb * 1000 + mb;

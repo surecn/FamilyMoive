@@ -61,3 +61,6 @@
 -keep class com.dangbei.euthenia.**{*;}
 -keep class com.ant.downloader.**{*;}
 -keep class com.j256.ormlite.**{*;}
+-keep class org.bouncycastle.**{*;}
+-keep class jcifs.**{*;}
+-keep class org.apache.log4j.**{*;}

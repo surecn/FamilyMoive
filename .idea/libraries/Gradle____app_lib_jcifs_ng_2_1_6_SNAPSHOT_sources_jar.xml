@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: ./app/lib/jcifs-ng-2.1.6-SNAPSHOT-sources.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/lib/jcifs-ng-2.1.6-SNAPSHOT-sources.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -8,11 +8,19 @@ import android.content.Intent;
 import com.dangbei.euthenia.manager.DangbeiAdManager;
 import com.surecn.familymovie.common.StreamService;
 import com.surecn.familymovie.data.HttpAdapter;
+import com.surecn.moat.core.LinearSchedule;
 import com.surecn.moat.core.Schedule;
+import com.surecn.moat.core.TaskSchedule;
+import com.surecn.moat.core.task.UITask;
 import com.surecn.moat.sqliteadmin.SQLiteAdmin;
 import com.surecn.moat.tools.log;
 import com.surecn.moat.tools.setting.SettingManager;
 import com.umeng.commonsdk.UMConfigure;
+
+import java.util.Properties;
+
+import jcifs.CIFSException;
+import jcifs.context.SingletonContext;
 
 import static com.surecn.familymovie.BuildConfig.DEBUG;
 
@@ -45,6 +53,22 @@ public class FMApplication extends Application {
         if (DEBUG) {
             SQLiteAdmin.with(this).init(8000);
         }
+
+//        Schedule.linear(new UITask() {
+//            @Override
+//            public void run(TaskSchedule taskSchedule, Object result) {
+//                Properties prop = new Properties();
+//                prop.put( "jcifs.smb.client.enableSMB1", "true");
+//                prop.put( "jcifs.smb.client.disableSMB2", "false");
+//                prop.put( "jcifs.smb.client.ipcSigningEnforced", "false");
+//                prop.put( "jcifs.traceResources", "true" );
+//                try {
+//                    SingletonContext.init(prop);
+//                } catch (CIFSException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
 
         /*http请求接口初始化*/
         HttpAdapter.init(this);

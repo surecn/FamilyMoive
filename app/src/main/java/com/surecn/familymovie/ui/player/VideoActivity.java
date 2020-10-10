@@ -41,6 +41,8 @@ import com.surecn.moat.core.TaskSchedule;
 import com.surecn.moat.core.task.Task;
 import com.surecn.moat.core.task.UITask;
 import com.surecn.moat.tools.log;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
@@ -49,7 +51,9 @@ import java.util.Date;
 import java.util.List;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.CIFSContext;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
@@ -437,17 +441,22 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                 if (mUrl.startsWith("smb://")) {
                     SmbFile smbFile = null;
                     try {
-                        smbFile = new SmbFile(mUrl);
-                        NtlmPasswordAuthentication ntlmPasswordAuthentication = null;
-                        if (mFileItem != null) {
-                            ntlmPasswordAuthentication = new NtlmPasswordAuthentication(mFileItem.server, mFileItem.user, mFileItem.pass);
+                        NtlmPasswordAuthenticator ntlmPasswordAuthenticator = null;
+                        CIFSContext context = SingletonContext.getInstance().withAnonymousCredentials();
+                        if (mFileItem != null && !TextUtils.isEmpty(mFileItem.server) && !TextUtils.isEmpty(mFileItem.user)) {
+                            ntlmPasswordAuthenticator = new NtlmPasswordAuthenticator(mFileItem.server, mFileItem.user, mFileItem.pass);
+                            context = SingletonContext.getInstance().withCredentials(ntlmPasswordAuthenticator);
                         }
-                        mList = SmbManager.listFile(smbFile.getParent(), 1, ntlmPasswordAuthentication);
+                        smbFile = new SmbFile(mUrl, context);
+                        mList = SmbManager.listFile(smbFile.getParent(), 1, ntlmPasswordAuthenticator);
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     } catch (SmbException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    File file = new File(mUrl);
+                    mList = FileManager.listFile(mUrl, 1);
                 }
             }
         }).next(new UITask() {
@@ -885,12 +894,10 @@ public class VideoActivity extends BaseActivity implements View.OnClickListener 
                         @Override
                         public void run(TaskSchedule taskSchedule, Object result) {
                             try {
-                                mSubTitle.setSubTitle(trackItem.value, new SmbFileInputStream(trackItem.value));
+                                mSubTitle.setSubTitle(trackItem.value, new SmbFileInputStream(new SmbFile(trackItem.value)));
                             } catch (SmbException e) {
                                 e.printStackTrace();
                             } catch (MalformedURLException e) {
-                                e.printStackTrace();
-                            } catch (UnknownHostException e) {
                                 e.printStackTrace();
                             }
                         }

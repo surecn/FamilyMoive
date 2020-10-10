@@ -284,7 +284,7 @@ public class FileActivity extends TitleActivity implements View.OnClickListener,
             } else if (file.type == 1) {
                 imageView.setImageResource(R.mipmap.file_icon_folder);
             } else if (file.type == 0) {
-                if (!file.needPass) {
+                if (file.needPass == 0) {
                     imageView.setImageResource(R.mipmap.smb);
                 } else {
                     imageView.setImageResource(R.mipmap.smb_lock);

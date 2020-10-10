@@ -1,24 +1,36 @@
 package com.surecn.familymovie.common;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 
+import com.surecn.familymovie.common.samba.Samba2;
 import com.surecn.familymovie.domain.FileItem;
 import com.surecn.familymovie.utils.DateUtils;
 import com.surecn.familymovie.utils.UriUtil;
+import com.surecn.moat.tools.log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import jcifs.UniAddress;
-import jcifs.netbios.NbtAddress;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.Address;
+import jcifs.CIFSContext;
+import jcifs.NetbiosAddress;
+import jcifs.SmbResource;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
+import jcifs.smb.SmbAuthException;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFilenameFilter;
@@ -33,73 +45,80 @@ public class SmbManager {
     private static Method getAddressMethod;
 
     static {
-        try {
-            getAddressMethod = SmbFile.class.getDeclaredMethod("getAddress");
-            getAddressMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            getAddressMethod = SmbFile.class.getDeclaredMethod("getAddress");
+//            getAddressMethod.setAccessible(true);
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static FileItem getServer(String ip) {
+        log.e("========getServer=======" + ip);
         FileItem fileItem = null;
         try {
-            NbtAddress nbtAddress = NbtAddress.getByName(ip);
-            nbtAddress.firstCalledName();
-            String name = nbtAddress.nextCalledName();
-            SmbFile smbFile = new SmbFile("smb://"+ip+"/");
+            SmbFile smbFile = new SmbFile("smb://" + ip + "/", SingletonContext.getInstance().withAnonymousCredentials());
+            smbFile.setConnectTimeout(200);
+            smbFile.setReadTimeout(100);
             if (!smbFile.exists()) {
                 return null;
             }
             fileItem = new FileItem();
-            fileItem.name = name;
             fileItem.path = smbFile.getPath();
             fileItem.type = 0;
-            fileItem.canAccess = false;
-            fileItem.needPass = true;
             fileItem.server = ip;
             smbFile.connect();
-            fileItem.canAccess = true;
-            fileItem.needPass = false;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (SmbException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            fileItem.needPass = 0;
+        } catch (SmbAuthException e) {
+            fileItem.needPass = 1;
+        } catch (Exception e) {
+            fileItem = null;
+        }
+        if (fileItem != null) {
+            Address nbtAddress = null;
+            try {
+                nbtAddress = SingletonContext.getInstance().getNameServiceClient().getByName(ip);
+                nbtAddress.firstCalledName();
+                String name = nbtAddress.nextCalledName(SingletonContext.getInstance());
+                fileItem.name = name;
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         }
         return fileItem;
     }
 
-    public static ArrayList<FileItem> listWorkGroup() {
-        ArrayList<FileItem> list = new ArrayList<>();
-        SmbFile f = null;
+    public static List<String> listLanIp() {
+        List<String> list = new ArrayList<String>();
+        boolean flag = false;
+        int count=0;
+        Runtime r = Runtime.getRuntime();
+        Process p;
         try {
-            f = new SmbFile("smb://workgroup/");
-            SmbFile[] smbFiles = f.listFiles();
-            if (smbFiles != null) {
-                for (SmbFile p : smbFiles) {
-                    FileItem fileItem = new FileItem();
-                    fileItem.name = p.getName();
-                    fileItem.path = p.getCanonicalPath();
-                    fileItem.type = 0;
-                    fileItem.canAccess = p.getAllowUserInteraction();
-                    list.add(fileItem);
+            p = r.exec("cat proc/net/arp");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p
+                    .getInputStream()));
+            String inline;
+            String ip = "((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}";
+            Pattern pattern = Pattern.compile(ip);
+            while ((inline = br.readLine()) != null) {
+                Matcher matcher = pattern.matcher(inline);
+                if (matcher.find()) {
+                    list.add(matcher.group());
                 }
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (SmbException e) {
+            br.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return list;
     }
 
-    public static ArrayList<String> listWorkGroupIp() {
+    public static List<String> listWorkspaces() {
         ArrayList<String> list = new ArrayList<>();
         SmbFile f = null;
         try {
-            f = new SmbFile("smb://workgroup/");
+            f = new SmbFile("smb://workgroup/", SingletonContext.getInstance().withAnonymousCredentials());
             SmbFile[] smbFiles = f.listFiles();
             if (smbFiles != null) {
                 for (SmbFile p : smbFiles) {
@@ -107,15 +126,22 @@ public class SmbManager {
                     fileItem.name = p.getName();
                     fileItem.path = p.getCanonicalPath();
                     fileItem.type = 0;
-                    fileItem.canAccess = p.getAllowUserInteraction();
-                    try {
-                        UniAddress uniAddress = (UniAddress) getAddressMethod.invoke(p);
-                        list.add(uniAddress.getHostAddress());
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        p.connect();
+//                        fileItem.canAccess = true;
+//                    } catch (Exception e) {
+//                        fileItem.canAccess = false;
+//                    }
+                    list.add(p.getServer());
+                    log.e("===" + p.getServer() + "===" + p.getServerWithDfs());
+//                    try {
+//                        UniAddress uniAddress = (UniAddress) getAddressMethod.invoke(p);
+//                        list.add(uniAddress.getHostAddress());
+//                    } catch (IllegalAccessException e) {
+//                        e.printStackTrace();
+//                    } catch (InvocationTargetException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         } catch (MalformedURLException e) {
@@ -126,33 +152,12 @@ public class SmbManager {
         return list;
     }
 
-    public static ArrayList<FileItem> listServer() {
-        ArrayList<FileItem> list = new ArrayList<>();
-        SmbFile f = null;
-        try {
-            f = new SmbFile("smb://");
-            SmbFile[] smbFiles = f.listFiles();
-
-            if (smbFiles != null) {
-                for (SmbFile p : smbFiles) {
-                    FileItem fileItem = new FileItem();
-                    fileItem.name = p.getName();
-                    fileItem.path = p.getCanonicalPath();
-                    fileItem.type = 0;
-                    fileItem.canAccess = p.getAllowUserInteraction();
-                    list.add(fileItem);
-                }
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (SmbException e) {
-            e.printStackTrace();
+    public static List<FileItem> listFile(String path, int filter, NtlmPasswordAuthenticator ntlmPasswordAuthenticator) throws SmbException, MalformedURLException {
+        CIFSContext cifsContext = SingletonContext.getInstance().withDefaultCredentials();
+        if (ntlmPasswordAuthenticator != null) {
+            cifsContext = SingletonContext.getInstance().withCredentials(ntlmPasswordAuthenticator);
         }
-        return list;
-    }
-
-    public static List<FileItem> listFile(String path, int filter, NtlmPasswordAuthentication ntlmPasswordAuthentication) throws SmbException, MalformedURLException {
-        SmbFile file = new SmbFile(path, ntlmPasswordAuthentication);
+        SmbFile file = new SmbFile(path, cifsContext);
         ArrayList<FileItem> files = new ArrayList<>();
         ArrayList<FileItem> folders = new ArrayList<>();
 
@@ -180,6 +185,7 @@ public class SmbManager {
                 }
                 fileItem.type = 1;
                 folders.add(fileItem);
+
             }
         }
         Collections.sort(files, new Comparator<FileItem>() {
@@ -198,9 +204,13 @@ public class SmbManager {
         return folders;
     }
 
-    public static FileItem getFileItem(String path, NtlmPasswordAuthentication ntlmPasswordAuthentication) {
+    public static FileItem getFileItem(String path, NtlmPasswordAuthenticator ntlmPasswordAuthenticator) {
         try {
-            SmbFile f = new SmbFile(path, ntlmPasswordAuthentication);
+            CIFSContext cifsContext = SingletonContext.getInstance().withAnonymousCredentials();
+            if (ntlmPasswordAuthenticator != null) {
+                cifsContext = SingletonContext.getInstance().withCredentials(ntlmPasswordAuthenticator);
+            }
+            SmbFile f = new SmbFile(path, cifsContext);
             FileItem fileItem = new FileItem();
             fileItem.name = UriUtil.uriNameFormat(f.getName());
             fileItem.path = f.getPath();
@@ -225,7 +235,7 @@ public class SmbManager {
         try {
             String _name = UriUtil.getUriSimpleName(filepath);
             String path = UriUtil.getUriParent(filepath);
-            SmbFile smbFile = new SmbFile(path);
+            SmbFile smbFile = new SmbFile(path, SingletonContext.getInstance());
             SmbFile[] files = smbFile.listFiles(new SmbFilenameFilter() {
                 @Override
                 public boolean accept(SmbFile dir, String name) throws SmbException {
@@ -246,8 +256,12 @@ public class SmbManager {
         return null;
     }
 
-    public static SmbFile createSmbFile(String path, NtlmPasswordAuthentication ntlmPasswordAuthentication) throws MalformedURLException {
-        return new SmbFile(path.replace("+", "%2B"), ntlmPasswordAuthentication);
+    public static SmbFile createSmbFile(String path, NtlmPasswordAuthenticator ntlmPasswordAuthenticator) throws MalformedURLException {
+        CIFSContext cifsContext = SingletonContext.getInstance().withAnonymousCredentials();
+        if (ntlmPasswordAuthenticator != null) {
+            cifsContext = SingletonContext.getInstance().withCredentials(ntlmPasswordAuthenticator);
+        }
+        return new SmbFile(path.replace("+", "%2B"), cifsContext);
     }
 
     public static List<String> getIPs() {

@@ -21,7 +21,7 @@ import com.surecn.moat.core.task.Task;
 import com.surecn.moat.core.task.UITask;
 import java.util.ArrayList;
 import java.util.List;
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.NtlmPasswordAuthenticator;
 
 public class FavoriteActivity extends FileActivity {
 
@@ -47,13 +47,13 @@ public class FavoriteActivity extends FileActivity {
                 ServerModel serverModel = new ServerModel(FavoriteActivity.this);
                 List<Favorite> list = mFavoriteModel.getFavoriteFolders();
 
-                NtlmPasswordAuthentication auth = null;
+                NtlmPasswordAuthenticator auth = null;
                 List<FileItem> folders = new ArrayList<>();
                 for (Favorite favorite : list) {
                     if (favorite.getType() == FavoriteModel.TYPE_FOLDER_LAN && favorite.getValue().startsWith("smb://")) {
                         FileItem serverItem = serverModel.getByPath(favorite.getExtra());
                         if (serverItem != null && !TextUtils.isEmpty(serverItem.user)) {
-                            auth = new NtlmPasswordAuthentication(serverItem.server, serverItem.user, serverItem.pass);
+                            auth = new NtlmPasswordAuthenticator(serverItem.server, serverItem.user, serverItem.pass);
                         }
                         FileItem fileItem = SmbManager.getFileItem(favorite.getValue(), auth);
                         fileItem.favoriteType = favorite.getType();

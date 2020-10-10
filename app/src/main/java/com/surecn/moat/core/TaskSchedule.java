@@ -83,6 +83,7 @@ public class TaskSchedule<R> {
                 mTaskList.pollFirst();
                 return current();
             case repeat: {
+                current().setNextState(State.next);
                 return current();
             }
             case cancel: {

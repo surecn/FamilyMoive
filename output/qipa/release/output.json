@@ -1,1 +1,20 @@
-[{"outputType":{"type":"APK"},"apkData":{"type":"MAIN","splits":[],"versionCode":14,"versionName":"1.4","enabled":true,"outputFile":"app-qipa-release.apk","fullName":"qipaRelease","baseName":"qipa-release"},"path":"app-qipa-release.apk","properties":{}}]
+{
+  "version": 1,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.surecn.familymovie",
+  "variantName": "qipaRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "properties": [],
+      "versionCode": 16,
+      "versionName": "16",
+      "enabled": true,
+      "outputFile": "app-qipa-release.apk"
+    }
+  ]
+}

@@ -14,7 +14,10 @@ import com.surecn.moat.core.task.UITask;
 import java.net.MalformedURLException;
 import java.util.List;
 import androidx.annotation.Nullable;
-import jcifs.smb.NtlmPasswordAuthentication;
+
+import jcifs.CIFSContext;
+import jcifs.context.SingletonContext;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
 
 /**
@@ -30,7 +33,7 @@ public class SmbActivity extends FileActivity {
 
     private int mRepeatCount;
 
-    private NtlmPasswordAuthentication mAuth;
+    private NtlmPasswordAuthenticator mAuth;
 
     private FavoriteModel mFavoriteModel;
 
@@ -41,7 +44,7 @@ public class SmbActivity extends FileActivity {
         mFileItem = (FileItem) getIntent().getParcelableExtra("item");
         mPath = mFileItem.path;
         if (!TextUtils.isEmpty(mFileItem.user)) {
-            mAuth = new NtlmPasswordAuthentication(mFileItem.server, mFileItem.user, mFileItem.pass);
+            mAuth = new NtlmPasswordAuthenticator(mFileItem.server, mFileItem.user, mFileItem.pass);
         }
 
         listFile(mPath);
@@ -54,7 +57,11 @@ public class SmbActivity extends FileActivity {
             return;
         }
         try {
-            mPath = new SmbFile(mPath, mAuth).getParent();
+            CIFSContext cifsContext = SingletonContext.getInstance().withAnonymousCredentials();
+            if (mAuth != null) {
+                cifsContext = SingletonContext.getInstance().withCredentials(mAuth);
+            }
+            mPath = new SmbFile(mPath, cifsContext).getParent();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -89,6 +96,7 @@ public class SmbActivity extends FileActivity {
                 try {
                     work.sendNext(SmbManager.listFile(url, 0, mAuth));
                 } catch (Exception e) {
+                    showToast(e.getMessage());
                     e.printStackTrace();
                     if (mRepeatCount > 0) {
                         mRepeatCount--;

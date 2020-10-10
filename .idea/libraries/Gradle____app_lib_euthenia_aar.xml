@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: ./app/lib/euthenia.aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f13f3849c0c98339a83553b2b9e33ff9/jetified-euthenia/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f13f3849c0c98339a83553b2b9e33ff9/jetified-euthenia/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

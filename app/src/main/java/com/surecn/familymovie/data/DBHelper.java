@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * 数据库版本
      */
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 9;
 
 
     private static DBHelper instance;
@@ -42,8 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL("CREATE TABLE HISTORY ( TYPE INTEGER, URL TEXT PRIMARY KEY, TIME INTEGER, POSITION INTEGER, LENGTH INTEGER, ROOT TEXT);");
-            db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, EXTRA TEXT, TIME INTEGER);");
-            db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER, USER TEXT, PASSWORD TEXT, ACCESS TEXT, SER TEXT, NEEDPASS TEXT);");
+            createTableFavorite(db);
+            createTableServer(db);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,31 +51,47 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, TIME INTEGER);");
-        }
-        if (oldVersion < 3) {
-            db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER);");
-        }
         if (oldVersion < 5) {
             db.execSQL("ALTER TABLE HISTORY ADD ROOT TEXT");
         }
-        if (oldVersion < 6) {
-            reCreateServerTable(db);
-        }
         if (oldVersion < 7) {
-            reCreateFavoriteTable(db);
+            deleteTableFavorite(db);
+            createTableFavorite(db);
+        }
+        if (oldVersion < 8) {
+            deleteTableServer(db);
+            createTableServer(db);
         }
     }
 
-    private void reCreateServerTable(SQLiteDatabase db) {
+    private void deleteTableServer(SQLiteDatabase db) {
         db.execSQL("DROP TABLE SERVER");
-        db.execSQL("CREATE TABLE SERVER ( TYPE INTEGER, NAME TEXT, PATH TEXT PRIMARY KEY, TIME INTEGER, USER TEXT, PASSWORD TEXT, ACCESS TEXT, SER TEXT, NEEDPASS TEXT);");
     }
 
-    private void reCreateFavoriteTable(SQLiteDatabase db) {
+    private void createTableServer(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE SERVER (" +
+                "TYPE INTEGER, " +
+                "NAME TEXT, " +
+                "PATH TEXT PRIMARY KEY, " +
+                "TIME INTEGER, " +
+                "USER TEXT, " +
+                "PASSWORD TEXT, " +
+                "ACCESS INTEGER, " +
+                "SER TEXT, " +
+                "NEEDPASS INTEGER, " +
+                "CUSTOM INTEGER);");
+    }
+
+    private void deleteTableFavorite(SQLiteDatabase db) {
         db.execSQL("DROP TABLE FAVORITE");
-        db.execSQL("CREATE TABLE FAVORITE ( TYPE INTEGER, VALUE TEXT PRIMARY KEY, EXTRA TEXT, TIME INTEGER);");
+    }
+
+    private void createTableFavorite(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE FAVORITE ( " +
+                "TYPE INTEGER, " +
+                "VALUE TEXT PRIMARY KEY, " +
+                "EXTRA TEXT, " +
+                "TIME INTEGER);");
     }
 
 }

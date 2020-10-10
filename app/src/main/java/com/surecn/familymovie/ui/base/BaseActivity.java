@@ -83,7 +83,7 @@ public class BaseActivity extends Activity {
     }
 
     public void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
     }
 
     public void showToast(int resId) {

@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
  * Time: 14:37
  */
 public class FileItem implements Parcelable {
-    public boolean canAccess;
+    public int canAccess;
     public int type;
     public String name;
     public String path;
@@ -20,9 +20,12 @@ public class FileItem implements Parcelable {
     public String user;
     public String pass;
     public String server;
-    public boolean needPass;
+    public int needPass;
+    public int custom;
 
     public int favoriteType;
+
+    public int accessed;
 
     public int getFavoriteType() {
         return favoriteType;
@@ -30,14 +33,6 @@ public class FileItem implements Parcelable {
 
     public void setFavoriteType(int favoriteType) {
         this.favoriteType = favoriteType;
-    }
-
-    public boolean isNeedPass() {
-        return needPass;
-    }
-
-    public void setNeedPass(boolean needPass) {
-        this.needPass = needPass;
     }
 
     public String getServer() {
@@ -64,12 +59,20 @@ public class FileItem implements Parcelable {
         this.pass = pass;
     }
 
-    public boolean isCanAccess() {
+    public int getCanAccess() {
         return canAccess;
     }
 
-    public void setCanAccess(boolean canAccess) {
+    public void setCanAccess(int canAccess) {
         this.canAccess = canAccess;
+    }
+
+    public int getNeedPass() {
+        return needPass;
+    }
+
+    public void setNeedPass(int needPass) {
+        this.needPass = needPass;
     }
 
     public int getType() {
@@ -112,6 +115,14 @@ public class FileItem implements Parcelable {
         this.lastModify = lastModify;
     }
 
+    public int getCustom() {
+        return custom;
+    }
+
+    public void setCustom(int custom) {
+        this.custom = custom;
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null) {
@@ -133,7 +144,7 @@ public class FileItem implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeByte(this.canAccess ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.canAccess);
         dest.writeInt(this.type);
         dest.writeString(this.name);
         dest.writeString(this.path);
@@ -142,13 +153,14 @@ public class FileItem implements Parcelable {
         dest.writeString(this.user);
         dest.writeString(this.pass);
         dest.writeString(this.server);
+        dest.writeInt(this.custom);
     }
 
     public FileItem() {
     }
 
     protected FileItem(Parcel in) {
-        this.canAccess = in.readByte() != 0;
+        this.canAccess = in.readInt();
         this.type = in.readInt();
         this.name = in.readString();
         this.path = in.readString();
@@ -157,6 +169,7 @@ public class FileItem implements Parcelable {
         this.user = in.readString();
         this.pass = in.readString();
         this.server = in.readString();
+        this.custom = in.readInt();
     }
 
     public static final Parcelable.Creator<FileItem> CREATOR = new Parcelable.Creator<FileItem>() {

@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileInputStream;
 import jcifs.util.transport.TransportException;
@@ -66,7 +66,7 @@ public class NanoStreamer extends NanoHTTPD {
     private Response respond(Map<String, String> headers, String uri, Map<String, String> params) {
         uri = "smb://" + uri.substring(5);
         int extensionIndex = uri.lastIndexOf(".");
-        NtlmPasswordAuthentication ntlmPasswordAuthentication = getAuth(params);
+        NtlmPasswordAuthenticator ntlmPasswordAuthenticator = getAuth(params);
         String extenstion = uri.substring(extensionIndex + 1).toLowerCase();
         String mimeTypeForFile = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extenstion);
         if (mimeTypeForFile == null) {
@@ -79,7 +79,7 @@ public class NanoStreamer extends NanoHTTPD {
         Response response = null;
         try {
             if (SambaUtil.isSmbUrl(smbUri) && !TextUtils.isEmpty(mimeTypeForFile)) {
-                SmbFile smbFile = SmbManager.createSmbFile(smbUri, ntlmPasswordAuthentication);
+                SmbFile smbFile = SmbManager.createSmbFile(smbUri, ntlmPasswordAuthenticator);
                 InputStream copyStream = new BufferedInputStream(new SmbFileInputStream(smbFile));
                 response = serveSmbFile(smbUri, headers, copyStream, smbFile, mimeTypeForFile);
             } else {
@@ -93,13 +93,13 @@ public class NanoStreamer extends NanoHTTPD {
                 "Error 404, file not found.");
     }
 
-    private NtlmPasswordAuthentication getAuth(Map<String, String> params) {
+    private NtlmPasswordAuthenticator getAuth(Map<String, String> params) {
         if (params != null) {
             String server = params.get("server");
             String user = params.get("user");
             String pass = params.get("pass");
             if (!TextUtils.isEmpty(server) && !TextUtils.isEmpty(user)) {
-                return new NtlmPasswordAuthentication(server, user, pass);
+                return new NtlmPasswordAuthenticator(server, user, pass);
             }
         }
         return null;
